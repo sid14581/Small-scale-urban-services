@@ -1,1 +1,45 @@
-version: "3"
+---
+version: "3" 
+
+
+services: 
+
+  web:
+    container_name: Django-webapp
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - 'C:\A_my files\Basic Projects\SMSC\Siddu716_project\django_data:/var/lib/django_data'
+
+
+
+  db:
+    container_name: db_mysql
+    image: 'mysql:latest'
+    environment:
+      MYSQL_HOST: localhost
+      MYSQL_PORT: 3306
+      MYSQL_ROOT_PASSWORD: '1234'
+      MYSQL_DATABASE: 'scmgs'
+      MYSQL_USER: 'dam'
+      MYSQL_PASSWORD: 'siddu'
+    ports:
+      - '53022:3306'
+    volumes:
+      - 'C:\A_my files\Basic Projects\SMSC\Siddu716_project\db_data:/var/lib/mysql'
+
+
+  
+
+
+    
+    
+    
+
+
+
+    
+      
