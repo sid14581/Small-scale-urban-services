@@ -1,0 +1,31 @@
+{% extends 'BASE.html' %}
+
+
+
+{% block content %}
+
+
+
+     <tbody >
+     <tr>
+            &emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp;<th style="padding-left:40px; padding-right: 40px">PROBLEM</th>
+            &emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;<th style="padding-left: 40px; padding-right: 40px">COMMENT </th>
+
+          </tr>
+
+
+      {% for fb in fbs %}
+
+
+          <tr style="font-weight: bolder; font-family: Arial; font-size: 18px;" >
+          &emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp;<td style="padding-left: 40px; padding-right: 40px">{{ fb.problem }}</td>
+          &emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;<td style="padding-left: 40px; padding-right: 40px">{{ fb.comment }}</td>
+          </tr>
+      {% endfor %}
+
+     </tbody>
+    </table>
+
+
+{% endblock %}
+

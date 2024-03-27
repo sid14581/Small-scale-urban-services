@@ -1,0 +1,85 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <title>Complaint_List</title>
+
+    <style>
+
+         th, td {
+            border: 3px solid black;
+            color: black;
+            height: 50px;
+        }
+
+
+        table {
+            border-collapse: collapse;
+            font-size: 20px;
+
+        }
+
+        th{
+            background-color: deepskyblue;
+        }
+
+        td {
+            background-color: aquamarine;
+        }
+
+        td:hover {
+            background-color: grey;
+            color: white;
+        }
+
+        .damdam {
+            color: white;
+            font-size: 45px;
+            -webkit-text-stroke-width: 2px;
+            -webkit-text-stroke-color: black;
+        }
+
+        .p1{
+            cursor: grab;
+
+        }
+
+        .p1:hover{
+            color: yellow;
+        }
+
+
+    </style>
+
+</head>
+
+<body bgcolor="black">
+
+<br>
+<center>
+    <h1>
+        <b style="font-family: 'Arial'; font-weight: bold; color: white;" class="damdam">
+            Complaint Table
+        </b>
+    </h1>
+
+    <table>
+        {% block content %}
+
+
+        {% endblock content %}
+    </table>
+</center>
+<br><br><br>
+<center>
+<a href="logout" style="color: red; font-weight: bolder; font-size: 10px;">
+    <b style="color: red; font-size: 18px;">Log Out</b>
+</a>
+</center>
+</body>
+
+</html>
