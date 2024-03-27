@@ -89,9 +89,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'scmgs',
-        'USER': 'root',
+        'USER': 'dam',
         'PASSWORD': 'Siddu716$',
-        'HOST': '127.0.0.1',
+        'HOST': 'db_mysql',
         'PORT': '3306',
     }
 }
@@ -135,7 +135,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, os.getcwd() + "\static")
+    os.path.join(BASE_DIR, os.getcwd() + "/static")
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'media')
