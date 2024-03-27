@@ -1,0 +1,133 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+
+    <style>
+
+        body, html {
+            height: 90%;
+            font-family: Arial, Helvetica, sans-serif;
+            scroll-behavior: no;
+        }
+
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        .bg-img {
+            /* The image used */background-image: url("{% static '\smartcity2.jpg' %}");
+            min-height: 680px;
+
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative;
+        }
+
+
+        /* Add styles to the form container */
+        .container {
+            position: absolute;
+            right: 0;
+            margin: 25px;
+            max-width: 900px;
+            padding: 20px;
+            background-color: orange;
+            border-radius: 20px;
+            border: 2px solid black;
+        }
+
+
+        /* Full-width input fields */
+        input[type=text], input[type=password] {
+            width: 95%;
+            padding: 15px;
+            margin: 5px 0 22px 0;
+            border: none;
+            background: white;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+
+
+        input[type=text]:focus, input[type=password]:focus {
+            background-color: lightgreen;
+            outline: none;
+        }
+		
+
+        /* Set a style for the submit button */
+        .btn {
+            background-color: white;
+            color: black;
+            padding: 15px 20px;
+            cursor: pointer;
+            width: 60%;
+            opacity: 0.9;
+            border-radius: 25px;
+            border: 3px solid white;
+        }
+
+        hr {
+            border: 1px solid white;
+            margin-bottom: 45px;
+        }
+
+
+        .btn:hover {
+            background-color: green;
+            color: white;
+            opacity: 1;
+
+            font-weight: bold;
+        }
+
+        a {
+            color: black;
+        }
+
+
+    </style>
+</head>
+
+<body style="background-color: #505050">
+
+<div class="bg-img"><br><br><br><br>
+    <div class="container">
+        <h1>EMPLOYEE LOGIN</h1>              <hr>
+
+        <form action="/E_third" method="post" >
+
+            {% csrf_token %}
+
+            <b>USERNAME:</b><br><input type="text" name="username">
+            <b>PASSWORD:</b><br><input type="password" name="password"><br><br>
+			 			
+            <center><button type="submit" class="btn"><strong style="font-size: 15px;">Login</strong></button><br><br></center>
+
+        </form>
+
+        <center><a href="e_register"><button class="btn"><strong style="font-size: 15px;">Register</strong></button></a></center>
+                    <br>
+            {% for m in  messages %}
+                {{ m }}
+            {% endfor %}
+
+</body>
+</html>
+
+
+
+
+
+
+

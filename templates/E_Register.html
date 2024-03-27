@@ -1,0 +1,170 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee_Register</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap4.5.0/css/bootstrap.min.css">
+    <style>
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #505050;
+        }
+
+        .bg-img {
+            /* The image used */
+            background-image: url("{% static '\smartcity.jpg' %}");
+            min-height: 679px;
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        /* Add padding to containers */
+        .container {
+            width: 3000px ;
+            padding: 15px 10px;
+            background-color: orange;
+            right: 0;
+            margin-inline-end: 15px;
+            margin-bottom: 10px;
+            max-width: 600px;
+            border-radius: 20px;
+            position: absolute;
+            border: 2px solid black;
+        }
+
+
+        /* Full-width input fields */
+        input[type=text], input[type=password] {
+            width: 60%;
+            padding: 15px;
+            margin: 5px 0 22px 0;
+            display: inline-block;
+            border: none;
+            background: white;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+
+
+        input[type=text]:focus, input[type=password]:focus {
+            background-color: lightgreen;
+            outline: none;
+        }
+
+
+        input[type=Date]:focus {
+            background-color: lightgreen;
+            outline: none;
+        }
+
+
+        /* Overwrite default styles of hr */
+        hr {
+            border: 3px solid white;
+            margin-bottom: 45px;
+            border-radius: 25px;
+        }
+
+
+        /* Set a style for the submit button */
+        .btn {
+            background-color: white;
+            color: black;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            width: 40%;
+            opacity: 0.9;
+            border-radius: 25px;
+            border: 3px solid white;
+        }
+
+
+        .btn:hover {
+            background-color: green;
+            color: white;
+            opacity: 1;
+
+        }
+
+
+        /* Add a blue text color to links */
+        a {
+
+            text-underline-position: none;
+        }
+
+        .damdam {
+            font-size: 40px;
+            font-weight: bold;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+
+        /* Set a grey background color and center the text of the "sign in" section */
+        b{
+            font-family: timesnewroman;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="bg-img">
+
+    <form action="e_register" method="post">
+
+        {% csrf_token %}
+        <br><br>
+        <div class="container">
+            <center><b class="damdam">EMPLOYEE  REGISTER<b></center> <hr>
+
+            &nbsp;<b>Name :</b>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+            <input type="text"  name="first_name">    <br>
+
+            &nbsp;<b>Email :</b> &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+            <input type="text"  name="email">         <br>
+
+
+            &nbsp;<b>Username :</b> &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+            <input type="text"  name="username">      <br>
+
+
+            &nbsp;<b>Password :</b> &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+            <input type="password"  name="password1">       <br>
+
+
+            <b>Confirm Password :</b>
+            <input type="password" name="password2">  <br>
+
+            &ensp;&ensp;&ensp;
+            <a href="third"><button type="submit" class="btn"><strong style="font-size: 15px;">Register</strong></button></a>
+            &ensp;&ensp;&ensp;
+            <button type="reset" class="btn"><strong style="font-size: 15px;">Reset</strong></button><br>
+
+            {% for m in  messages %}
+                {{ m }}
+            {% endfor %}
+
+        </div>
+    </form>
+
+</div>
+</body>
+
+</html>
+

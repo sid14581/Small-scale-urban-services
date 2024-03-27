@@ -1,0 +1,40 @@
+{% extends 'BASE.html' %}
+
+
+-
+{% block content %}
+    <form method="get" action="/W_show">
+
+        {{ myFilters5.form }}
+
+        <button>Search</button>
+
+    </form>
+    <br>
+     <tbody >
+        <tr>
+            &emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp;<th style="padding-left: 40px; padding-right: 40px">COMPLAINT</th>
+            &emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;<th style="padding-left: 12px; padding-right: 12px">PHONE_NUMBER</th>
+            &emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;<th style="padding-left: 70px; padding-right: 70px">ADDRESS </th>
+            &emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;<th style="padding-left: 70px; padding-right: 70px">AREA </th>
+            &emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;<th style="padding-left: 100px; padding-right: 100px">DRIVE LINK</th>
+        </tr>
+
+
+      {% for result5 in results5 %}
+
+
+      <tr style="font-weight: bolder; font-family: Arial; font-size: 18px;" >
+        &emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp;<td style="padding-left: 50px; padding-right: 50px">{{ result5.complain }}</td>
+        &emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;<td style="padding-left: 12px; padding-right: 12px">{{ result5.phone }}</td>
+        &emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;<td style="padding-left: 100px; padding-right: 100px">{{ result5.address }}</td>
+        &emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;<td style="padding-left: 100px; padding-right: 100px">{{ result5.area }}</td>
+        &emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;<td style="padding-left: 10px; padding-right: 50px;" class="p1">{{ result5.link }}</td>
+    </tr>
+      {% endfor %}
+
+     </tbody>
+    </table>
+
+
+{% endblock %}
