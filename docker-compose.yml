@@ -1,10 +1,31 @@
 ---
 version: "3" 
 
+networks:
+  net:
 
 services: 
 
+  # db:
+  #   image: 'mysql:latest'
+  #   container_name: mysql_db
+  #   volumes:
+  #     - 'C:\A_my files\Basic Projects\SMSC\Siddu716_project\db_data:/var/lib/mysql'    
+
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: '1234'
+  #     MYSQL_DATABASE: 'project_db'
+
+  #   ports:
+  #     - '3307:3306'
+  #   expose:
+  #     - 3307
+  #   networks:
+  #     - net
+      
+
   web:
+    image: django-ui
     container_name: Django-webapp
     build:
       context: .
@@ -13,23 +34,14 @@ services:
       - "8000:8000"
     volumes:
       - 'C:\A_my files\Basic Projects\SMSC\Siddu716_project\django_data:/var/lib/django_data'
+    networks:
+      - net
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    # depends_on:
+    #   - db
 
 
-
-  db:
-    container_name: db_mysql
-    image: 'mysql:latest'
-    environment:
-      MYSQL_HOST: localhost
-      MYSQL_PORT: 3306
-      MYSQL_ROOT_PASSWORD: '1234'
-      MYSQL_DATABASE: 'scmgs'
-      MYSQL_USER: 'dam'
-      MYSQL_PASSWORD: 'siddu'
-    ports:
-      - '53022:3306'
-    volumes:
-      - 'C:\A_my files\Basic Projects\SMSC\Siddu716_project\db_data:/var/lib/mysql'
 
 
   
