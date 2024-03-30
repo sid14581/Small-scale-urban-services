@@ -88,11 +88,12 @@ DATABASES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'scmgs',
+        'NAME': 'projectDB',
         'USER': 'root',
-        'PASSWORD': 'Siddu716$',
-        'HOST': 'localhost',
-        'PORT': '3306'
+        'PASSWORD': '',
+        'HOST': 'db',
+        'PORT': '3306',
+        
     }
 }
 
