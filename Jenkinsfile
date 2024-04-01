@@ -18,6 +18,22 @@ pipeline{
       }
    }
 
+stage("Building the code image"){
+    steps{
+      script{
+          sh '''
+              echo ' '
+              echo '************************ Building the Code*****************************'   
+
+              cd /var/jenkins_home/workspace/small-scale-urban-service-pipelines/
+
+              docker-compose up -d
+
+            '''
+        }
+      }
+   }
+
 
 
 }
