@@ -5,7 +5,7 @@ pipeline{
     IMAGE_TAG = "${BUILD_NMBER}"
 
   }
-
+ // REMOVED
   stages{
 
    stage("Checkout from Application Repo."){
