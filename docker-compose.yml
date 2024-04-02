@@ -18,6 +18,8 @@ services:
       - '3306:3306'
     networks:
       - net 
+    expose:
+      - '3306'
 
   web:
     depends_on:
@@ -29,10 +31,11 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
+
     command: >      
-      bash -c "./wait-for-it.sh db:3306 -- python manage.py migrate
-      && python manage.py runserver 0.0.0.0:8000
-      && python manage.py  .\scmgs\create_groups.py"
+     bash -c "./wait-for-it.sh db:3306 -- python manage.py migrate
+     && python manage.py runserver 0.0.0.0:8000"
+
 
     volumes:
       - './django_data:/var/lib/django_data' 
