@@ -1,2 +1,5 @@
-db_data/
-django_data/
+db_data/*
+django_data/*
+
+!db_data/.gitkeep
+!django_data/.gitkeep
