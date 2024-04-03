@@ -9,7 +9,7 @@ services:
   db:
     image: 'mysql:latest'
     container_name: mysql_db
-    volumes:d
+    volumes:
       - '$PWD/db_data:/var/lib/mysql'
     environment: 
       - MYSQL_DATABASE=projectDB
