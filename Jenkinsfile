@@ -44,7 +44,7 @@ stage("Building the code image"){
               
               docker tag django-ui:latest  sid716/djangoui-ssus:${BUILD_NUMBER}
 
-              docker login -u dock_user -p dock_pass
+              docker login -u $dock_user -p $dock_pass
 
               docker push sid716/djangoui-ssus:${BUILD_NUMBER} 
 
