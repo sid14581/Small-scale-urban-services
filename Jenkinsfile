@@ -56,8 +56,8 @@ stage("Building the code image"){
   stage("Checkout to the Deployment K8S SCM"){
       steps{
         script{
-          git branch: 'main'
-            credentialsId: 'damdamYO'
+          git branch: 'main',
+            credentialsId: 'damdamYO',
             url: 'https://github.com/sid14581/Deployment-Small-scale-Urban-Services.git'
         }
       }
