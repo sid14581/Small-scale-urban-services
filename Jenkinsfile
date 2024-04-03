@@ -28,7 +28,7 @@ stage("Building the code image"){
               cd /var/jenkins_home/workspace/small-scale-urban-service-pipelines/
 
               docker-compose up -d
-              docker-compose build
+              docker-compose up -d
               
 
             '''
