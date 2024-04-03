@@ -10,7 +10,7 @@ services:
     image: 'mysql:latest'
     container_name: mysql_db
     volumes:
-      - '$PWD/db_data:/var/lib/mysql'
+      - $PWD/db_data:/var/lib/mysql
     environment: 
       - MYSQL_DATABASE=projectDB
       - MYSQL_ALLOW_EMPTY_PASSWORD='true'
@@ -38,7 +38,7 @@ services:
 
 
     volumes:
-      - '$PWD/django_data:/var/lib/django_data' 
+      - $PWD/django_data:/var/lib/django_data
     networks:
       - net
     
