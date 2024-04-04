@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: urban-service-app
+  labels:
+    app: django-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: urban-service-app
+      app: django-app
+  template:
+    metadata:
+      name: urban-service-app
+      labels:
+        app: django-app
+    spec:
+      containers:
+        - name: urban-service
+          image: sid716/djangoui-ssus:30
+          ports:
+            - containerPort: 8000
+        
+    
