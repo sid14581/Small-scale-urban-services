@@ -83,7 +83,7 @@ stage("Building the code image"){
                git remote -v
                echo " "
                
-               git push origin  https://${GITHUB_TOKEN}@github.com/sid14581/Deployment-Small-scale-Urban-Services.git HEAD:main
+               git push https://${GITHUB_TOKEN}@github.com/sid14581/Deployment-Small-scale-Urban-Services.git HEAD:main
               '''
             }
         }
