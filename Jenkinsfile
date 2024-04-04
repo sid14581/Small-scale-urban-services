@@ -68,7 +68,7 @@ stage("Building the code image"){
         script{
             withCredentials([string(credentialsId: 'damdamGithub', variable: 'GITHUB_TOKEN')]){
               sh '''
-               cd /var/jenkins_home/workspace/small-scale-urban-service-pipelines/deploy/
+               cd /var/jenkins_home/workspace/small-scale-urban-service-pipelines/deploy_files/
               
                cat deploy.yaml
                
