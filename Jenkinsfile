@@ -70,13 +70,13 @@ stage("Building the code image"){
               sh '''
                cd /var/jenkins_home/workspace/small-scale-urban-service-pipelines/deploy_files/
               
-               cat deploy.yaml
+               cat python-deployment.yaml
                
-               sed -i "s@sid716.*@sid716/djangoui-ssus:${BUILD_NUMBER}@g" deploy.yaml
+               sed -i "s@sid716.*@sid716/djangoui-ssus:${BUILD_NUMBER}@g" python-deployment.yaml
 
-               cat deploy.yaml
+               cat python-deployment.yaml
 
-               git add deploy.yaml
+               git add .
                git commit -m 'Updated the deploy yaml | Jenkins Pipeline'
 
                echo " "
