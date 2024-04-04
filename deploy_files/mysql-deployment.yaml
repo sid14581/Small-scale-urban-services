@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: urban-service-mysql-app
+  labels:
+    app: mysql-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: urban-service-mysql-app
+      app: mysql-app
+  template:
+    metadata:
+      name: urban-service-mysql-app
+      labels:
+        app: mysql-app
+    spec:
+      containers:
+        - name: urban-mysql-service
+          image: mysql:latest
+          ports:
+            - containerPort: 3306
+        
+    

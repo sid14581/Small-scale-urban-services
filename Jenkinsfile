@@ -63,5 +63,32 @@ stage("Building the code image"){
       }
   }  
 
+  stage("Updating the K8S Manifest files and updating the Repo."){
+      steps{
+        script{
+            withCredentials([string(credentialsId: 'damdamGithub', variable: 'GITHUB_TOKEN')]){
+              sh '''
+               cd /var/jenkins_home/workspace/small-scale-urban-service-pipelines/deploy/
+              
+               cat deploy.yaml
+               
+               sed -i "s@sid716.*@sid716/djangoui-ssus:${BUILD_NUMBER}@g" deploy.yaml
+
+               cat deploy.yaml
+
+               git add deploy.yaml
+               git commit -m 'Updated the deploy yaml | Jenkins Pipeline'
+
+               echo " "
+               git remote -v
+               echo " "
+               
+               git push origin  https://${GITHUB_TOKEN}@github.com/sid14581/Deployment-Small-scale-Urban-Services.git HEAD:main
+              '''
+            }
+        }
+      }
+  }  
+
 }
 }
