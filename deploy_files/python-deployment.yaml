@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: urban-service
-          image: sid716/djangoui-ssus:30
+          image: sid716/djangoui-ssus:35
           ports:
             - containerPort: 8000
         
