@@ -21,15 +21,17 @@ spec:
           image: sid716/djangoui-ssus:35
           ports:
             - containerPort: 8000
+
           volumeMounts:
             - name: urban-service-mount
               mountPath: /app/media
+          
           command: ['python', 'manage.py', 'migrate']
 
       restartPolicy: OnFailure
+
       volumes: 
         - name: urban-service-mount
-          apiVersion: v1
           PersistentVolumeClaim:
             claimName: meta-pvc
           
