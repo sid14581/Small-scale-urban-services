@@ -44,7 +44,7 @@ stage("Building the code image"){
               
               docker tag django-ui:latest  sid716/djangoui-ssus:${BUILD_NUMBER}
 
-              docker login -u $dock_user -p $dock_pass
+              echo "$dock_pass" | docker login -u "$dock_user" --password-stdin
 
               docker push sid716/djangoui-ssus:${BUILD_NUMBER} 
 
@@ -83,7 +83,8 @@ stage("Building the code image"){
                git remote -v
                echo " "
                
-               git push https://${GITHUB_TOKEN}@github.com/sid14581/Deployment-Small-scale-Urban-Services.git HEAD:main
+               git remote set-url origin https://github.com/sid14581/Deployment-Small-scale-Urban-Services.git
+               git -c credential.helper='!f() { echo username=x-access-token; echo "password=${GITHUB_TOKEN}"; }; f' push origin HEAD:main
               '''
             }
         }
