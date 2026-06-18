@@ -1,39 +1,66 @@
-{% extends 'BASE.html' %}
+{% extends 'base_layout.html' %}
+{% load static %}
 
+{% block title %}Miscellaneous Reports - SCMGS Staff{% endblock %}
 
--
 {% block content %}
-    <form method="get" action="/O_show">
+<div class="hero-section" style="padding: 2rem 1.5rem;">
+    <h1 class="hero-title" style="font-size: 2.25rem;">🛡️ General & Miscellaneous Reports</h1>
+    <p class="hero-subtitle" style="margin-bottom: 0;">
+        Review and filter citizen reports that fall under general municipal or other categories.
+    </p>
+</div>
 
-        {{ myFilters6.form }}
-        <button>Search</button>
-
+<div class="glass-panel" style="margin-bottom: 1.5rem;">
+    <h3 style="margin-bottom: 1rem; font-size: 1.2rem;">Filter Records</h3>
+    <form method="get" action="/O_show" style="display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;">
+        <div class="form-group" style="margin-bottom: 0; flex: 1; min-width: 200px;">
+            <label class="form-label" for="id_area">Search Area/Sector</label>
+            {{ myFilters6.form.area }}
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+        <a href="/O_show" class="btn btn-outline">Clear</a>
     </form>
-    <br>
-     <tbody >
-        <tr>
-            &emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp;<th style="padding-left: 40px; padding-right: 40px">COMPLAINT</th>
-            &emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;<th style="padding-left: 12px; padding-right: 12px">PHONE_NUMBER</th>
-            &emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;<th style="padding-left: 70px; padding-right: 70px">ADDRESS </th>
-            &emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;<th style="padding-left: 70px; padding-right: 70px">AREA </th>
-            &emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;<th style="padding-left: 100px; padding-right: 100px">DRIVE LINK</th>
-        </tr>
+</div>
 
-
-      {% for result6 in results6 %}
-
-
-          <tr style="font-weight: bolder; font-family: Arial; font-size: 18px;" >
-          &emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp;<td style="padding-left: 50px; padding-right: 50px">{{ result6.complain }}</td>
-          &emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;<td style="padding-left: 12px; padding-right: 12px">{{ result6.phone }}</td>
-          &emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;<td style="padding-left: 100px; padding-right: 100px">{{ result6.address }}</td>
-          &emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;<td style="padding-left: 100px; padding-right: 100px">{{ result6.area }}</td>          
-          &emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;<td style="padding-left: 10px; padding-right: 50px" class="p1">{{ result6.link }}</td>
-          </tr>
-      {% endfor %}
-
-     </tbody>
-    </table>
-
-
+<div class="glass-panel">
+    <div class="table-responsive">
+        <table class="modern-table">
+            <thead>
+                <tr>
+                    <th style="width: 40%;">Complaint Details</th>
+                    <th>Phone</th>
+                    <th>Address / Landmark</th>
+                    <th>Area</th>
+                    <th>Evidence Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result6 in results6 %}
+                    <tr>
+                        <td style="color: var(--text-primary);">{{ result6.complain }}</td>
+                        <td>{{ result6.phone }}</td>
+                        <td>{{ result6.address }}</td>
+                        <td><span class="badge badge-indigo">{{ result6.area }}</span></td>
+                        <td>
+                            {% if result6.link %}
+                                <a href="{{ result6.link }}" target="_blank" class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 0.25rem;">
+                                    View Evidence &rarr;
+                                </a>
+                            {% else %}
+                                <span style="color: var(--text-muted); font-size: 0.85rem;">No Media</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 2rem;">
+                            No general or miscellaneous complaints found matching the filters.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

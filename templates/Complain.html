@@ -1,704 +1,452 @@
-
+{% extends 'base_layout.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Complain</title>
-
-    <style>
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .bg-img {
-            /* The image used */
-            background-image: url("{% static '\viewpoint2.jpg' %}");
-            min-height: 679px;
-            /* Center and scale the image nicely */
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            position: relative;
-
-        }
-
-
-        /* Full-width input fields */
-        input[type=text], input[type=password] {
-            width: 100%;
-            padding: 12px 20px;
-            margin: 8px 0;
-            display: inline-block;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-
-        /* Set a style for all buttons */
-        button {
-            background-color: black;
-            color: white;
-            padding-top: 20px;
-            padding-right:15px;
-            padding-left:15px;
-            padding-bottom: 15px;
-            margin: 8px 0;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-            border-radius: 15px;
-        }
-
-
-        button:hover {
-            opacity: 0.8;
-        }
-
-
-
-        /* Center the image and position the close button */
-        .imgcontainer {
-            text-align: center;
-            margin: 24px 0 12px 0;
-            position: relative;
-            border-radius: 15px;
-        }
-
-        .imgcontainer1 {
-            text-align: center;
-            margin: 24px 0 12px 0;
-            position: relative;
-            border-radius: 15px;
-        }
-
-
-        img.avatar {
-            width: 30%;
-            border-radius: 40%;
-        }
-
-        .container {
-            padding: 16px;
-        }
-
-        .container1 {
-            padding: 16px;
-        }
-
-        span.psw {
-            float: right;
-            padding-top: 16px;
-        }
-
-        /* The Modal (background) */
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgb(0,0,0); /* Fallback color */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-            padding-top: 40px;
-        }
-
-        .modal1 {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgb(0,0,0); /* Fallback color */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-            padding-top: 40px;
-        }
-
-        /* Modal Content/Box */
-        .modal-content {
-            background-color: orange;
-            margin:  5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
-            border: 5px solid white;
-            border-radius: 20px;
-            width: 80%;
-            height: 70% ;/* Could be more or less, depending on screen size */
-        }
-
-                /* Modal Content/Box */
-        .modal-content1 {
-            background-color: orange;
-            margin: 0% auto 1% auto; /* 5% from the top, 15% from the bottom and centered */
-            border: 5px solid white;
-            border-radius: 20px;
-            width: 95%;
-            height: 275% /* Could be more or less, depending on screen size */
-        }
-
-
-
-
-        /* The Close Button (x) */
-        .close {
-            position: absolute;
-            right: 25px;
-            top: 0;
-            color: #000;
-            font-size: 35px;
-            font-weight: bold;
-        }
-
-
-        .close:hover,.close:focus {
-            color: black;
-            cursor: pointer;
-        }
-
-                /* The Close Button (x) */
-        .close1 {
-            position: absolute;
-            right: 25px;
-            top: 0;
-            color: #000;
-            font-size: 35px;
-            font-weight: bold;
-            color: #f2f2f2;
-        }
-
-
-        .close1:hover,.close1:focus {
-            color: white;
-            cursor: pointer;
-        }
-
-        /* Add Zoom Animation */
-        .animate {
-            -webkit-animation: animatezoom 0.6s;
-            animation: animatezoom 0.6s
-        }
-
-
-        @-webkit-keyframes animatezoom {
-            from {-webkit-transform: scale(0)}
-            to {-webkit-transform: scale(1)}
-        }
-
-        @keyframes animatezoom {
-            from {transform: scale(0)}
-            to {transform: scale(1)}
-        }
-
-
-        /* Change styles for span and cancel button on extra small screens */
-        @media screen and (max-width: 400px) {
-            span.psw {
-                display: block;
-                float: none;
-            }
-
-            .cancelbtn {
-                width: 100%;
-            }
-        }
-
-
-        input[type=text] {
-            width: 400px;
-            height: 70px;
-            padding-top: 10px;
-            margin: 5px 0 22px 0;
-            border: 2px solid black;
-            background: white;
-            border-radius: 15px;
-            font-weight: bold;
-        }
-
-
-        input[type=text]:focus {
-            background-color: lightgreen;
-            outline: none;
-        }
-
-
-        input[type=submit], input[type=reset] {
-            width: 10%;
-            padding: 15px;
-            margin: 5px 0 22px 0;
-            border:  2px solid black;
-            background: white;
-            border-radius: 15px;
-            font-weight: bold;
-        }
-
-
-        .yo{
-            width:90%;
-            height: 50px;
-            padding-top: -10px;
-            padding-bottom: 20px;
-
-            border-radius: 15px;
-
-        }
-
-
-        b{
-            font-size: 20px;
-        }
-
-
-        .btn {
-            background-color: white;
-            color: black;
-            padding: 15px 20px;
-
-            cursor: pointer;
-            width: 60%;
-            opacity: 0.9;
-            border-radius: 25px;
-            border: 3px solid white;
-        }
-
-
-        .btn:hover {
-            background-color: green;
-            color: white;
-            opacity: 1;
-
-            font-weight: bold;
-        }
-
-
-        h1{
-            color: white;
-            font-size: 40px;
-            font-weight: bold;
-        }
-
-
-        .damdam {
-            color: white;
-            font-size: 45px;
-            -webkit-text-stroke-width: 2px;
-            -webkit-text-stroke-color: black;
-        }
-
-        a{
-            color: #f2f2f2;
-            font-weight: bolder;
-        }
-
-
-
-.help {
-  font-size: calc(20px + 18vh);
-  line-height: calc(20px + 20px);
-/*   text-shadow: 0 0 5px #f562ff, 0 0 15px #f562ff, 0 0 25px #f562ff,
-    0 0 20px #f562ff, 0 0 30px #890092, 0 0 80px #890092, 0 0 80px #890092;
-  color: #fccaff; */
-  text-shadow: 0 0 5px #ffa500, 0 0 15px #ffa500, 0 0 20px #ffa500, 0 0 40px #ffa500, 0 0 60px #ff0000, 0 0 10px #ff8d00, 0 0 98px #ff0000;
-    color: #fff6a9;
-  font-family: "Sacramento", cursive;
-  text-align: center;
-  animation: blink 12s infinite;
-  -webkit-animation: blink 12s infinite;
-}
-
-
-@-webkit-keyframes blink {
-  20%,
-  24%,
-  55% {
-    color: #111;
-    text-shadow: none;
-  }
-
-  0%,
-  19%,
-  21%,
-  23%,
-  25%,
-  54%,
-  56%,
-  100% {
-/*     color: #fccaff;
-    text-shadow: 0 0 5px #f562ff, 0 0 15px #f562ff, 0 0 25px #f562ff,
-      0 0 20px #f562ff, 0 0 30px #890092, 0 0 80px #890092, 0 0 80px #890092; */
-  text-shadow: 0 0 5px #ffa500, 0 0 15px #ffa500, 0 0 20px #ffa500, 0 0 40px #ffa500, 0 0 60px #ff0000, 0 0 10px #ff8d00, 0 0 98px #ff0000;
-    color: #fff6a9;
-  }
-}
-
-@keyframes blink {
-  20%,
-  24%,
-  55% {
-    color: #111;
-    text-shadow: none;
-  }
-
-  0%,
-  19%,
-  21%,
-  23%,
-  25%,
-  54%,
-  56%,
-  100% {
-/*     color: #fccaff;
-    text-shadow: 0 0 5px #f562ff, 0 0 15px #f562ff, 0 0 25px #f562ff,
-      0 0 20px #f562ff, 0 0 30px #890092, 0 0 80px #890092, 0 0 80px #890092; */
-  text-shadow: 0 0 5px #ffa500, 0 0 15px #ffa500, 0 0 20px #ffa500, 0 0 40px #ffa500, 0 0 60px #ff0000, 0 0 10px #ff8d00, 0 0 98px #ff0000;
-    color: #fff6a9;
-  }
-}
-
-
-
-
-    </style>
-
-    <title> Compalin </title>
-
-</head>
-
-<body class="bg-img">
-<br>&emsp;&emsp;&emsp;&emsp;
-
-
-<center>
-    <br>
-<!-- =====================================================================================================   -->
-
-    <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">
-        <div style="padding-bottom: 15px;"><strong style="font-size: 20px; font-weight: bold;">AIR POLLUTION</strong></div>
-        <img src="{% static '\air-pollution.jpg' %}" style="width:260px; height:150px; border: 3px solid lightblue; border-radius: 15px;" >
-    </button>    &emsp;&emsp;&emsp;&emsp;
-<!-- =====================================================================================================   -->
-
-    <button onclick="document.getElementById('id02').style.display='block'" style="width:auto;">
-        <div style="padding-bottom: 15px;"><strong style="font-size: 20px; font-weight: bold;">ELECTRICITY</strong></div>
-        <img src="{% static '\electricity.jpg' %}" style="width:260px; height:150px; border: 3px solid lightblue; border-radius: 15px;" >
-    </button>    &emsp;&emsp;&emsp;&emsp;
-<!-- =====================================================================================================   -->
-
-
-    <button onclick="document.getElementById('id03').style.display='block'" style="width:auto;">
-        <div style="padding-bottom: 15px;"><strong style="font-size: 20px; font-weight: bold;">ROAD CONSTRUCTION</strong></div>
-        <img src="{% static '\roadconstruction (1).jpg' %}" style="width:260px; height:150px; border: 3px solid lightblue; border-radius: 15px;">
-    </button>
-    <br><br>
-<!-- =====================================================================================================   -->
-
-
-    <button onclick="document.getElementById('id04').style.display='block'" style="width:auto;">
-        <div style="padding-bottom: 15px;"><strong style="font-size: 20px; font-weight: bold;">SEWAGE & WATER LOGGING</strong></div>
-        <img src="{% static '\sewer.jpg' %}" style="width:275px; height:150px; border: 3px solid lightblue; border-radius: 15px;">
-    </button>      &emsp;&emsp;&emsp;
-<!-- =====================================================================================================   -->
-
-
-    <button onclick="document.getElementById('id05').style.display='block'" style="width:auto;">
-        <div style="padding-bottom: 15px;"><strong style="font-size: 20px; font-weight: bold;">WASTE MANAGEMENT</strong></div>
-        <img src="{% static '\waste.jpg' %}" style="width:275px; height:150px; border: 3px solid lightblue; border-radius: 15px;">
-    </button>&emsp;&emsp;&emsp;&emsp;
-<!-- =====================================================================================================   -->
-
-
-    <button onclick="document.getElementById('id08').style.display='block'" style="width:auto;">
-        <div style="padding-bottom: 15px;"><strong style="font-size: 20px; font-weight: bold;">OTHERS</strong></div>
-        <img src="{% static '\others.jpeg' %}" style="width:275px; height:150px; border: 3px solid lightblue; border-radius: 15px;">
-    </button>
-<!-- =====================================================================================================   -->
-    <br><br><br>
-    <a href="feedback" style="color: white; font-weight: bolder; font-size: 10px;">
-        <b style="color: white; font-size: 18px;">FeedBack</b>
-    </a>
-    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-    &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
-    &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
-    &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
-    &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
-    &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
-
-<!-- =====================================================================================================   -->
-    <h7 style="width:auto; color: #f2f2f2; font-weight: bold; font-size: 19px;" class="help">Upload the images in Google Drive =></h7>
-    &ensp;
-    <h7 onclick="document.getElementById('id06').style.display='block'" style="width:auto; color: #f2f2f2; font-weight: bold; font-size: 19px;" >
-        HELP
-    </h7>
-
-</center>
-&emsp;
-<!-- =====================================================================================================   -->
-<!-- =====================================================================================================   -->
-<!-- =====================================================================================================   -->
-&emsp;&emsp;&emsp;
-
-<div id="id01" class="modal">
-
-  <form method="POST"  enctype="multipart/form-data"  action="/sub1"  class="modal-content animate">
-   {% csrf_token %}
-    <div class="imgcontainer">
-      <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
-    </div>
-
-    <div class="container">
-      <div class="yo">
-          <center><h1 class="damdam">ENTER YOUR COMPLAINT</h1></center>
-      </div><br><br>
-
-        &emsp;<b>Complaint </b>&emsp;{{ form.complain }}&emsp;&emsp;
-        <b>Phone Number </b>&emsp;&emsp;&ensp;{{ form.phone }}       <br>
-        &emsp;<b>Address </b>&emsp;&emsp;{{ form.address }}&emsp;&emsp;
-        <b>Upload Drive Link </b>&emsp;{{ form.link }}<br>&emsp;
-        <b>Area &emsp;&emsp;&nbsp;</b>&emsp;{{ form.area }}&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-        &emsp;&emsp;&emsp;&emsp;
-        <input type="submit" class="btn" name="sno1"> &emsp;&emsp;&emsp;&emsp;&emsp; <input type="reset" class="btn">
-        
-    </div>
-  </form>
-</div>
-<!-- =========================================================================================================================   -->&emsp;
-
-<div id="id02" class="modal">
-
-  <form method="POST"  enctype="multipart/form-data"  action="/sub2"  class="modal-content animate">
-   {% csrf_token %}
-    <div class="imgcontainer">
-      <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
-    </div>
-
-    <div class="container">
-      <div class="yo">
-          <center><h1 class="damdam">ENTER YOUR COMPLAINT</h1></center>
-      </div><br><br>
-
-        &emsp;<b>Complaint </b>&emsp;{{ form.complain }}&emsp;&emsp;
-        <b>Phone Number </b>&emsp;&emsp;&ensp;{{ form.phone }}       <br>
-        &emsp;<b>Address </b>&emsp;&emsp;{{ form.address }}&emsp;&emsp;
-        <b>Upload Drive Link </b>&emsp;{{ form.link }}<br>&emsp;
-        <b>Area &emsp;&emsp;&nbsp;</b>&emsp;{{ form.area }}&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-        &emsp;&emsp;&emsp;&emsp;
-        <input type="submit" class="btn" name="sno1"> &emsp;&emsp;&emsp;&emsp;&emsp; <input type="reset" class="btn">
-        
-    </div>
-  </form>
-</div>
-<!-- =========================================================================================================================   -->
-
-
-<div id="id03" class="modal">
-
-  <form method="POST"  enctype="multipart/form-data"  action="/sub3"  class="modal-content animate">
-   {% csrf_token %}
-    <div class="imgcontainer">
-      <span onclick="document.getElementById('id03').style.display='none'" class="close" title="Close Modal">&times;</span>
-    </div>
-
-    <div class="container">
-      <div class="yo">
-          <center><h1 class="damdam">ENTER YOUR COMPLAINT</h1></center>
-      </div><br><br>
-
-        &emsp;<b>Complaint </b>&emsp;{{ form.complain }}&emsp;&emsp;
-        <b>Phone Number </b>&emsp;&emsp;&ensp;{{ form.phone }}       <br>
-        &emsp;<b>Address </b>&emsp;&emsp;{{ form.address }}&emsp;&emsp;
-        <b>Upload Drive Link </b>&emsp;{{ form.link }}<br>&emsp;
-        <b>Area &emsp;&emsp;&nbsp;</b>&emsp;{{ form.area }}&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-        &emsp;&emsp;&emsp;&emsp;
-        <input type="submit" class="btn" name="sno1"> &emsp;&emsp;&emsp;&emsp;&emsp; <input type="reset" class="btn">
-        
-    </div>
-  </form>
-</div>
-<!-- =========================================================================================================================   -->
-
-
-<div id="id04" class="modal">
-
-  <form method="POST"  enctype="multipart/form-data"  action="/sub4"  class="modal-content animate">
-   {% csrf_token %}
-    <div class="imgcontainer">
-      <span onclick="document.getElementById('id04').style.display='none'" class="close" title="Close Modal">&times;</span>
-    </div>
-
-    <div class="container">
-      <div class="yo">
-          <center><h1 class="damdam">ENTER YOUR COMPLAINT</h1></center>
-      </div><br><br>
-
-        &emsp;<b>Complaint </b>&emsp;{{ form.complain }}&emsp;&emsp;
-        <b>Phone Number </b>&emsp;&emsp;&ensp;{{ form.phone }}       <br>
-        &emsp;<b>Address </b>&emsp;&emsp;{{ form.address }}&emsp;&emsp;
-        <b>Upload Drive Link </b>&emsp;{{ form.link }}<br>&emsp;
-        <b>Area &emsp;&emsp;&nbsp;</b>&emsp;{{ form.area }}&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-        &emsp;&emsp;&emsp;&emsp;
-        <input type="submit" class="btn" name="sno1"> &emsp;&emsp;&emsp;&emsp;&emsp; <input type="reset" class="btn">
-        
-    </div>
-  </form>
-</div>
-<!-- =========================================================================================================================   -->
-
-<div id="id05" class="modal">
-
-  <form method="POST"  enctype="multipart/form-data"  action="/sub5"  class="modal-content animate">
-   {% csrf_token %}
-    <div class="imgcontainer">
-      <span onclick="document.getElementById('id05').style.display='none'" class="close" title="Close Modal">&times;</span>
-    </div>
-
-    <div class="container">
-      <div class="yo">
-          <center><h1 class="damdam">ENTER YOUR COMPLAINT</h1></center>
-      </div><br><br>
-
-        &emsp;<b>Complaint </b>&emsp;{{ form.complain }}&emsp;&emsp;
-        <b>Phone Number </b>&emsp;&emsp;&ensp;{{ form.phone }}       <br>
-        &emsp;<b>Address </b>&emsp;&emsp;{{ form.address }}&emsp;&emsp;
-        <b>Upload Drive Link </b>&emsp;{{ form.link }}<br>&emsp;
-        <b>Area &emsp;&emsp;&nbsp;</b>&emsp;{{ form.area }}&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-        &emsp;&emsp;&emsp;&emsp;
-        <input type="submit" class="btn" name="sno1"> &emsp;&emsp;&emsp;&emsp;&emsp; <input type="reset" class="btn">
-        
-    </div>
-  </form>
-</div>
-<!-- =========================================================================================================================   -->
-
-<div id="id08" class="modal">
-
-  <form method="POST"  enctype="multipart/form-data"  action="/sub6"  class="modal-content animate">
-   {% csrf_token %}
-    <div class="imgcontainer">
-      <span onclick="document.getElementById('id08').style.display='none'" class="close" title="Close Modal">&times;</span>
-    </div>
-
-    <div class="container">
-      <div class="yo">
-          <center><h1 class="damdam">ENTER YOUR COMPLAINT</h1></center>
-      </div><br><br>
-
-        &emsp;<b>Complaint </b>&emsp;{{ form.complain }}&emsp;&emsp;
-        <b>Phone Number </b>&emsp;&emsp;&ensp;{{ form.phone }}       <br>
-        &emsp;<b>Address </b>&emsp;&emsp;{{ form.address }}&emsp;&emsp;
-        <b>Upload Drive Link </b>&emsp;{{ form.link }}<br>&emsp;
-        <b>Area &emsp;&emsp;&nbsp;</b>&emsp;{{ form.area }}&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-        &emsp;&emsp;&emsp;&emsp;
-        <input type="submit" class="btn" name="sno1"> &emsp;&emsp;&emsp;&emsp;&emsp; <input type="reset" class="btn">
-        
-    </div>
-  </form>
-</div>
-
-<!-- =========================================================================================================================   -->
-
-
-<div id="id06" class="modal1">
-    <div class="modal-content1 animate">
-        <div class="imgcontainer1">
-            <span onclick="document.getElementById('id06').style.display='none'" class="close" title="Close Modal">&times;</span>
-        </div>
-
-        <div class="container1" style="font-weight: bold; font-size: large">
-
-            Step 1 :  Open Google Drive and Login with your mail id.<br><br><br>
-
-
-
-            Step 2 :  Select " New " and click on " Folder " option.<br><br>
-                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-            <img src="{% static '\1.jpg' %}" style="width:450px; height:350px; border: 2px solid black; border-radius: 15px;" >
-            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-            <img src="{% static '\2.jpg' %}" style="width:450px; height:350px; border: 2px solid black; border-radius: 15px;" ><br><br><br><br>
-
-
-
-            Step 3 :  Name the create new folder as SCMS.<br><br>
-                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-            <img src="{% static '\3.jpg' %}" style="width:450px; height:350px; border: 2px solid black; border-radius: 15px;" ><br><br><br><br>
-
-
-
-            Step 4 :  Go to the created drive folder (SCMS),&emsp;Select " Upload " option and the select the images and videos that you want to upload.<br><br>
-                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-            <img src="{% static '\4.jpg' %}" style="width:470px; height:370px; border: 2px solid black; border-radius: 15px;" ><br><br><br><br>
-
-
-
-            Step 5 :  Now click on options symbol " <b> ⋮ </b> " on the folder and Select " Copy Link" .<br><br>
-                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-            <img src="{% static '\5.jpg' %}" style="width:470px; height:380px;  border: 2px solid black; border-radius: 15px;" > <br><br><br>
-
-            Step 6 :  Now you can paste the Drive Folder Link in the form that you copied earlier.
-
-
-
-        </div>
-    </div>
-</div>
-<!-- ========================================================================================================================= -->
-
-<div id="id07" class="modal">
-    <div class="modal-content animate" style="background-color: black">
-
-        <div class="imgcontainer">
-            <span onclick="document.getElementById('id07').style.display='none'" class="close1" title="Close Modal">&times;</span>
-        </div>
-
-        <div class="container1" style="font-weight: bold; font-size: large;">
-            <center style="font-size: larger; font-size: 20px; "><br>
-                <a href="/A_show" >Air Pollution Complaints</a><br><br><br>
-                <a href="/E_show" >Electricity Complaints</a><br><br><br>
-                <a href="/R_show" >Road Construction Complaints</a><br><br><br>
-                <a href="/S_show" >Sewage & Water Logging Complaints</a><br><br><br>
-                <a href="/W_show" >Waste Management Complaints</a><br><br><br>
-                <a href="/O_show" >Other Complaints</a><br><br><br>
-
-                <a href="logout" style="color: red; font-weight: bolder; font-size: 10px;">
-                    <b style="color: red; font-size: 18px;">Log Out</b>
-                </a>
-
-            </center>
-
-        </div>
-    </div>
-</div>
-<!-- =========================================================================================================================   -->
-
-
-
-<!-- =========================================================================================================================   -->
-<!-- =========================================================================================================================   -->
-
-
-<script>
-// Get the modal
-var modal = document.getElementById('id01');
-var modal = document.getElementById('id02');
-var modal = document.getElementById('id03');
-var modal = document.getElementById('id04');
-var modal = document.getElementById('id05');
-var modal = document.getElementById('id06');
-var modal = document.getElementById('id07');
-var modal = document.getElementById('id08');
-
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
+{% block title %}Submit a Complaint - SCMGS{% endblock %}
+
+{% block content %}
+<style>
+    /* Modal styles */
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(9, 13, 22, 0.7);
+        backdrop-filter: blur(8px);
+        z-index: 1100;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
     }
-}
+    
+    .modal-card {
+        background-color: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        width: 100%;
+        max-width: 600px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+        animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        overflow: hidden;
+    }
+    
+    .modal-header {
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .modal-body {
+        padding: 1.5rem;
+        max-height: 75vh;
+        overflow-y: auto;
+    }
+    
+    .modal-close-btn {
+        background: transparent;
+        border: none;
+        color: var(--text-secondary);
+        cursor: pointer;
+        font-size: 1.5rem;
+        line-height: 1;
+        transition: var(--transition-fast);
+    }
+    
+    .modal-close-btn:hover {
+        color: var(--text-primary);
+    }
 
+    @keyframes slideUp {
+        from {
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    /* Help layout */
+    .help-step {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        background-color: var(--bg-tertiary);
+        padding: 1rem;
+        border-radius: var(--radius-sm);
+        border-left: 3px solid var(--accent-primary);
+    }
+    
+    .step-num {
+        background-color: var(--accent-primary);
+        color: white;
+        border-radius: 50%;
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        flex-shrink: 0;
+        font-size: 0.9rem;
+    }
+</style>
+
+<div class="hero-section" style="padding: 2rem 1.5rem;">
+    <h1 class="hero-title" style="font-size: 2.25rem;">File a Complaint</h1>
+    <p class="hero-subtitle" style="margin-bottom: 0;">
+        Select the appropriate service category below to submit details and attach evidence.
+    </p>
+</div>
+
+<!-- Category Selection Cards -->
+<div class="grid-cards" style="margin-top: 1rem;">
+    <!-- Air Pollution -->
+    <div class="glass-panel category-card" style="cursor: pointer;" onclick="openModal('modal-air')">
+        <h3 style="color: #60a5fa; margin-bottom: 0.5rem;">💨 Air Pollution</h3>
+        <p>Report smoke, open garbage fires, dust, or factory emissions.</p>
+        <button class="btn btn-outline" style="margin-top: auto; pointer-events: none;">Open Form &rarr;</button>
+    </div>
+
+    <!-- Electricity -->
+    <div class="glass-panel category-card" style="cursor: pointer;" onclick="openModal('modal-elec')">
+        <h3 style="color: #fbbf24; margin-bottom: 0.5rem;">⚡ Electricity</h3>
+        <p>Report power cuts, broken streetlights, or sparking lines.</p>
+        <button class="btn btn-outline" style="margin-top: auto; pointer-events: none;">Open Form &rarr;</button>
+    </div>
+
+    <!-- Road Construction -->
+    <div class="glass-panel category-card" style="cursor: pointer;" onclick="openModal('modal-road')">
+        <h3 style="color: #f87171; margin-bottom: 0.5rem;">🚧 Road Maintenance</h3>
+        <p>Report bad potholes, pavement issues, or unsafe roadways.</p>
+        <button class="btn btn-outline" style="margin-top: auto; pointer-events: none;">Open Form &rarr;</button>
+    </div>
+
+    <!-- Sewage & Water Logging -->
+    <div class="glass-panel category-card" style="cursor: pointer;" onclick="openModal('modal-sew')">
+        <h3 style="color: #38bdf8; margin-bottom: 0.5rem;">💧 Drainage & Sewage</h3>
+        <p>Report blocked drains, street flooding, or sewer overflows.</p>
+        <button class="btn btn-outline" style="margin-top: auto; pointer-events: none;">Open Form &rarr;</button>
+    </div>
+
+    <!-- Waste Management -->
+    <div class="glass-panel category-card" style="cursor: pointer;" onclick="openModal('modal-waste')">
+        <h3 style="color: #34d399; margin-bottom: 0.5rem;">♻️ Waste Management</h3>
+        <p>Report illegal dumping, missed trash, or empty bins.</p>
+        <button class="btn btn-outline" style="margin-top: auto; pointer-events: none;">Open Form &rarr;</button>
+    </div>
+
+    <!-- Others -->
+    <div class="glass-panel category-card" style="cursor: pointer;" onclick="openModal('modal-other')">
+        <h3 style="color: #a78bfa; margin-bottom: 0.5rem;">🛡️ Miscellaneous</h3>
+        <p>Report other public service issues or local city concerns.</p>
+        <button class="btn btn-outline" style="margin-top: auto; pointer-events: none;">Open Form &rarr;</button>
+    </div>
+</div>
+
+<!-- Drive Upload Guide -->
+<div class="glass-panel" style="margin-top: 2rem;">
+    <h3 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+        📂 How to Upload Media Evidence
+    </h3>
+    <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem;">
+        If you have photos or video evidence, upload them to Google Drive and paste the shared link in the form. Follow these quick steps:
+    </p>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+        <div>
+            <div class="help-step">
+                <span class="step-num">1</span>
+                <div>
+                    <h4 style="font-size: 0.95rem; margin-bottom: 0.25rem;">Create a Folder</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary);">Open Google Drive and create a new folder named "SCMGS".</p>
+                </div>
+            </div>
+            
+            <div class="help-step">
+                <span class="step-num">2</span>
+                <div>
+                    <h4 style="font-size: 0.95rem; margin-bottom: 0.25rem;">Upload Files</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary);">Upload images/videos from your phone or desktop to the folder.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div>
+            <div class="help-step">
+                <span class="step-num">3</span>
+                <div>
+                    <h4 style="font-size: 0.95rem; margin-bottom: 0.25rem;">Share link</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary);">Right-click or tap settings, click <strong>Share</strong>, set access to "Anyone with the link", and copy it.</p>
+                </div>
+            </div>
+            
+            <div class="help-step">
+                <span class="step-num">4</span>
+                <div>
+                    <h4 style="font-size: 0.95rem; margin-bottom: 0.25rem;">Paste Link</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary);">Paste the copied share link into the "Upload Drive Link" field on the report form.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================= MODALS ================= -->
+
+<!-- Air Pollution Modal -->
+<div id="modal-air" class="modal-overlay" onclick="closeModalOnOuterClick(event, 'modal-air')">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>Report Air Pollution</h3>
+            <button class="modal-close-btn" onclick="closeModal('modal-air')">&times;</button>
+        </div>
+        <form method="POST" enctype="multipart/form-data" action="/sub1">
+            {% csrf_token %}
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Describe the Issue</label>
+                    {{ form.complain }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    {{ form.phone }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Specific Address / Landmark</label>
+                    {{ form.address }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Google Drive Link (Evidence)</label>
+                    {{ form.link }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Area / Sector</label>
+                    {{ form.area }}
+                </div>
+                <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Submit Report</button>
+                    <button type="button" class="btn btn-outline" onclick="closeModal('modal-air')">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Electricity Modal -->
+<div id="modal-elec" class="modal-overlay" onclick="closeModalOnOuterClick(event, 'modal-elec')">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>Report Electricity Issue</h3>
+            <button class="modal-close-btn" onclick="closeModal('modal-elec')">&times;</button>
+        </div>
+        <form method="POST" enctype="multipart/form-data" action="/sub2">
+            {% csrf_token %}
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Describe the Issue</label>
+                    {{ form.complain }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    {{ form.phone }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Specific Address / Landmark</label>
+                    {{ form.address }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Google Drive Link (Evidence)</label>
+                    {{ form.link }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Area / Sector</label>
+                    {{ form.area }}
+                </div>
+                <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Submit Report</button>
+                    <button type="button" class="btn btn-outline" onclick="closeModal('modal-elec')">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Road Construction Modal -->
+<div id="modal-road" class="modal-overlay" onclick="closeModalOnOuterClick(event, 'modal-road')">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>Report Road Maintenance Issue</h3>
+            <button class="modal-close-btn" onclick="closeModal('modal-road')">&times;</button>
+        </div>
+        <form method="POST" enctype="multipart/form-data" action="/sub3">
+            {% csrf_token %}
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Describe the Issue</label>
+                    {{ form.complain }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    {{ form.phone }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Specific Address / Landmark</label>
+                    {{ form.address }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Google Drive Link (Evidence)</label>
+                    {{ form.link }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Area / Sector</label>
+                    {{ form.area }}
+                </div>
+                <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Submit Report</button>
+                    <button type="button" class="btn btn-outline" onclick="closeModal('modal-road')">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Sewage Modal -->
+<div id="modal-sew" class="modal-overlay" onclick="closeModalOnOuterClick(event, 'modal-sew')">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>Report Drainage / Sewage Issue</h3>
+            <button class="modal-close-btn" onclick="closeModal('modal-sew')">&times;</button>
+        </div>
+        <form method="POST" enctype="multipart/form-data" action="/sub4">
+            {% csrf_token %}
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Describe the Issue</label>
+                    {{ form.complain }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    {{ form.phone }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Specific Address / Landmark</label>
+                    {{ form.address }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Google Drive Link (Evidence)</label>
+                    {{ form.link }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Area / Sector</label>
+                    {{ form.area }}
+                </div>
+                <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Submit Report</button>
+                    <button type="button" class="btn btn-outline" onclick="closeModal('modal-sew')">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Waste Management Modal -->
+<div id="modal-waste" class="modal-overlay" onclick="closeModalOnOuterClick(event, 'modal-waste')">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>Report Waste Management Issue</h3>
+            <button class="modal-close-btn" onclick="closeModal('modal-waste')">&times;</button>
+        </div>
+        <form method="POST" enctype="multipart/form-data" action="/sub5">
+            {% csrf_token %}
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Describe the Issue</label>
+                    {{ form.complain }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    {{ form.phone }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Specific Address / Landmark</label>
+                    {{ form.address }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Google Drive Link (Evidence)</label>
+                    {{ form.link }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Area / Sector</label>
+                    {{ form.area }}
+                </div>
+                <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Submit Report</button>
+                    <button type="button" class="btn btn-outline" onclick="closeModal('modal-waste')">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Others Modal -->
+<div id="modal-other" class="modal-overlay" onclick="closeModalOnOuterClick(event, 'modal-other')">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>Report General Municipal Issue</h3>
+            <button class="modal-close-btn" onclick="closeModal('modal-other')">&times;</button>
+        </div>
+        <form method="POST" enctype="multipart/form-data" action="/sub6">
+            {% csrf_token %}
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Describe the Issue</label>
+                    {{ form.complain }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    {{ form.phone }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Specific Address / Landmark</label>
+                    {{ form.address }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Google Drive Link (Evidence)</label>
+                    {{ form.link }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Area / Sector</label>
+                    {{ form.area }}
+                </div>
+                <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Submit Report</button>
+                    <button type="button" class="btn btn-outline" onclick="closeModal('modal-other')">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- JS to control modals -->
+<script>
+    function openModal(id) {
+        document.getElementById(id).style.display = 'flex';
+    }
+    
+    function closeModal(id) {
+        document.getElementById(id).style.display = 'none';
+    }
+    
+    function closeModalOnOuterClick(event, id) {
+        if (event.target === document.getElementById(id)) {
+            closeModal(id);
+        }
+    }
 </script>
-
-</body>
-</html>
-
+{% endblock %}

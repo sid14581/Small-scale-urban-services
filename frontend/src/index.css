@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-slate-900 text-slate-100 min-h-screen;
+}
+
+.card {
+  @apply bg-slate-800 border border-slate-700 rounded-xl p-6 shadow-lg;
+}
+
+.btn {
+  @apply inline-flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-colors;
+}
+
+.btn-primary {
+  @apply btn bg-indigo-600 hover:bg-indigo-500 text-white;
+}
+
+.btn-outline {
+  @apply btn border border-slate-600 hover:bg-slate-700 text-slate-200;
+}
+
+.input {
+  @apply w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-slate-100
+    focus:outline-none focus:ring-2 focus:ring-indigo-500;
+}
+
+.badge {
+  @apply inline-block px-2 py-0.5 rounded text-xs font-semibold;
+}
+
+.badge-open { @apply badge bg-yellow-900 text-yellow-200; }
+.badge-in_progress { @apply badge bg-blue-900 text-blue-200; }
+.badge-resolved { @apply badge bg-green-900 text-green-200; }
+
+.text-muted {
+  @apply text-slate-400;
+}
+
+.text-link {
+  @apply text-indigo-400 hover:underline;
+}
+
+.text-error {
+  @apply text-red-400;
+}
+
+.panel-accent {
+  @apply border border-slate-700 bg-slate-800;
+}
+
+.stat-total {
+  @apply text-white;
+}

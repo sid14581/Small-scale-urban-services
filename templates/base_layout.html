@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SCMGS - Smart City Management System{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/modern_style.css' %}">
+</head>
+<body>
+
+    <!-- Responsive Navbar -->
+    <nav class="navbar">
+        <a href="/" class="nav-brand">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#6366f1;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            SCMGS
+        </a>
+        <ul class="nav-links">
+            <li><a href="/" class="nav-link">Home</a></li>
+            {% if user.is_authenticated %}
+                {% if user.is_staff %}
+                    <li><a href="/sub0" class="nav-link">Staff Panel</a></li>
+                    <li><a href="/view_fb" class="nav-link">Feedbacks</a></li>
+                {% else %}
+                    <li><a href="/sub1" class="nav-link">File Complaint</a></li>
+                    <li><a href="/feedback" class="nav-link">Feedback</a></li>
+                {% endif %}
+                <li><span class="badge badge-indigo">Hi, {{ user.username }}{% if user.is_staff %} (Staff){% endif %}</span></li>
+                <li><a href="/logout" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;">Log Out</a></li>
+            {% else %}
+                <li><a href="/third" class="nav-link">Citizen Login</a></li>
+                <li><a href="/second" class="nav-link">Citizen Register</a></li>
+                <li><a href="/E_third" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;">Employee Portal</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="app-container">
+        <!-- Django Messages Alert Area -->
+        {% if messages %}
+            <ul class="messages-container">
+                {% for message in messages %}
+                    <li class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                        {{ message }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <!-- Content Block -->
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; {% now "Y" %} Smart City Management System. Crafted for visual elegance and operational efficiency.</p>
+    </footer>
+
+</body>
+</html>

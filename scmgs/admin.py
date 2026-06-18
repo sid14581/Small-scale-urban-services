@@ -1,26 +1,23 @@
 from django.contrib import admin
-from .models import *
+
+from scmgs.admin_site import admin_site
+from scmgs.models import Complaint, FeedBack
 
 
-# Register your models here.
+class ComplaintAdmin(admin.ModelAdmin):
+    list_display = (
+        'reference_id', 'category', 'complain', 'area', 'status',
+        'submitted_by', 'created_at',
+    )
+    list_filter = ('category', 'status', 'created_at')
+    search_fields = ('reference_id', 'complain', 'phone', 'area')
+    readonly_fields = ('reference_id', 'created_at', 'updated_at')
 
-class mydata1(admin.ModelAdmin):
-    list_display = ('complain', 'phone', 'address', 'link')
 
-class mydata2(admin.ModelAdmin):
-    list_display = ('problem','comment')
+class FeedBackAdmin(admin.ModelAdmin):
+    list_display = ('problem', 'comment', 'submitted_by', 'created_at')
+    search_fields = ('problem', 'comment')
 
 
-admin.site.register(Upload1, mydata1)
-
-admin.site.register(Upload2, mydata1)
-
-admin.site.register(Upload3, mydata1)
-
-admin.site.register(Upload4, mydata1)
-
-admin.site.register(Upload5, mydata1)
-
-admin.site.register(Upload6, mydata1)
-
-admin.site.register(FeedBack, mydata2)
+admin_site.register(Complaint, ComplaintAdmin)
+admin_site.register(FeedBack, FeedBackAdmin)

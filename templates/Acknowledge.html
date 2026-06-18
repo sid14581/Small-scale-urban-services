@@ -1,38 +1,24 @@
+{% extends 'base_layout.html' %}
+{% load static %}
 
-{% load  static  %}
+{% block title %}Submission Successful - SCMGS{% endblock %}
 
-<!DOCTYPE html>
-<html lang="en">
+{% block content %}
+<div style="max-width: 500px; margin: 4rem auto; text-align: center;">
+    <div class="glass-panel">
+        <div style="width: 80px; height: 80px; background-color: rgba(16, 185, 129, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+        
+        <h2 style="font-size: 1.8rem; margin-bottom: 1rem;">Submission Successful</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.98rem;">
+            Your complaint has been submitted successfully to our system. Our municipal operations team will review it shortly.
+        </p>
 
-<head>
-
-    <style>
-
-        body {
-            background-color: lightsteelblue;
-        }
-
-    </style>
-
-    <title>Successful</title>
-
-</head>
-
-<body>
-
-<br><br><br><br><br><br><br><br><br>
-
-<center>
-
-    <h1 style="color: black; font-size: 40px;" > YOUR COMPLAINT HAS SUCCESSFULLY SUBMITTED...... </h1>      <br><br>
-
-    <img class="image media" id="image-shycautiousafricanpiedkingfisher" alt="Tick tick GIF" src="https://thumbs.gfycat.com/ShyCautiousAfricanpiedkingfisher-size_restricted.gif" height="250" width="250">
-
-    <br><br><br><br><br><br>
-
-    <a href="logout" style="color: black; font-weight: bolder; font-size: 20px;">Log Out</a>
-
-</center>
-
-</body>
-</html>
+        <div style="display: flex; gap: 1rem; flex-direction: column;">
+            <a href="/sub1" class="btn btn-primary">Submit Another Complaint</a>
+            <a href="/" class="btn btn-outline">Return to Homepage</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

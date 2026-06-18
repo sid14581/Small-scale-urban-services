@@ -1,96 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Feedback</title>
-    <style>
+{% extends 'base_layout.html' %}
+{% load static %}
 
-        body {
-            background-color: deepskyblue;
-            color: #f2f2f2;
-        }
+{% block title %}Submit Feedback - SCMGS{% endblock %}
 
-        input[type=text] {
-            width: 400px;
-            height: 50px;
-            padding-top: 10px;
-            margin: 5px 0 22px 0;
-            border: 2px solid black;
-            background: white;
-            border-radius: 15px;
-            font-weight: bold;
-        }
+{% block content %}
+<div style="max-width: 500px; margin: 3rem auto;">
+    <div class="glass-panel">
+        <h2 style="text-align: center; margin-bottom: 0.5rem; font-size: 2rem;">User Feedback</h2>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.95rem;">
+            Help us improve our city services. Share your thoughts or suggestions below.
+        </p>
 
+        <form method="post" action="/feedback">
+            {% csrf_token %}
 
-        input[type=text]:focus {
-            background-color: lightgreen;
-            outline: none;
-        }
+            <div class="form-group">
+                <label class="form-label">Problem Category / Area</label>
+                {{ form.problem }}
+            </div>
 
+            <div class="form-group">
+                <label class="form-label">Detailed Comments</label>
+                {{ form.comment }}
+            </div>
 
-        input[type=submit], input[type=reset] {
-            width: 10%;
-            padding: 15px;
-            margin: 5px 0 22px 0;
-            border:  2px solid black;
-            background: white;
-            border-radius: 15px;
-            font-weight: bold;
-        }
-
-
-        input[type=submit]:hover, input[type=reset]:hover {
-            width: 10%;
-            padding: 15px;
-            margin: 5px 0 22px 0;
-            border:  2px solid black;
-            background: orange;
-            border-radius: 15px;
-            font-weight: bolder;
-            color: white;
-
-        }
-
-
-        h1{
-            font-weight: bolder;
-            font-family: Calibri;
-        }
-
-        .damdam {
-            color: white;
-            font-size: 70px;
-            -webkit-text-stroke-width: 3px;
-            -webkit-text-stroke-color: black;
-        }
-
-
-    </style>
-</head>
-<body>
-     <form method="post" action="/feedback">
-         {% csrf_token %}
-         <center>
-                         <br> <br>
-                            <h1 class="damdam">FEEDBACK</h1>
-                         <br> <br>
-
-             <b style="font-size: 40px; color: black; font-family: Calibri;" >PROBLEM :</b>  &emsp;&emsp;&emsp;{{ form.problem }} <br><br>
-             <b style="font-size: 40px; color: black; font-family: Calibri;">COMMENT :</b>  &nbsp;&emsp;&emsp;{{ form.comment }} <br><br>
-
-         </center>
-        <br><br>
-         <center>
-             &emsp;&emsp; &emsp;<input type="submit"> &emsp;&emsp;&emsp;&emsp; <input type="reset">
-         </center>
-
-     </form>
-     <br>
-
-     <center>
-         <a href="logout" style="color: red; font-weight: bolder; font-size: 10px;">
-             <b style="color: red; font-size: 20px;">Log Out</b>
-         </a>
-     </center>
-</body>
-</html>
+            <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+                <button type="submit" class="btn btn-primary" style="flex: 1;">Submit Feedback</button>
+                <button type="reset" class="btn btn-outline">Reset</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,5 +1,14 @@
 db_data/*
-django_data/*
+media/*
+.env
+staticfiles/
+__pycache__/
+*.pyc
+venv/
+.idea/
+frontend/node_modules/
+frontend/dist/
+frontend/public/assets/*
 
 !db_data/.gitkeep
-!django_data/.gitkeep
+!media/.gitkeep
