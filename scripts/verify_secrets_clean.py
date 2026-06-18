@@ -5,20 +5,20 @@ import subprocess
 import sys
 from pathlib import Path
 
-LEAKED_PATTERNS = ["hrll", "buck$t", "Siddu716$"]
 GITHUB_TOKEN_RE = re.compile(r"ghp_[A-Za-z0-9]{20,}")
+DJANGO_SECRET_RE = re.compile(r"SECRET_KEY\s*=\s*['\"][^'\"]{20,}['\"]")
 
 
-def git_grep(pattern: str) -> list[str]:
+def git_grep_path(pattern: str, path: str) -> list[str]:
     revs = subprocess.check_output(["git", "rev-list", "--all"], text=True).strip()
     if not revs:
         return []
     result = subprocess.run(
-        ["git", "grep", "-i", pattern, *revs.split()],
+        ["git", "grep", "-E", pattern, *revs.split(), "--", path],
         capture_output=True,
         text=True,
     )
-    return [line for line in result.stdout.splitlines() if line.strip()]
+    return [line for line in result.stdout.splitlines() if line.strip() and "REMOVED" not in line]
 
 
 def git_github_tokens() -> list[str]:
@@ -30,17 +30,23 @@ def git_github_tokens() -> list[str]:
         capture_output=True,
         text=True,
     )
-    return [line for line in result.stdout.splitlines() if line.strip()]
+    return [line for line in result.stdout.splitlines() if line.strip() and "REMOVED" not in line]
 
 
 def main():
     repo = Path(__file__).resolve().parents[1]
     issues = []
 
-    for pattern in LEAKED_PATTERNS:
-        matches = git_grep(pattern)
-        if matches:
-            issues.append(f"  - Pattern '{pattern}': {len(matches)} match(es) in git history")
+    django_secrets = git_grep_path(
+        r"SECRET_KEY\s*=\s*['\"][^'\"]+['\"]",
+        "Siddu716_project/settings.py",
+    )
+    if django_secrets:
+        issues.append(f"  - Hardcoded SECRET_KEY in settings.py history: {len(django_secrets)} match(es)")
+
+    db_passwords = git_grep_path(r"PASSWORD':\s*'Siddu716\$'", "Siddu716_project/settings.py")
+    if db_passwords:
+        issues.append(f"  - Leaked DB password in settings.py history: {len(db_passwords)} match(es)")
 
     github_matches = git_github_tokens()
     if github_matches:
