@@ -9,12 +9,21 @@ from decouple import config, Csv
 # Build paths
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Security — all secrets loaded from .env
+# Security — all secrets loaded from .env (never commit real values)
 SECRET_KEY = config(
     'SECRET_KEY',
     default='django-insecure-dev-only-change-in-production',
 )
 DEBUG = config('DEBUG', default=False, cast=bool)
+
+_INSECURE_SECRET_KEYS = {
+    'django-insecure-dev-only-change-in-production',
+    'change-me-generate-a-unique-secret-key-before-deploy',
+    'your-very-secret-key-change-this-in-production',
+}
+if not DEBUG and SECRET_KEY in _INSECURE_SECRET_KEYS:
+    from django.core.exceptions import ImproperlyConfigured
+    raise ImproperlyConfigured('Set a unique SECRET_KEY in .env before running in production.')
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv())
 
 # Application definition
