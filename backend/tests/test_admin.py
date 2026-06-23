@@ -16,7 +16,7 @@ class AdminAccessTests(TestCase):
         self.client = APIClient()
         Group.objects.create(name='Staff')
 
-        self.staff = User.objects.create_user('staff', 's@test.com', 'pass12345')
+        self.staff = User.objects.create_user('staff', 's@test.com', 'Pass12345')
         self.staff.is_staff = True
         self.staff.save()
         self.staff.groups.add(Group.objects.get(name='Staff'))

@@ -436,3 +436,117 @@ A comprehensive audit identified **81 distinct issues** across code quality, sec
 | Date | Phase | Change Summary |
 |------|-------|---------------|
 | 2026-06-23 | 12.1 | Home category-click complaint flow, hero layout, softer light mode, nav cleanup. Build passes. |
+| 2026-06-23 | 13.1 | Phase 13 implemented: Redis cache, DB pooling, auth audit logs, input validation hardening. |
+
+---
+
+## Phase 13 — Backend Configuration Analysis & Hardening (2026-06-23)
+
+### Analysis Summary
+
+**Date**: 2026-06-23 | **Reviewer**: Copilot  
+**Focus**: Auth flows, OTP delivery, caching, database, security hardening
+
+### ✅ What's Working Well
+
+| Component | Status | Notes |
+|-----------|--------|-------|
+| **JWT Authentication** | ✅ Solid | CookieJWTAuthentication handles both header + httpOnly cookie paths |
+| **OTP System** | ✅ Solid | Per-user rate limiting, Twilio Verify + SMS fallback, 10min TTL |
+| **Django Settings** | ✅ Secure | SECRET_KEY validation, DEBUG-based security toggles, env-based config |
+| **Login/Register Flow** | ✅ Working | 3-step: init → verify → issue JWT; per-user OTP generation working correctly |
+
+### ⚠️ Issues Found & Roadmap
+
+| Issue | Severity | File(s) | Recommendation | Status |
+|-------|----------|---------|-----------------|--------|
+| **Cache Backend (locmem)** | 🟡 Medium | `settings.py` | Replace with Redis for multi-worker production | Done (2026-06-23) |
+| **DB Connection Pooling** | 🟡 Medium | `settings.py` | Add `ConnMaxAge` + connection pooling | Done (2026-06-23) |
+| **Logging Coverage** | 🟡 Medium | `otp_service.py`, `api_views.py` | Add audit logs for failed OTP attempts, token refresh | Done (2026-06-23) |
+| **Input Sanitization** | 🟡 Medium | `serializers.py` | Validate username length (30 char max) | Done (2026-06-23) |
+| **Error Messages** | 🟢 Low | `otp_views.py` | Generic "Invalid or expired OTP" is good; keep as-is | Documented |
+| **Rate Limit Config** | 🟢 Low | `settings.py` | Document OTP_RATE_LIMIT behavior in README | Done (2026-06-23) |
+| **CORS Headers** | ✅ OK | `settings.py` | Correctly set; origin validation in place | Done |
+| **CSRF Protection** | ✅ OK | `settings.py` | CSRF_TRUSTED_ORIGINS configured; httpOnly cookies mitigate CSRF | Done |
+
+### 📋 Recommended Implementation Tasks
+
+#### Task 1: Redis Cache Backend
+- Replace `locmem` with Redis in production
+- Update `docker-compose.yml`: add redis service
+- Update `.env.example`: add `REDIS_URL`
+- Update `settings.py`: conditional Redis/locmem based on DEBUG
+- **Impact**: Enables horizontal scaling, OTP persistence across workers
+
+#### Task 2: Database Connection Pooling  
+- Add `MySQLdb` pool configuration to `settings.py`
+- Set `CONN_MAX_AGE=600` (10 min connection reuse)
+- Optional: Add `django-db-connection-pool` for advanced pooling
+- **Impact**: Reduces DB connection overhead, improves throughput
+
+#### Task 3: Audit Logging for Auth
+- Create `scmgs/services/audit_logger.py`
+- Log: OTP generation, verification failures, password attempts, token refresh
+- Add audit log model + view for staff dashboard
+- **Impact**: Compliance, security forensics
+
+#### Task 4: Input Validation Hardening
+- Validate username length (Django User default: 30 chars max)
+- Add password strength check (8+ chars, mixed case + numbers)
+- Validate email format in UserRegisterSerializer
+- **Impact**: Prevents invalid data, reduces account takeover risk
+
+### Dependencies
+
+| Task | Depends On | Notes |
+|------|-----------|-------|
+| Redis cache | — | Independent; can be deployed anytime |
+| Audit logging | — | Independent; can be deployed anytime |
+| DB pooling | — | Independent; no code changes needed, config only |
+| Input hardening | — | Independent; serializer-level change |
+
+### Estimated Effort
+
+| Task | Effort | Risk |
+|------|--------|------|
+| Redis integration | 2–3h | 🟢 Low (standard config) |
+| DB pooling | 30m | 🟢 Low (config only) |
+| Audit logging | 3–4h | 🟡 Medium (new model + views) |
+| Input validation | 1–2h | 🟢 Low (serializer updates) |
+
+---
+
+## OTP System Deep Dive
+
+### Current Behavior
+- **Generation**: 6-digit code OR Twilio Verify session ID
+- **Verification**: Rate-limited to 3 attempts per user/session in 15min
+- **Delivery**: SMS via Twilio (fallback: console log in dev)
+- **Per-User**: Each user gets fresh OTP; cannot reuse old codes
+
+### Known Limitations
+- ~~`locmem` cache: doesn't persist across server restarts in production~~ — Redis available via `REDIS_URL` in Docker/production
+- ~~No audit trail for failed OTP attempts~~ — `AuthAuditLog` model + `/api/audit-logs/` (staff)
+- Twilio Verify cancels old verifications on new request (prevents same code reuse)
+
+### Twilio Integration Status
+- ✅ Supports both Verify API (recommended) + SMS fallback
+- ✅ Automatic code generation (Verify) or manual 6-digit (SMS)
+- ✅ Phone number validation: E.164 format enforced
+
+---
+
+## Security Checklist
+
+| Check | Status | Evidence |
+|-------|--------|----------|
+| **SECRET_KEY validation** | ✅ | `settings.py:16–23` enforces unique key in prod |
+| **HTTPS redirect** | ✅ | `SECURE_SSL_REDIRECT=True` when not DEBUG |
+| **HSTS headers** | ✅ | `SECURE_HSTS_SECONDS=31536000` (1 year) |
+| **httpOnly cookies** | ✅ | `_cookie_kwargs()` in `auth_views.py:17–23` |
+| **SameSite=Lax** | ✅ | Prevents CSRF in cross-origin form submissions |
+| **Rate limiting** | ✅ | `AuthRateThrottle: 5/min`, `OTP_RATE_LIMIT: 3/900s` |
+| **Input validation** | ✅ | Username (30 max), password strength, email, phone (E.164), complaint fields |
+| **Audit logging** | ✅ | `AuthAuditLog` model, staff API `/api/audit-logs/`, Django admin |
+
+---

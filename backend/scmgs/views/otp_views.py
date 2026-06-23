@@ -9,9 +9,10 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from scmgs.views.auth_views import AuthRateThrottle, set_jwt_cookies
-from scmgs.models import UserProfile
+from scmgs.models import AuthAuditEvent, UserProfile
+from scmgs.services.audit_logger import log_auth_event
 from scmgs.services.otp_service import create_otp_session, verify_otp_session
-from scmgs.serializers import UserRegisterSerializer, UserSerializer
+from scmgs.serializers import UserRegisterSerializer, UserSerializer, validate_password_strength
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +37,7 @@ class RegisterInitSerializer(UserRegisterSerializer):
     def validate(self, attrs):
         if attrs['password'] != attrs['password_confirm']:
             raise serializers.ValidationError({'password_confirm': 'Passwords do not match.'})
+        validate_password_strength(attrs['password'])
         return attrs
 
 
@@ -64,6 +66,7 @@ class LoginInitView(APIView):
 
         user = authenticate(username=username, password=password)
         if user is None:
+            log_auth_event(request, AuthAuditEvent.LOGIN_FAILED, username=username, detail='Invalid credentials')
             return Response({'detail': 'Invalid credentials.'}, status=status.HTTP_401_UNAUTHORIZED)
 
         try:
@@ -114,6 +117,10 @@ class RegisterInitView(APIView):
             return Response({'detail': 'Failed to send OTP. Try again later.'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
         logger.info('Register OTP initiated for phone %s', phone)
+        log_auth_event(
+            request, AuthAuditEvent.REGISTER_INIT,
+            username=register_data['username'], detail='Register OTP initiated',
+        )
         return Response({'otp_session': session_id})
 
 
@@ -129,6 +136,7 @@ class OtpVerifyView(APIView):
 
         payload = verify_otp_session(session_id, code)
         if not payload:
+            log_auth_event(request, AuthAuditEvent.OTP_FAILED, detail='Invalid or expired OTP')
             return Response({'detail': 'Invalid or expired OTP.'}, status=status.HTTP_400_BAD_REQUEST)
 
         if payload['flow'] == 'login':

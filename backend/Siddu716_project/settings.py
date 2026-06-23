@@ -81,6 +81,7 @@ DATABASES = {
         'PASSWORD': config('DB_PASSWORD', default=''),
         'HOST': config('DB_HOST', default='db'),
         'PORT': config('DB_PORT', default='3306'),
+        'CONN_MAX_AGE': config('DB_CONN_MAX_AGE', default=600, cast=int),
     }
 }
 
@@ -152,13 +153,25 @@ CSRF_TRUSTED_ORIGINS = config(
     cast=Csv(),
 )
 
-# Cache — in-memory per process (use Redis in multi-worker production)
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'scms-cache',
+# Cache — Redis when REDIS_URL set; locmem for local dev without Redis
+REDIS_URL = config('REDIS_URL', default='')
+if REDIS_URL:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django_redis.cache.RedisCache',
+            'LOCATION': REDIS_URL,
+            'OPTIONS': {
+                'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            },
+        }
     }
-}
+else:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+            'LOCATION': 'scms-cache',
+        }
+    }
 
 # Production security headers
 if not DEBUG:

@@ -19,6 +19,7 @@ drf-spectacular==0.28.0
 
 # Config / environment
 python-decouple==3.8
+django-redis==5.4.0
 
 # WSGI server (production)
 gunicorn==23.0.0

@@ -85,3 +85,35 @@ class FeedBack(models.Model):
 
     def __str__(self):
         return self.problem
+
+
+class AuthAuditEvent(models.TextChoices):
+    OTP_SENT = 'otp_sent', 'OTP Sent'
+    OTP_FAILED = 'otp_failed', 'OTP Failed'
+    LOGIN_FAILED = 'login_failed', 'Login Failed'
+    TOKEN_REFRESH = 'token_refresh', 'Token Refresh'
+    REGISTER_INIT = 'register_init', 'Register Initiated'
+
+
+class AuthAuditLog(models.Model):
+    event_type = models.CharField(max_length=20, choices=AuthAuditEvent.choices, db_index=True)
+    username = models.CharField(max_length=150, blank=True, default='')
+    user = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='auth_audit_logs',
+    )
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    detail = models.CharField(max_length=255, blank=True, default='')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['event_type', 'created_at']),
+        ]
+
+    def __str__(self):
+        return f'{self.event_type} — {self.username or "unknown"} @ {self.created_at}'

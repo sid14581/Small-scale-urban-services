@@ -19,6 +19,18 @@ services:
       retries: 12
       start_period: 90s
 
+  redis:
+    image: redis:7-alpine
+    container_name: scms_redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
   backend:
     build:
       context: ./backend
@@ -27,12 +39,15 @@ services:
     env_file: .env
     environment:
       DB_HOST: db
+      REDIS_URL: redis://redis:6379/1
       GUNICORN_RELOAD: "1"
     volumes:
       - ./backend:/app
       - ./backend/media:/app/media
     depends_on:
       db:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     expose:
       - "8000"

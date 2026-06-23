@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from scmgs.admin_site import admin_site
-from scmgs.models import Complaint, FeedBack
+from scmgs.models import AuthAuditLog, Complaint, FeedBack
 
 
 class ComplaintAdmin(admin.ModelAdmin):
@@ -21,3 +21,21 @@ class FeedBackAdmin(admin.ModelAdmin):
 
 admin_site.register(Complaint, ComplaintAdmin)
 admin_site.register(FeedBack, FeedBackAdmin)
+
+
+class AuthAuditLogAdmin(admin.ModelAdmin):
+    list_display = ('event_type', 'username', 'user', 'ip_address', 'detail', 'created_at')
+    list_filter = ('event_type', 'created_at')
+    search_fields = ('username', 'detail', 'ip_address')
+    readonly_fields = (
+        'event_type', 'username', 'user', 'ip_address', 'detail', 'created_at',
+    )
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+
+admin_site.register(AuthAuditLog, AuthAuditLogAdmin)

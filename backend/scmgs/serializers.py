@@ -1,8 +1,24 @@
 import re
+
 from django.contrib.auth.models import Group, User
+from django.core.validators import EmailValidator
 from rest_framework import serializers
 
 from scmgs.models import Complaint, ComplaintCategory, ComplaintStatus, FeedBack, UserProfile
+
+_email_validator = EmailValidator()
+
+
+def validate_password_strength(value):
+    if len(value) < 8:
+        raise serializers.ValidationError('Password must be at least 8 characters.')
+    if not re.search(r'[A-Z]', value):
+        raise serializers.ValidationError('Password must contain at least one uppercase letter.')
+    if not re.search(r'[a-z]', value):
+        raise serializers.ValidationError('Password must contain at least one lowercase letter.')
+    if not re.search(r'\d', value):
+        raise serializers.ValidationError('Password must contain at least one digit.')
+    return value
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -13,6 +29,20 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'username', 'email', 'first_name', 'password', 'phone')
         extra_kwargs = {'email': {'required': True}}
+
+    def validate_username(self, value):
+        value = value.strip()
+        if len(value) > 30:
+            raise serializers.ValidationError('Username must be 30 characters or fewer.')
+        return value
+
+    def validate_email(self, value):
+        value = value.strip()
+        _email_validator(value)
+        return value
+
+    def validate_password(self, value):
+        return validate_password_strength(value)
 
     def validate_phone(self, value):
         if value:

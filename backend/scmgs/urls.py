@@ -3,6 +3,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.routers import DefaultRouter
 
 from scmgs.views.api_views import (
+    AuditLogListView,
     ComplaintViewSet,
     FeedBackViewSet,
     HealthView,
@@ -30,5 +31,6 @@ urlpatterns = [
     path('auth/logout/', LogoutView.as_view(), name='api_logout'),
     path('auth/profile/', ProfileView.as_view(), name='api_profile'),
     path('stats/', StatsView.as_view(), name='api_stats'),
+    path('audit-logs/', AuditLogListView.as_view(), name='api_audit_logs'),
     path('', include(router.urls)),
 ]

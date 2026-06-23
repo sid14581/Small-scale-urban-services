@@ -1,10 +1,16 @@
 from django.conf import settings
+from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
 from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
+from scmgs.models import AuthAuditEvent
+from scmgs.services.audit_logger import log_auth_event
+
 
 ACCESS_COOKIE = 'access_token'
 REFRESH_COOKIE = 'refresh_token'
@@ -51,12 +57,26 @@ class CookieTokenRefreshView(TokenRefreshView):
     def post(self, request, *args, **kwargs):
         refresh = request.data.get('refresh') or request.COOKIES.get(REFRESH_COOKIE)
         if not refresh:
+            log_auth_event(request, AuthAuditEvent.LOGIN_FAILED, detail='Refresh token missing')
             return Response({'detail': 'Refresh token required.'}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = self.get_serializer(data={'refresh': refresh})
-        serializer.is_valid(raise_exception=True)
+        try:
+            serializer.is_valid(raise_exception=True)
+        except Exception:
+            log_auth_event(request, AuthAuditEvent.LOGIN_FAILED, detail='Invalid refresh token')
+            raise
+
         response = Response(serializer.validated_data, status=status.HTTP_200_OK)
         set_jwt_cookies(response, serializer.validated_data['access'], refresh)
+        try:
+            user = User.objects.get(pk=RefreshToken(refresh)['user_id'])
+            log_auth_event(
+                request, AuthAuditEvent.TOKEN_REFRESH,
+                user=user, username=user.username, detail='Token refreshed',
+            )
+        except (User.DoesNotExist, KeyError):
+            log_auth_event(request, AuthAuditEvent.TOKEN_REFRESH, detail='Token refreshed')
         return response
 
 

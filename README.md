@@ -91,6 +91,28 @@ npm run dev   # http://localhost:5173 (proxies /api to :8000)
 | PATCH | `/api/complaints/{id}/status/` | Staff only |
 | GET/POST | `/api/feedback/` | Authenticated |
 | GET | `/api/stats/` | Staff only |
+| GET | `/api/audit-logs/` | Staff only |
+
+## Backend Configuration
+
+### Redis cache
+
+Docker Compose runs Redis and sets `REDIS_URL=redis://redis:6379/1` on the backend. Without `REDIS_URL`, Django uses in-memory (`locmem`) cache — fine for local `runserver`, not for multi-worker production.
+
+### OTP rate limits
+
+Per-user/session (not shared phone):
+
+| Variable | Default (DEBUG) | Default (production) | Meaning |
+|----------|-----------------|----------------------|---------|
+| `OTP_RATE_LIMIT` | 10 | 3 | Max OTP requests per window |
+| `OTP_RATE_WINDOW` | 900 | 900 | Window in seconds (15 min) |
+
+Rate subject: `user:{id}` for login, `register:{username}` for signup.
+
+### Database connection reuse
+
+`DB_CONN_MAX_AGE` defaults to **600** seconds (10 min). Set in `.env` to override.
 
 ## Project Structure
 
@@ -101,7 +123,7 @@ npm run dev   # http://localhost:5173 (proxies /api to :8000)
 ├── infrastructure/     # nginx, K8s manifests, CI, scripts
 ├── docs/               # decisions, design mockups
 ├── legacy/             # Archived templates & Bootstrap static
-└── docker-compose.yml  # Full stack (db + backend + frontend + nginx)
+└── docker-compose.yml  # Full stack (db + redis + backend + frontend + nginx)
 ```
 
 ## Running Tests
