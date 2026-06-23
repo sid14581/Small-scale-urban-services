@@ -5,7 +5,7 @@ WORKDIR /app
 COPY frontend/package.json .
 RUN npm install
 COPY frontend/ .
-COPY static/ /tmp/static/
+COPY shared/assets/ /tmp/static/
 RUN mkdir -p public/assets && find /tmp/static -maxdepth 1 -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) -exec cp {} public/assets/ \;
 RUN npx vite build
 

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import PasswordInput from '../components/PasswordInput'
 import OtpInput, { isOtpComplete } from '../components/OtpInput'
@@ -10,6 +10,8 @@ import { BRANDING } from '../constants'
 export default function Login() {
   const { loginInit, verifyOtp } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
+  const redirectTo = location.state?.from
   const [step, setStep] = useState(1)
   const [form, setForm] = useState({ username: '', password: '' })
   const [otpSession, setOtpSession] = useState('')
@@ -43,7 +45,7 @@ export default function Login() {
     setSubmitting(true)
     try {
       const profile = await verifyOtp(otpSession, otpCode)
-      navigate(getDefaultRoute(profile))
+      navigate(redirectTo || getDefaultRoute(profile), { replace: true })
     } catch (err) {
       setError(getApiErrorMessage(err, 'Invalid or expired OTP.'))
     } finally {
@@ -70,13 +72,13 @@ export default function Login() {
       <Navbar />
       <main className="max-w-4xl mx-auto px-4 py-12">
         <div className="grid md:grid-cols-2 gap-8 items-center">
-          <div className="hidden md:flex flex-col items-center justify-center rounded-2xl panel-accent p-8 overflow-hidden">
+          <div className="hidden md:flex flex-col items-center justify-center rounded-3xl hero-gradient border border-slate-200 dark:border-slate-700 p-8 overflow-hidden">
             <img
               src={BRANDING.auth}
               alt="Smart city viewpoint"
-              className="w-full max-h-72 object-contain mb-4"
+              className="w-full max-h-72 object-contain mb-4 rounded-2xl"
             />
-            <p className="text-muted text-center text-sm">
+            <p className="text-muted text-center text-sm max-w-xs">
               Welcome back to the Smart City Management System
             </p>
           </div>
@@ -84,10 +86,11 @@ export default function Login() {
             <img
               src={BRANDING.hero}
               alt="SCMS"
-              className="w-12 h-12 mx-auto mb-4 md:hidden"
+              className="w-12 h-12 mx-auto mb-4 md:hidden rounded-xl ring-2 ring-primary/20"
             />
-            <h2 className="text-2xl font-bold mb-6">Login</h2>
-            {error && <p className="text-error mb-4 text-sm">{error}</p>}
+            <h2 className="text-2xl font-bold mb-1 text-slate-900 dark:text-white">Login</h2>
+            <p className="text-muted text-sm mb-6">Sign in with your username and password, then verify via SMS.</p>
+            {error && <p className="text-error mb-4 text-sm p-3 rounded-xl bg-red-50 dark:bg-red-900/20">{error}</p>}
 
             {step === 1 ? (
               <form onSubmit={handleCredentialsSubmit} className="space-y-4">
@@ -97,6 +100,7 @@ export default function Login() {
                   value={form.username}
                   onChange={(e) => setForm({ ...form, username: e.target.value })}
                   required
+                  autoComplete="username"
                 />
                 <PasswordInput
                   placeholder="Password"
@@ -137,8 +141,8 @@ export default function Login() {
               </form>
             )}
 
-            <p className="mt-4 text-sm text-muted">
-              No account? <Link to="/register" className="text-link">Register</Link>
+            <p className="mt-6 text-sm text-muted text-center">
+              No account? <Link to="/register" className="text-link font-medium">Register</Link>
             </p>
           </div>
         </div>

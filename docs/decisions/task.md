@@ -28,7 +28,7 @@ Transform a 2018 college Django project into a professional full-stack portfolio
 | ADR-001 | ✅ Done | Single `Complaint` model with `category` field |
 | ADR-002 | ✅ Done | Status lifecycle: open / in_progress / resolved |
 | ADR-003 | ✅ Done | JWT auth via simplejwt |
-| ADR-004 | ✅ Done | Docker Compose primary; K8s moved to `deploy_files/legacy/` |
+| ADR-004 | ✅ Done | Docker Compose primary; K8s moved to `infrastructure/kubernetes/legacy/` |
 | ADR-005 | ✅ Done | React SPA in `frontend/` with Vite + Tailwind |
 
 ---
@@ -38,7 +38,7 @@ Transform a 2018 college Django project into a professional full-stack portfolio
 ### Phase 1 — Foundation Cleanup ✅
 | Task | Status | Notes |
 |------|--------|-------|
-| Migrations restored | ✅ Done | `scmgs/migrations/0001_initial.py` |
+| Migrations restored | ✅ Done | `backend/scmgs/migrations/0001_initial.py` |
 | seed_groups command | ✅ Done | Creates User/Staff groups + demo accounts |
 | Dockerfile fixed | ✅ Done | `requirements.txt`, python:3.11-slim, gunicorn entrypoint |
 | Env-based settings | ✅ Done | python-decouple + SECRET_KEY dev fallback |
@@ -57,7 +57,7 @@ Transform a 2018 college Django project into a professional full-stack portfolio
 | serializers.py | ✅ Done | Complaint, FeedBack, User serializers |
 | permissions.py | ✅ Done | IsStaff, IsStaffOrReadOwn |
 | api_views.py | ✅ Done | ViewSets + stats endpoint |
-| scmgs/urls.py | ✅ Done | /api/auth/*, /api/complaints/*, /api/feedback/*, /api/stats/ |
+| backend/scmgs/urls.py | ✅ Done | /api/auth/*, /api/complaints/*, /api/feedback/*, /api/stats/ |
 
 ### Phase 4 — React Frontend ✅
 | Task | Status | Notes |
@@ -128,6 +128,7 @@ Transform a 2018 college Django project into a professional full-stack portfolio
 | 2026-06-14 | 1–7 | Full enhancement implemented: DRF API, React SPA, Docker Compose, tests, docs. |
 | 2026-06-15 | 8 | Backend optimization: Query optimization, validation, logging, error handling, containerization fixes. |
 | 2026-06-16 | 9 | Phase 8.1–8.3: Error handling, JWT cookies, rate limiting, pagination, Django 5 upgrade, Swagger, status transitions, stats caching. |
+| 2026-06-23 | 12 | Reconciled task.md inaccuracies; Stitch UI redesign complete (Civic Hybrid, teal tokens, theme toggle, all 13 pages); build passes. |
 
 ---
 
@@ -156,7 +157,7 @@ A comprehensive audit identified **81 distinct issues** across code quality, sec
 | **SEC-010** | `frontend/src/pages/SubmitComplaint.jsx` | 🔴 CRITICAL | Error shown as raw JSON instead of user-friendly message | ✅ Done |
 | **SEC-011** | `frontend/src/api/axios.js` | 🔴 CRITICAL | JWT token in localStorage (not httpOnly cookie) — XSS vulnerability | ✅ Done |
 | **SEC-012** | `frontend/src/pages/Register.jsx` | 🔴 CRITICAL | No password confirmation field | ✅ Done |
-| **SEC-013** | `scmgs/api_views.py` | 🔴 CRITICAL | No rate limiting on login/register — brute force attacks possible | ✅ Done |
+| **SEC-013** | `backend/scmgs/views/api_views.py` | 🔴 CRITICAL | No rate limiting on login/register — brute force attacks possible | ✅ Done |
 
 ### **High Priority Issues (Priority 2) — Fix This Week**
 | Issue | File | Severity | Description | Status |
@@ -170,23 +171,23 @@ A comprehensive audit identified **81 distinct issues** across code quality, sec
 | **DEPS-001** | `requirements.txt` | 🟠 HIGH | Django 4.1.5 is EOL (Dec 2023); no security patches | ✅ Done |
 | **DEPS-002** | `frontend/package.json` | 🟠 HIGH | axios 1.6.8 is outdated; 1.7.0+ available with bug fixes | ✅ Done |
 | **CONFIG-001** | `Siddu716_project/settings.py` | 🟠 HIGH | No HTTPS enforcement or HSTS headers | ✅ Done |
-| **CONFIG-002** | `scmgs/urls.py` | 🟠 HIGH | Missing CSRF protection on API endpoints | ✅ Done |
+| **CONFIG-002** | `backend/scmgs/urls.py` | 🟠 HIGH | Missing CSRF protection on API endpoints | ✅ Done |
 
 ### **Medium Priority Issues (Priority 3) — Fix This Sprint**
 | Issue | File | Severity | Description | Status | Count |
 |-------|------|----------|-------------|--------|-------|
 | **VALID-001** | `frontend/src/pages/SubmitComplaint.jsx` | 🟡 MEDIUM | Optional area field should enforce non-empty input | ✅ Done |
-| **VALID-002** | `scmgs/models.py` | 🟡 MEDIUM | Link field accepts any URL; could inject JavaScript via data: URIs | ✅ Done |
+| **VALID-002** | `backend/scmgs/models.py` | 🟡 MEDIUM | Link field accepts any URL; could inject JavaScript via data: URIs | ✅ Done |
 | **BUG-001** | `frontend/src/pages/ComplaintList.jsx` | 🟡 MEDIUM | Category filter loads all complaints; filtering happens client-side not server-side | ✅ Done |
 | **BUG-002** | `frontend/src/api/axios.js` | 🟡 MEDIUM | JWT refresh loop: if refresh fails, other requests may still retry infinitely | ✅ Done |
-| **BUG-003** | `scmgs/api_views.py:84` | 🟡 MEDIUM | No status transition validation (can't go resolved → open) | ✅ Done |
+| **BUG-003** | `backend/scmgs/views/api_views.py:84` | 🟡 MEDIUM | No status transition validation (can't go resolved → open) | ✅ Done |
 | **BUG-004** | `frontend/src/pages/ComplaintDetail.jsx` | 🟡 MEDIUM | 404 complaint not found shows "Loading..." forever | ✅ Done |
-| **DOCS-001** | `scmgs/api_views.py` | 🟡 MEDIUM | No API documentation (Swagger/OpenAPI) | ✅ Done |
+| **DOCS-001** | `backend/scmgs/views/api_views.py` | 🟡 MEDIUM | No API documentation (Swagger/OpenAPI) | ✅ Done |
 | **DOCS-002** | `frontend/src/` | 🟡 MEDIUM | No component documentation or Storybook | ⏳ Pending |
-| **PERF-001** | `scmgs/api_views.py` | 🟡 MEDIUM | No caching on stats endpoint — queries DB every request | ✅ Done |
+| **PERF-001** | `backend/scmgs/views/api_views.py` | 🟡 MEDIUM | No caching on stats endpoint — queries DB every request | ✅ Done |
 | **PERF-002** | `Siddu716_project/settings.py` | 🟡 MEDIUM | No Redis configured for caching | ⏳ Pending |
 | **PERF-003** | `Siddu716_project/docker-compose.yml` | 🟡 MEDIUM | Only 3 gunicorn workers; may not scale for 100+ concurrent users | ⏳ Pending |
-| **PERF-004** | `scmgs/` | 🟡 MEDIUM | No Celery for async processing; long tasks block request handler | ⏳ Pending |
+| **PERF-004** | `backend/scmgs/` | 🟡 MEDIUM | No Celery for async processing; long tasks block request handler | ⏳ Pending |
 
 ### **Low Priority Issues (Priority 4) — Fix Later**
 | Issue | File | Severity | Description | Status | Count |
@@ -196,8 +197,8 @@ A comprehensive audit identified **81 distinct issues** across code quality, sec
 | **TESTING-002** | `backend/` | 🟢 LOW | Tests use Django TestCase instead of pytest | ⏳ Pending | - |
 | **LINTING-001** | `frontend/` | 🟢 LOW | No ESLint/Prettier configured | ⏳ Pending | - |
 | **LINTING-002** | `backend/` | 🟢 LOW | No Black/Flake8 configured | ⏳ Pending | - |
-| **ARCH-007** | `scmgs/` | 🟢 LOW | No service layer; business logic mixed with API views | ⏳ Pending | - |
-| **ARCH-008** | `scmgs/models.py` | 🟢 LOW | Categories hardcoded; can't add dynamically | ⏳ Pending | - |
+| **ARCH-007** | `backend/scmgs/` | 🟢 LOW | No service layer; business logic mixed with API views | ⏳ Pending | - |
+| **ARCH-008** | `backend/scmgs/models.py` | 🟢 LOW | Categories hardcoded; can't add dynamically | ⏳ Pending | - |
 | **LOG-001** | `frontend/src/context/AuthContext.jsx` | 🟢 LOW | `console.warn()` left in production code | ✅ Done |
 | **TZ-001** | `Siddu716_project/settings.py` | 🟢 LOW | Timezone set to UTC instead of local timezone | ⏳ Pending | - |
 
@@ -213,7 +214,7 @@ A comprehensive audit identified **81 distinct issues** across code quality, sec
 | Soft deletes + audit trail | ❌ Deferred | 🟠 High | High scope; not implemented |
 | Email notifications | ❌ Deferred | 🟠 High | Requires Celery/SMTP setup |
 | Multi-language support | ❌ Deferred | 🟠 High | English only |
-| Dark/light mode toggle | ✅ Done | 🟢 Low | Navbar toggle, localStorage persistence, Tailwind dark class |
+| Dark/light mode toggle | ✅ Done | 🟢 Low | Navbar ☀️/🌙 toggle + `theme.js` localStorage persistence (Phase 12) |
 
 ---
 
@@ -258,22 +259,22 @@ A comprehensive audit identified **81 distinct issues** across code quality, sec
 
 ### **Phase 8.3 — Medium Priority Fixes (3–5 days)**
 16. ✅ Add status transition validation
-17. ✅ Add caching (Redis) for stats endpoint
+17. ✅ Add stats endpoint caching (locmem in `settings.py`; satisfies PERF-001 partially — Redis/PERF-002 still pending)
 18. ✅ Add Swagger/OpenAPI documentation
-19. ✅ Extract service layer for business logic
-20. ✅ Add soft deletes and audit logging
+19. ⏳ Extract service layer for business logic (ARCH-007 still pending)
+20. ❌ Add soft deletes and audit logging (deferred — see Incomplete Features)
 
 ### **Phase 8.4 — Low Priority + Enhancements (Backlog)**
-21. ✅ Add unit tests (Jest/Vitest)
-22. ✅ Add linting (ESLint, Black, Flake8)
-23. ✅ Implement email notifications (Celery)
+21. ⏳ Add unit tests (Jest/Vitest) — TESTING-001 pending
+22. ⏳ Add linting (ESLint, Black, Flake8) — LINTING-001/002 pending
+23. ❌ Implement email notifications (Celery) — deferred
 24. ✅ Add image preview before upload
 25. ✅ Add text search functionality
-26. ✅ Add multi-language support
-27. ✅ Add light mode toggle
-28. ✅ Implement CSV/PDF export
+26. ❌ Add multi-language support — deferred
+27. ✅ Add light/dark mode toggle — Phase 12 Civic Hybrid redesign
+28. ✅ Implement CSV export (PDF deferred)
 29. ✅ Add user profile page
-30. ✅ Add admin settings panel
+30. ❌ Add admin settings panel — deferred
 
 ---
 
@@ -313,15 +314,15 @@ A comprehensive audit identified **81 distinct issues** across code quality, sec
 
 | ID | Priority | File(s) | Issue | Fix needed | Status |
 |----|----------|---------|-------|------------|--------|
-| AUDIT-001 | 🔴 Critical | `scmgs/auth_views.py` | Refresh endpoint ignores rotated refresh token when `ROTATE_REFRESH_TOKENS=True` (old cookie value is reused). | In `CookieTokenRefreshView.post`, set refresh cookie from `serializer.validated_data.get('refresh', refresh)` instead of always old token. | ⏳ Pending |
-| AUDIT-002 | 🔴 Critical | `scmgs/management/commands/seed_groups.py`, `entrypoint.sh` | Every container start force-resets `admin` password to default `Admin@1234`. | Gate demo credential seeding/reset behind explicit env flag (e.g., `SEED_DEMO_USERS=true` only in dev). | ⏳ Pending |
+| AUDIT-001 | 🔴 Critical | `backend/scmgs/views/auth_views.py` | Refresh endpoint ignores rotated refresh token when `ROTATE_REFRESH_TOKENS=True` (old cookie value is reused). | In `CookieTokenRefreshView.post`, set refresh cookie from `serializer.validated_data.get('refresh', refresh)` instead of always old token. | ⏳ Pending |
+| AUDIT-002 | 🔴 Critical | `backend/scmgs/management/commands/seed_groups.py`, `backend/entrypoint.sh` | Every container start force-resets `admin` password to default `Admin@1234`. | Gate demo credential seeding/reset behind explicit env flag (e.g., `SEED_DEMO_USERS=true` only in dev). | ⏳ Pending |
 | AUDIT-003 | 🔴 Critical | `frontend/src/config/authBypass.js`, `docker-compose.yml`, `.env.example` | Auth-bypass modes are build-time toggles and can be accidentally enabled in non-dev deployments. | Enforce `VITE_AUTH_BYPASS=off` in production builds and add explicit startup guard/fail-fast. | ⏳ Pending |
 | AUDIT-004 | 🟠 High | `README.md`, `requirements.txt` | Docs are inconsistent with code (README says Django 4.1 and mentions GitHub Actions workflow that is absent). | Update README stack/version/CI sections to match repository reality. | ⏳ Pending |
 | AUDIT-005 | 🟠 High | `.github/workflows/` | CI workflow missing while project expects automated checks. | Add/restore workflow for backend tests + frontend build on PR/push. | ⏳ Pending |
 | AUDIT-006 | 🟠 High | `Jenkinsfile` | Pipeline contains reliability defects (e.g., `BUILD_NMBER` typo, duplicate `docker-compose up -d`). | Fix variable typo, remove duplicate run command, and harden pipeline stages. | ⏳ Pending |
-| AUDIT-007 | 🟠 High | `scmgs/auth_views.py` | `LogoutView` requires valid auth token; expired-session logout may fail to clear cookies. | Change logout endpoint to clear cookies even when token is expired (AllowAny + safe cookie clear). | ⏳ Pending |
+| AUDIT-007 | 🟠 High | `backend/scmgs/views/auth_views.py` | `LogoutView` requires valid auth token; expired-session logout may fail to clear cookies. | Change logout endpoint to clear cookies even when token is expired (AllowAny + safe cookie clear). | ⏳ Pending |
 | AUDIT-008 | 🟡 Medium | `Siddu716_project/settings.py`, local env tooling | Host validation blocked because dependencies are not provisioned outside Docker. | Add documented/automated local bootstrap (`python3.11 -m venv`, install requirements) and pin supported Python version. | ⏳ Pending |
-| AUDIT-009 | 🟡 Medium | `scmgs/api_views.py` | Broad `except Exception` blocks log and re-raise without targeted handling. | Replace with narrower exception handling or remove redundant catch/rethrow blocks. | ⏳ Pending |
+| AUDIT-009 | 🟡 Medium | `backend/scmgs/views/api_views.py` | Broad `except Exception` blocks log and re-raise without targeted handling. | Replace with narrower exception handling or remove redundant catch/rethrow blocks. | ⏳ Pending |
 | AUDIT-010 | 🟡 Medium | `docker-compose.yml` | MySQL runs with empty root password and host-exposed 3306 in default config. | Use non-empty DB credentials by default and restrict/explain host port exposure for dev-only. | ⏳ Pending |
 
 ### Recommended execution order (from this audit)
@@ -346,3 +347,92 @@ A comprehensive audit identified **81 distinct issues** across code quality, sec
 | SMS OTP after password (login + register) | ✅ Done | Twilio integration + dev console fallback; `UserProfile.phone` model |
 | Remove photo upload from complaint form | ✅ Done | Google Drive/Docs link only; JSON POST |
 | Staff complaint Drive URL as hyperlink | ✅ Done | Full URL shown and clickable in detail + list views |
+
+---
+
+## Phase 12 — Stitch Design Analysis & UI Redesign (2026-06-23)
+
+### Design brief
+
+| Item | Detail |
+|------|--------|
+| **App** | Smart City Management System (SCMS) — urban complaint portal |
+| **Roles** | citizen, staff, admin |
+| **Categories** | air_pollution, electricity, road, sewage, waste, others |
+| **Routes (13)** | `/`, `/login`, `/register`, `/complaints`, `/complaints/new/:category`, `/my-complaints`, `/feedback`, `/profile`, `/staff`, `/staff/complaints`, `/staff/complaints/:id`, `/staff/feedback` |
+| **Key flows** | JWT + SMS OTP auth, complaint submit (Drive link), staff bulk status, stats dashboard |
+
+### Stitch MCP status
+
+| Check | Result |
+|-------|--------|
+| Stitch API via curl (`https://stitch.googleapis.com/mcp`) | ✅ API key auth works; `list_projects`, `create_project` succeed |
+| Stitch project | ✅ `projects/16308196752677021907` ("SCMS Urban Services") |
+| `generate_screen_from_text` | ❌ Timed out (~61s); no screens created |
+| Stitch MCP in Cursor subagent | ❌ Not in enabled MCP server list — used curl fallback |
+| Design fallback | Manual **Civic Hybrid** design system (teal civic palette, light default + dark toggle) |
+
+### Design directions compared
+
+| Variant | Palette | Strengths | Weaknesses | Score |
+|---------|---------|-----------|------------|-------|
+| **A — Civic Hybrid** (winner) | Teal on slate, light default + dark toggle | High contrast, civic trust, WCAG-friendly, category top-borders, staff badges | Slightly less dramatic than gradient options | **5/5** |
+| B — Indigo Night | Indigo/slate dark-only | Familiar (pre-redesign), cohesive dark | No light mode, lower civic warmth | 3.5/5 |
+| C — Emerald Gradient | Green gradients + glass | Modern, portfolio polish | Category distinction weaker, contrast risks | 3.5/5 |
+
+**Winner: Civic Hybrid** — best balance of accessibility, category discoverability, mobile-first card layout, and staff/citizen visual separation.
+
+### Stitch project / screen inventory
+
+| Item | Value |
+|------|-------|
+| Stitch project | `projects/16308196752677021907` |
+| Stitch screen IDs | None (generation timed out) |
+| Reference assets | `docs/design/stitch/` (`README.md`, `home.html`, `screen-patterns.html`) |
+
+### Implementation checklist
+
+| Page / Component | Status |
+|------------------|--------|
+| Design tokens (`tailwind.config.js`, `index.css`) | ✅ Done |
+| Theme toggle (`Navbar.jsx`, `theme.js`) | ✅ Done |
+| `Navbar.jsx` | ✅ Done |
+| `ComplaintCard.jsx` | ✅ Done |
+| `PasswordInput.jsx` | ✅ Done |
+| `OtpInput.jsx` | ✅ Done |
+| `Home.jsx` | ✅ Done |
+| `Login.jsx` / `Register.jsx` | ✅ Done |
+| `ComplaintHub.jsx` / `SubmitComplaint.jsx` | ✅ Done |
+| `MyComplaints.jsx` / `FeedbackPage.jsx` / `Profile.jsx` | ✅ Done |
+| `StaffDashboard.jsx` / `ComplaintList.jsx` / `ComplaintDetail.jsx` / `StaffFeedback.jsx` | ✅ Done |
+| `npm run build` | ✅ Pass (2026-06-23) |
+| References in `docs/design/stitch/` | ✅ Done (manual HTML refs) |
+
+### Design tokens (before → after)
+
+| Token | Before | After (Civic Hybrid) |
+|-------|--------|----------------------|
+| Primary | `#6366f1` (indigo) | `#0d9488` (teal) |
+| Background (light) | n/a (dark only) | `#f8fafc` (slate-50) |
+| Background (dark) | `#0f172a` (slate-900) | `#0f172a` (unchanged) |
+| Card | `slate-800` border | white / `slate-800` with `rounded-2xl` |
+| Badge open | yellow-900 | amber-100 / amber-900 dark |
+| Badge resolved | green-900 | emerald-100 / emerald-900 dark |
+| Theme toggle | none | Navbar + `localStorage` |
+
+---
+
+## Phase 12.1 — Home UX & Light Mode (2026-06-23)
+
+| Change | Status | Notes |
+|--------|--------|-------|
+| Category cards → direct submit (`/complaints/new/:category`) | ✅ Done | Guest → login with return URL |
+| Remove navbar "File Complaint" | ✅ Done | `/complaints` redirects to `/` |
+| Hero layout 40/60 (2fr/3fr), taller slideshow | ✅ Done | `Home.jsx` |
+| Light mode softened (Stitch Civic Light tokens) | ✅ Done | Phase 12.1: darker elevated boxes (`#dae2fd` cards on `#eef0ff` canvas) |
+| Login post-auth redirect to intended URL | ✅ Done | `PrivateRoute` + `Login.jsx` |
+| Stitch MCP | — | Reused project `16308196752677021907` tokens only; no screen regen |
+
+| Date | Phase | Change Summary |
+|------|-------|---------------|
+| 2026-06-23 | 12.1 | Home category-click complaint flow, hero layout, softer light mode, nav cleanup. Build passes. |
