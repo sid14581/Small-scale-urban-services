@@ -5,6 +5,9 @@ import uuid
 from django.conf import settings
 from django.core.cache import cache
 
+from scmgs.models import AuthAuditEvent
+from scmgs.services.audit_logger import log_auth_event
+
 logger = logging.getLogger(__name__)
 
 OTP_TTL = 600  # 10 minutes
@@ -43,10 +46,14 @@ def generate_otp_code():
     return f'{random.randint(0, 999999):06d}'
 
 
-def check_rate_limit(subject):
+def check_rate_limit(subject, *, username=''):
     key = _rate_key(subject)
     count = cache.get(key, 0)
     if count >= _otp_rate_limit():
+        log_auth_event(
+            None, AuthAuditEvent.OTP_FAILED,
+            username=username, detail=f'Rate limit exceeded for {subject}',
+        )
         return False
     cache.set(key, count + 1, _otp_rate_window())
     return True
@@ -137,7 +144,14 @@ def send_sms_otp(phone, code):
 
 def create_otp_session(flow, phone, *, user_id=None, register_data=None, rate_subject=None):
     subject = rate_subject or (f'user:{user_id}' if user_id else phone)
-    if not check_rate_limit(subject):
+    username = ''
+    if user_id:
+        from django.contrib.auth.models import User
+        username = User.objects.filter(pk=user_id).values_list('username', flat=True).first() or ''
+    elif register_data:
+        username = register_data.get('username', '')
+
+    if not check_rate_limit(subject, username=username):
         raise ValueError('rate_limit')
 
     use_verify = _use_twilio_verify()
@@ -161,6 +175,7 @@ def create_otp_session(flow, phone, *, user_id=None, register_data=None, rate_su
         cache.delete(_cache_key(session_id))
         raise ValueError('sms_failed')
 
+    log_auth_event(None, AuthAuditEvent.OTP_SENT, username=username, detail=f'{flow} OTP session created')
     return session_id
 
 
