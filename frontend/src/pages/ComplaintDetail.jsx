@@ -1,9 +1,15 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import api from '../api/axios'
 import { getApiErrorMessage } from '../utils/apiError'
 import { normalizeExternalUrl } from '../utils/url'
+
+const STATUS_CLASS = {
+  open: 'badge-open',
+  in_progress: 'badge-in_progress',
+  resolved: 'badge-resolved',
+}
 
 export default function ComplaintDetail() {
   const { id } = useParams()
@@ -51,7 +57,8 @@ export default function ComplaintDetail() {
   return (
     <>
       <Navbar />
-      <main className="max-w-lg mx-auto px-4 py-8">
+      <main className="max-w-lg mx-auto px-4 py-8 md:py-12">
+        <Link to="/staff/complaints" className="text-link text-sm mb-4 inline-block">← Back to complaints</Link>
         {loading && <p className="text-muted">Loading...</p>}
         {error && (
           <div className="card">
@@ -60,22 +67,37 @@ export default function ComplaintDetail() {
         )}
         {complaint && (
           <div className="card">
-            <p className="text-link font-mono">{complaint.reference_id}</p>
-            <h2 className="text-2xl font-bold mt-2">{complaint.complain}</h2>
-            <dl className="mt-4 space-y-2 text-sm">
-              <div><dt className="text-muted">Category</dt><dd>{complaint.category_display}</dd></div>
-              <div><dt className="text-muted">Phone</dt><dd>{complaint.phone}</dd></div>
-              <div><dt className="text-muted">Address</dt><dd>{complaint.address}</dd></div>
-              <div><dt className="text-muted">Area</dt><dd>{complaint.area}</dd></div>
+            <div className="flex items-start justify-between gap-3 mb-4">
+              <p className="text-link font-mono text-sm">{complaint.reference_id}</p>
+              <span className={STATUS_CLASS[complaint.status] || 'badge'}>{complaint.status_display}</span>
+            </div>
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{complaint.complain}</h2>
+            <dl className="mt-6 space-y-4 text-sm">
+              <div className="p-3 rounded-xl bg-surface-muted dark:bg-slate-800/50">
+                <dt className="text-muted text-xs uppercase tracking-wide">Category</dt>
+                <dd className="font-medium mt-1">{complaint.category_display}</dd>
+              </div>
+              <div className="p-3 rounded-xl bg-surface-muted dark:bg-slate-800/50">
+                <dt className="text-muted text-xs uppercase tracking-wide">Phone</dt>
+                <dd className="mt-1">{complaint.phone}</dd>
+              </div>
+              <div className="p-3 rounded-xl bg-surface-muted dark:bg-slate-800/50">
+                <dt className="text-muted text-xs uppercase tracking-wide">Address</dt>
+                <dd className="mt-1">{complaint.address}</dd>
+              </div>
+              <div className="p-3 rounded-xl bg-surface-muted dark:bg-slate-800/50">
+                <dt className="text-muted text-xs uppercase tracking-wide">Area</dt>
+                <dd className="mt-1">{complaint.area}</dd>
+              </div>
               {driveUrl && (
-                <div>
-                  <dt className="text-muted">Google Drive Link</dt>
-                  <dd>
+                <div className="p-3 rounded-xl bg-surface-muted dark:bg-slate-800/50">
+                  <dt className="text-muted text-xs uppercase tracking-wide">Google Drive Link</dt>
+                  <dd className="mt-1">
                     <a
                       href={driveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-link underline break-all"
+                      className="text-link break-all"
                     >
                       {complaint.link}
                     </a>
@@ -83,9 +105,9 @@ export default function ComplaintDetail() {
                 </div>
               )}
             </dl>
-            <div className="mt-6">
-              <label className="text-sm text-muted">Update Status</label>
-              <select className="input mt-1" value={status} onChange={(e) => setStatus(e.target.value)}>
+            <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700">
+              <label className="text-sm text-muted font-medium">Update Status</label>
+              <select className="input mt-2" value={status} onChange={(e) => setStatus(e.target.value)}>
                 <option value="open">Open</option>
                 <option value="in_progress">In Progress</option>
                 <option value="resolved">Resolved</option>

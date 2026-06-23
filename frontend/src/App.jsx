@@ -3,7 +3,6 @@ import PrivateRoute from './components/PrivateRoute'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
-import ComplaintHub from './pages/ComplaintHub'
 import SubmitComplaint from './pages/SubmitComplaint'
 import MyComplaints from './pages/MyComplaints'
 import FeedbackPage from './pages/FeedbackPage'
@@ -22,7 +21,7 @@ function AppRoutes() {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
       <Route path="/register" element={user ? <Navigate to="/" /> : <Register />} />
-      <Route path="/complaints" element={<PrivateRoute citizenOnly><ComplaintHub /></PrivateRoute>} />
+      <Route path="/complaints" element={<Navigate to="/" replace />} />
       <Route path="/complaints/new/:category" element={<PrivateRoute citizenOnly><SubmitComplaint /></PrivateRoute>} />
       <Route path="/my-complaints" element={<PrivateRoute citizenOnly><MyComplaints /></PrivateRoute>} />
       <Route path="/feedback" element={<PrivateRoute citizenOnly><FeedbackPage /></PrivateRoute>} />

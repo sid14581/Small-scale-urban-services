@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SCMS Home — Civic Hybrid Reference</title>
+  <style>
+    :root { --primary: #0d9488; --bg: #f8fafc; --surface: #fff; --text: #0f172a; --muted: #64748b; }
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; background: var(--bg); color: var(--text); }
+    nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; background: #fff; border-bottom: 1px solid #e2e8f0; }
+    .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin: 2rem auto; max-width: 72rem; border-radius: 1.5rem; overflow: hidden; border: 1px solid #e2e8f0; background: linear-gradient(135deg, #f0fdfa, #fff, #f8fafc); }
+    .hero-text { padding: 3rem; }
+    .badge { display: inline-block; background: #ccfbf1; color: var(--primary); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; padding: 0.25rem 0.75rem; border-radius: 999px; margin-bottom: 1rem; }
+    h1 { font-size: 2.5rem; line-height: 1.1; margin-bottom: 1rem; }
+    p { color: var(--muted); margin-bottom: 2rem; }
+    .btn { display: inline-block; padding: 0.75rem 2rem; border-radius: 0.75rem; font-weight: 600; text-decoration: none; }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-outline { border: 2px solid #cbd5e1; color: var(--text); margin-left: 0.5rem; }
+    .hero-img { background: #94a3b8; min-height: 20rem; }
+    .categories { max-width: 72rem; margin: 0 auto 3rem; padding: 0 1.5rem; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .cat { background: var(--surface); border: 1px solid #e2e8f0; border-radius: 1rem; padding: 1.25rem; text-align: center; border-top: 4px solid var(--primary); }
+    @media (max-width: 768px) { .hero { grid-template-columns: 1fr; } .grid { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+</head>
+<body>
+  <nav><strong>SCMS Urban Services</strong><span>Login · Register</span></nav>
+  <section class="hero">
+    <div class="hero-text">
+      <span class="badge">Civic Urban Services</span>
+      <h1>Report urban service issues</h1>
+      <p>Help improve your community. File complaints, track progress, and share feedback.</p>
+      <a class="btn btn-primary" href="#">Get Started</a>
+      <a class="btn btn-outline" href="#">Login</a>
+    </div>
+    <div class="hero-img"></div>
+  </section>
+  <section class="categories">
+    <h2 style="text-align:center;margin-bottom:1.5rem">Service Categories</h2>
+    <div class="grid">
+      <div class="cat">Air Pollution</div>
+      <div class="cat" style="border-top-color:#f59e0b">Electricity</div>
+      <div class="cat" style="border-top-color:#f97316">Road</div>
+      <div class="cat" style="border-top-color:#06b6d4">Sewage</div>
+      <div class="cat" style="border-top-color:#10b981">Waste</div>
+      <div class="cat" style="border-top-color:#8b5cf6">Others</div>
+    </div>
+  </section>
+</body>
+</html>

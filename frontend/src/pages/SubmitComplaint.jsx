@@ -12,7 +12,7 @@ export default function SubmitComplaint() {
   const [form, setForm] = useState({ complain: '', phone: '', address: '', area: '', link: '' })
   const [error, setError] = useState('')
 
-  if (!cat) return <p className="p-8">Invalid category</p>
+  if (!cat) return <p className="p-8 text-muted">Invalid category</p>
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -28,23 +28,38 @@ export default function SubmitComplaint() {
   return (
     <>
       <Navbar />
-      <main className="max-w-lg mx-auto px-4 py-8">
+      <main className="max-w-lg mx-auto px-4 py-8 md:py-12">
         <div className="card">
-          <div className="flex items-center gap-4 mb-2">
-            <img src={cat.image} alt={cat.label} className="w-14 h-14 object-contain" />
-            <h2 className="text-2xl font-bold">{cat.label} Complaint</h2>
+          <div className="flex items-center gap-4 mb-4 pb-4 border-b border-slate-200 dark:border-slate-700">
+            <img src={cat.image} alt={cat.label} className="w-14 h-14 object-cover rounded-xl ring-2 ring-primary/20" />
+            <div>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{cat.label}</h2>
+              <p className="text-muted text-sm">Complaint form</p>
+            </div>
           </div>
-          <Link to="/complaints" className="text-link text-sm">← Back to categories</Link>
-          {error && <p className="text-error mt-4 text-sm">{error}</p>}
+          <Link to="/" className="text-link text-sm inline-flex items-center gap-1">← Back to categories</Link>
+          {error && <p className="text-error mt-4 text-sm p-3 rounded-xl bg-red-50 dark:bg-red-900/20">{error}</p>}
           <form onSubmit={handleSubmit} className="space-y-4 mt-6">
-            <input className="input" placeholder="Describe your complaint" value={form.complain}
-              onChange={(e) => setForm({ ...form, complain: e.target.value })} required />
-            <input className="input" placeholder="Phone number" value={form.phone}
-              onChange={(e) => setForm({ ...form, phone: e.target.value })} required />
-            <input className="input" placeholder="Address" value={form.address}
-              onChange={(e) => setForm({ ...form, address: e.target.value })} required />
-            <input className="input" placeholder="Area / locality" value={form.area}
-              onChange={(e) => setForm({ ...form, area: e.target.value })} required />
+            <div>
+              <label className="text-sm text-muted">Description</label>
+              <input className="input mt-1" placeholder="Describe your complaint" value={form.complain}
+                onChange={(e) => setForm({ ...form, complain: e.target.value })} required />
+            </div>
+            <div>
+              <label className="text-sm text-muted">Phone number</label>
+              <input className="input mt-1" placeholder="Phone number" value={form.phone}
+                onChange={(e) => setForm({ ...form, phone: e.target.value })} required />
+            </div>
+            <div>
+              <label className="text-sm text-muted">Address</label>
+              <input className="input mt-1" placeholder="Address" value={form.address}
+                onChange={(e) => setForm({ ...form, address: e.target.value })} required />
+            </div>
+            <div>
+              <label className="text-sm text-muted">Area / locality</label>
+              <input className="input mt-1" placeholder="Area / locality" value={form.area}
+                onChange={(e) => setForm({ ...form, area: e.target.value })} required />
+            </div>
             <div>
               <label className="text-sm text-muted">Google Drive / Docs link (optional)</label>
               <input

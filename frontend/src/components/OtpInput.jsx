@@ -8,19 +8,23 @@ export function isOtpComplete(code) {
 
 export default function OtpInput({ value, onChange, disabled }) {
   return (
-    <input
-      className="input text-center text-lg tracking-widest font-mono"
-      type="text"
-      inputMode="numeric"
-      pattern="[0-9]*"
-      maxLength={OTP_MAX}
-      placeholder="Enter code"
-      value={value}
-      onChange={(e) => onChange(e.target.value.replace(/\D/g, '').slice(0, OTP_MAX))}
-      disabled={disabled}
-      required
-      autoComplete="one-time-code"
-    />
+    <div className="space-y-2">
+      <input
+        className="input text-center text-2xl tracking-[0.4em] font-mono"
+        type="text"
+        inputMode="numeric"
+        pattern="[0-9]*"
+        maxLength={OTP_MAX}
+        placeholder="• • • •"
+        value={value}
+        onChange={(e) => onChange(e.target.value.replace(/\D/g, '').slice(0, OTP_MAX))}
+        disabled={disabled}
+        required
+        autoComplete="one-time-code"
+        aria-label="One-time verification code"
+      />
+      <p className="text-xs text-muted text-center">Enter the {OTP_MIN}–{OTP_MAX} digit code from SMS</p>
+    </div>
   )
 }
 

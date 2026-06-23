@@ -45,7 +45,7 @@ export default function Register() {
     setSubmitting(true)
     try {
       await verifyOtp(otpSession, otpCode)
-      navigate('/complaints')
+      navigate('/')
     } catch (err) {
       setError(getApiErrorMessage(err, 'Invalid or expired OTP.'))
     } finally {
@@ -72,13 +72,13 @@ export default function Register() {
       <Navbar />
       <main className="max-w-4xl mx-auto px-4 py-12">
         <div className="grid md:grid-cols-2 gap-8 items-center">
-          <div className="hidden md:flex flex-col items-center justify-center rounded-2xl panel-accent p-8 overflow-hidden">
+          <div className="hidden md:flex flex-col items-center justify-center rounded-3xl hero-gradient border border-slate-200 dark:border-slate-700 p-8 overflow-hidden">
             <img
               src={BRANDING.auth}
               alt="Smart city viewpoint"
-              className="w-full max-h-72 object-contain mb-4"
+              className="w-full max-h-72 object-contain mb-4 rounded-2xl"
             />
-            <p className="text-muted text-center text-sm">
+            <p className="text-muted text-center text-sm max-w-xs">
               Join your community in building a smarter city
             </p>
           </div>
@@ -86,11 +86,11 @@ export default function Register() {
             <img
               src={BRANDING.hero}
               alt="SCMS"
-              className="w-12 h-12 mx-auto mb-4 md:hidden"
+              className="w-12 h-12 mx-auto mb-4 md:hidden rounded-xl ring-2 ring-primary/20"
             />
-            <h2 className="text-2xl font-bold mb-6">Register</h2>
-            <p className="text-muted text-sm mb-4">Create a citizen account to file complaints and feedback.</p>
-            {error && <p className="text-error mb-4 text-sm">{error}</p>}
+            <h2 className="text-2xl font-bold mb-1 text-slate-900 dark:text-white">Register</h2>
+            <p className="text-muted text-sm mb-6">Create a citizen account to file complaints and feedback.</p>
+            {error && <p className="text-error mb-4 text-sm p-3 rounded-xl bg-red-50 dark:bg-red-900/20">{error}</p>}
 
             {step === 1 ? (
               <form onSubmit={handleDetailsSubmit} className="space-y-4">
@@ -139,8 +139,8 @@ export default function Register() {
               </form>
             )}
 
-            <p className="mt-4 text-sm text-muted">
-              Have an account? <Link to="/login" className="text-link">Login</Link>
+            <p className="mt-6 text-sm text-muted text-center">
+              Have an account? <Link to="/login" className="text-link font-medium">Login</Link>
             </p>
           </div>
         </div>
