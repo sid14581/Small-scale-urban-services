@@ -34,17 +34,17 @@ def git_github_tokens() -> list[str]:
 
 
 def main():
-    repo = Path(__file__).resolve().parents[1]
+    repo = Path(__file__).resolve().parents[2]
     issues = []
 
     django_secrets = git_grep_path(
         r"SECRET_KEY\s*=\s*['\"][^'\"]+['\"]",
-        "Siddu716_project/settings.py",
+        "backend/Siddu716_project/settings.py",
     )
     if django_secrets:
         issues.append(f"  - Hardcoded SECRET_KEY in settings.py history: {len(django_secrets)} match(es)")
 
-    db_passwords = git_grep_path(r"PASSWORD':\s*'Siddu716\$'", "Siddu716_project/settings.py")
+    db_passwords = git_grep_path(r"PASSWORD':\s*'Siddu716\$'", "backend/Siddu716_project/settings.py")
     if db_passwords:
         issues.append(f"  - Leaked DB password in settings.py history: {len(db_passwords)} match(es)")
 
@@ -52,13 +52,13 @@ def main():
     if github_matches:
         issues.append(f"  - GitHub tokens (ghp_...): {len(github_matches)} match(es) in git history")
 
-    settings = (repo / "Siddu716_project" / "settings.py").read_text(encoding="utf-8")
+    settings = (repo / "backend" / "Siddu716_project" / "settings.py").read_text(encoding="utf-8")
     uses_config = "SECRET_KEY" in settings and "config(" in settings.split("SECRET_KEY", 1)[1][:80]
     hardcoded = "SECRET_KEY = '" in settings or 'SECRET_KEY = "' in settings
     if not (uses_config and not hardcoded):
         issues.append("  - settings.py does not load SECRET_KEY from environment")
 
-    jenkins = (repo / "Jenkinsfile").read_text(encoding="utf-8")
+    jenkins = (repo / "infrastructure" / "ci" / "Jenkinsfile").read_text(encoding="utf-8")
     if GITHUB_TOKEN_RE.search(jenkins):
         issues.append("  - Jenkinsfile contains a hardcoded GitHub token")
 

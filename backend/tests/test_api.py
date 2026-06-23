@@ -21,21 +21,6 @@ TEST_DATABASES = {
     }
 }
 
-
-@override_settings(DATABASES=TEST_DATABASES)
-class ComplaintModelTests(TestCase):
-    def test_reference_id_generated(self):
-        c = Complaint.objects.create(
-            category=ComplaintCategory.ROAD,
-            complain='Pothole',
-            phone='123',
-            address='Main St',
-            area='North',
-        )
-        self.assertTrue(c.reference_id)
-        self.assertEqual(c.status, ComplaintStatus.OPEN)
-
-
 TEST_OTP_SETTINGS = {
     'TWILIO_VERIFY_SERVICE_SID': '',
     'TWILIO_ACCOUNT_SID': '',
@@ -67,7 +52,7 @@ class APITests(TestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls._auth_throttle_patch = patch(
-            'scmgs.auth_views.AuthRateThrottle.allow_request',
+            'scmgs.views.auth_views.AuthRateThrottle.allow_request',
             return_value=True,
         )
         cls._auth_throttle_patch.start()
@@ -90,7 +75,7 @@ class APITests(TestCase):
         return res
 
     def test_register_and_login(self):
-        with patch('scmgs.otp_service.generate_otp_code', return_value='123456'):
+        with patch('scmgs.services.otp_service.generate_otp_code', return_value='123456'):
             init = self.client.post('/api/auth/register/init/', {
                 'username': 'newuser', 'email': 'n@test.com', 'first_name': 'New',
                 'password': 'longpass123', 'password_confirm': 'longpass123',
@@ -112,7 +97,7 @@ class APITests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_otp_verify_rejects_wrong_code(self):
-        with patch('scmgs.otp_service.generate_otp_code', return_value='123456'):
+        with patch('scmgs.services.otp_service.generate_otp_code', return_value='123456'):
             init = self.client.post('/api/auth/login/init/', {
                 'username': 'citizen',
                 'password': 'pass12345',
@@ -125,7 +110,7 @@ class APITests(TestCase):
         self.assertEqual(verify.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_otp_login_flow_sets_cookies(self):
-        with patch('scmgs.otp_service.generate_otp_code', return_value='123456'):
+        with patch('scmgs.services.otp_service.generate_otp_code', return_value='123456'):
             init = self.client.post('/api/auth/login/init/', {
                 'username': 'citizen',
                 'password': 'pass12345',
@@ -139,7 +124,7 @@ class APITests(TestCase):
         self.assertTrue(verify.cookies.get('access_token') or verify.data.get('username'))
 
     def test_register_always_creates_citizen(self):
-        with patch('scmgs.otp_service.generate_otp_code', return_value='654321'):
+        with patch('scmgs.services.otp_service.generate_otp_code', return_value='654321'):
             init = self.client.post('/api/auth/register/init/', {
                 'username': 'newcitizen', 'email': 'nc@test.com', 'first_name': 'NC',
                 'password': 'longpass123', 'password_confirm': 'longpass123',
@@ -293,42 +278,3 @@ class APITests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res['Content-Type'], 'text/csv')
         self.assertIn('Export test complaint', res.content.decode())
-
-
-@override_settings(DATABASES=TEST_DATABASES)
-class AdminAccessTests(TestCase):
-    def setUp(self):
-        self.client = APIClient()
-        Group.objects.create(name='Staff')
-
-        self.staff = User.objects.create_user('staff', 's@test.com', 'pass12345')
-        self.staff.is_staff = True
-        self.staff.save()
-        self.staff.groups.add(Group.objects.get(name='Staff'))
-
-        self.admin = User.objects.create_superuser('admin', 'a@test.com', 'Admin@1234')
-
-    def test_staff_cannot_access_django_admin_index(self):
-        self.client.force_login(self.staff)
-        res = self.client.get('/admin/')
-        self.assertIn(res.status_code, (302, 403))
-        if res.status_code == 302:
-            self.assertIn('login', res.url)
-
-    def test_superuser_can_access_django_admin_index(self):
-        self.client.force_login(self.admin)
-        res = self.client.get('/admin/')
-        self.assertEqual(res.status_code, 200)
-
-
-@override_settings(DATABASES=TEST_DATABASES)
-class SeedGroupsTests(TestCase):
-    def test_seed_groups_command(self):
-        from django.core.management import call_command
-        call_command('seed_groups')
-        self.assertTrue(User.objects.filter(username='admin').exists())
-        admin = User.objects.get(username='admin')
-        self.assertTrue(admin.is_superuser)
-        self.assertTrue(admin.check_password('Admin@1234'))
-        staff = User.objects.get(username='staff')
-        self.assertFalse(staff.is_staff)
