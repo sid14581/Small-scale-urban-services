@@ -36,11 +36,11 @@ class APITests(TestCase):
         Group.objects.create(name='User')
         Group.objects.create(name='Staff')
 
-        self.citizen = User.objects.create_user('citizen', 'c@test.com', 'pass12345')
+        self.citizen = User.objects.create_user('citizen', 'c@test.com', 'Pass12345')
         self.citizen.groups.add(Group.objects.get(name='User'))
         UserProfile.objects.create(user=self.citizen, phone='+15551111111')
 
-        self.staff = User.objects.create_user('staff', 's@test.com', 'pass12345')
+        self.staff = User.objects.create_user('staff', 's@test.com', 'Pass12345')
         self.staff.groups.add(Group.objects.get(name='Staff'))
         UserProfile.objects.create(user=self.staff, phone='+15552222222')
 
@@ -78,7 +78,7 @@ class APITests(TestCase):
         with patch('scmgs.services.otp_service.generate_otp_code', return_value='123456'):
             init = self.client.post('/api/auth/register/init/', {
                 'username': 'newuser', 'email': 'n@test.com', 'first_name': 'New',
-                'password': 'longpass123', 'password_confirm': 'longpass123',
+                'password': 'Longpass123', 'password_confirm': 'Longpass123',
                 'phone': '+15559998888',
             })
         self.assertEqual(init.status_code, status.HTTP_200_OK, init.data)
@@ -100,7 +100,7 @@ class APITests(TestCase):
         with patch('scmgs.services.otp_service.generate_otp_code', return_value='123456'):
             init = self.client.post('/api/auth/login/init/', {
                 'username': 'citizen',
-                'password': 'pass12345',
+                'password': 'Pass12345',
             })
         self.assertEqual(init.status_code, status.HTTP_200_OK)
         verify = self.client.post('/api/auth/otp/verify/', {
@@ -113,7 +113,7 @@ class APITests(TestCase):
         with patch('scmgs.services.otp_service.generate_otp_code', return_value='123456'):
             init = self.client.post('/api/auth/login/init/', {
                 'username': 'citizen',
-                'password': 'pass12345',
+                'password': 'Pass12345',
             })
         self.assertEqual(init.status_code, status.HTTP_200_OK)
         verify = self.client.post('/api/auth/otp/verify/', {
@@ -127,7 +127,7 @@ class APITests(TestCase):
         with patch('scmgs.services.otp_service.generate_otp_code', return_value='654321'):
             init = self.client.post('/api/auth/register/init/', {
                 'username': 'newcitizen', 'email': 'nc@test.com', 'first_name': 'NC',
-                'password': 'longpass123', 'password_confirm': 'longpass123',
+                'password': 'Longpass123', 'password_confirm': 'Longpass123',
                 'phone': '+15557776666',
             })
         self.client.post('/api/auth/otp/verify/', {
@@ -154,7 +154,7 @@ class APITests(TestCase):
         self.assertFalse(is_staff_member(self.citizen))
 
     def test_citizen_submit_complaint(self):
-        self._login('citizen', 'pass12345')
+        self._login('citizen', 'Pass12345')
         res = self.client.post('/api/complaints/', {
             'category': 'air_pollution',
             'complain': 'Heavy smoke near the factory area',
@@ -172,7 +172,7 @@ class APITests(TestCase):
             phone='111', address='B', area='South',
             submitted_by=self.citizen,
         )
-        self._login('staff', 'pass12345')
+        self._login('staff', 'Pass12345')
         res = self.client.patch(f'/api/complaints/{c.id}/status/', {'status': 'resolved'})
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         c.refresh_from_db()
@@ -186,7 +186,7 @@ class APITests(TestCase):
             submitted_by=self.citizen,
             status=ComplaintStatus.RESOLVED,
         )
-        self._login('staff', 'pass12345')
+        self._login('staff', 'Pass12345')
         res = self.client.patch(f'/api/complaints/{c.id}/status/', {'status': 'open'})
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
@@ -196,18 +196,18 @@ class APITests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
     def test_citizen_cannot_access_stats(self):
-        self._login('citizen', 'pass12345')
+        self._login('citizen', 'Pass12345')
         res = self.client.get('/api/stats/')
         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_staff_stats(self):
-        self._login('staff', 'pass12345')
+        self._login('staff', 'Pass12345')
         res = self.client.get('/api/stats/')
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertIn('total', res.data)
 
     def test_feedback_submission(self):
-        self._login('citizen', 'pass12345')
+        self._login('citizen', 'Pass12345')
         res = self.client.post('/api/feedback/', {'problem': 'UI', 'comment': 'Looks great'})
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
 
@@ -224,7 +224,7 @@ class APITests(TestCase):
             phone='222', address='Other', area='Uptown',
             submitted_by=self.citizen,
         )
-        self._login('staff', 'pass12345')
+        self._login('staff', 'Pass12345')
         res = self.client.get('/api/complaints/', {'search': 'pothole'})
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         results = res.data['results'] if 'results' in res.data else res.data
@@ -232,7 +232,7 @@ class APITests(TestCase):
         self.assertIn('Pothole', results[0]['complain'])
 
     def test_profile_get_and_patch(self):
-        self._login('citizen', 'pass12345')
+        self._login('citizen', 'Pass12345')
         res = self.client.get('/api/auth/profile/')
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         res = self.client.patch('/api/auth/profile/', {
@@ -256,7 +256,7 @@ class APITests(TestCase):
             phone='112', address='C', area='South',
             submitted_by=self.citizen,
         )
-        self._login('staff', 'pass12345')
+        self._login('staff', 'Pass12345')
         res = self.client.patch('/api/complaints/bulk-status/', {
             'ids': [c1.id, c2.id],
             'status': 'in_progress',
@@ -273,7 +273,7 @@ class APITests(TestCase):
             phone='111', address='A', area='North',
             submitted_by=self.citizen,
         )
-        self._login('staff', 'pass12345')
+        self._login('staff', 'Pass12345')
         res = self.client.get('/api/complaints/export/')
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res['Content-Type'], 'text/csv')

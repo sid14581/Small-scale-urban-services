@@ -5,14 +5,14 @@ from django.contrib.auth.models import User
 from django.core.cache import cache
 from django.db.models import Count, Q
 from django.http import HttpResponse
-from rest_framework import generics, status, viewsets
+from rest_framework import generics, serializers, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from scmgs.views.auth_views import AuthRateThrottle
-from scmgs.models import Complaint, ComplaintCategory, ComplaintStatus, FeedBack
+from scmgs.models import AuthAuditEvent, AuthAuditLog, Complaint, ComplaintCategory, ComplaintStatus, FeedBack
 from scmgs.permissions import IsStaff, IsStaffOrReadOwn, is_staff_member
 from scmgs.serializers import (
     BulkComplaintStatusSerializer,
@@ -221,3 +221,47 @@ class StatsView(APIView):
         except Exception as e:
             logger.error(f"Stats retrieval failed: {str(e)}")
             raise
+
+
+class AuthAuditLogSerializer(serializers.ModelSerializer):
+    event_type_display = serializers.CharField(source='get_event_type_display', read_only=True)
+    user_username = serializers.CharField(source='user.username', read_only=True, default=None)
+
+    class Meta:
+        model = AuthAuditLog
+        fields = (
+            'id', 'event_type', 'event_type_display', 'username', 'user',
+            'user_username', 'ip_address', 'detail', 'created_at',
+        )
+        read_only_fields = (
+            'id', 'event_type', 'event_type_display', 'username', 'user',
+            'user_username', 'ip_address', 'detail', 'created_at',
+        )
+
+
+class AuditLogListView(APIView):
+    permission_classes = [IsStaff]
+
+    def get(self, request):
+        qs = AuthAuditLog.objects.all()
+        event_type = request.query_params.get('event_type')
+        if event_type:
+            if event_type not in AuthAuditEvent.values:
+                return Response(
+                    {'detail': 'Invalid event_type filter.'},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            qs = qs.filter(event_type=event_type)
+
+        page_size = min(int(request.query_params.get('page_size', 20)), 100)
+        page = max(int(request.query_params.get('page', 1)), 1)
+        total = qs.count()
+        start = (page - 1) * page_size
+        logs = qs[start:start + page_size]
+        serializer = AuthAuditLogSerializer(logs, many=True)
+        return Response({
+            'count': total,
+            'page': page,
+            'page_size': page_size,
+            'results': serializer.data,
+        })
