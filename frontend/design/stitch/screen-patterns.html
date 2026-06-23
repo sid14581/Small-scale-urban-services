@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SCMS Screen Patterns — Civic Hybrid Reference</title>
+  <style>
+    :root { --primary: #0d9488; --bg: #f8fafc; --surface: #fff; --text: #0f172a; --muted: #64748b; --staff: #d97706; }
+    body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 2rem; max-width: 56rem; margin: 0 auto; }
+    h1 { color: var(--primary); margin-bottom: 0.5rem; }
+    h2 { margin: 2rem 0 1rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; }
+    .card { background: var(--surface); border: 1px solid #e2e8f0; border-radius: 1rem; padding: 1.5rem; margin-bottom: 1rem; }
+    .staff-badge { display: inline-block; background: #fef3c7; color: #92400e; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; padding: 0.2rem 0.5rem; border-radius: 0.5rem; border: 1px solid #fde68a; }
+    .badge-open { background: #fef3c7; color: #92400e; padding: 0.15rem 0.5rem; border-radius: 999px; font-size: 0.7rem; font-weight: 600; }
+    .input { width: 100%; padding: 0.65rem 1rem; border: 1px solid #cbd5e1; border-radius: 0.75rem; margin-top: 0.25rem; }
+    .btn { background: var(--primary); color: #fff; border: none; padding: 0.65rem 1.5rem; border-radius: 0.75rem; font-weight: 600; }
+    label { font-size: 0.85rem; color: var(--muted); }
+    .stat { text-align: center; }
+    .stat strong { display: block; font-size: 2rem; color: var(--primary); }
+  </style>
+</head>
+<body>
+  <h1>SCMS Urban Services — Screen Pattern Reference</h1>
+  <p style="color:var(--muted)">Variant C Civic Hybrid. Stitch project: projects/16308196752677021907. Manual reference — screen generation timed out.</p>
+
+  <h2>Auth (Login / Register)</h2>
+  <div class="card">
+    <h3>Login</h3>
+    <label>Username</label><input class="input" placeholder="Username" />
+    <label style="display:block;margin-top:1rem">Password</label><input class="input" type="password" />
+    <button class="btn" style="width:100%;margin-top:1rem">Continue</button>
+  </div>
+
+  <h2>Complaint Hub</h2>
+  <div class="card" style="border-top:4px solid var(--primary)">Air Pollution — Submit complaint →</div>
+  <div class="card" style="border-top:4px solid #f59e0b">Electricity — Submit complaint →</div>
+
+  <h2>Staff Dashboard</h2>
+  <span class="staff-badge">Staff Portal</span>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1rem">
+    <div class="card stat"><strong>42</strong>Total</div>
+    <div class="card stat"><strong style="color:#d97706">12</strong>Open</div>
+    <div class="card stat"><strong style="color:#0284c7">8</strong>In Progress</div>
+    <div class="card stat"><strong style="color:#059669">22</strong>Resolved</div>
+  </div>
+
+  <h2>Complaint Card</h2>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between"><code style="color:var(--primary)">CMP-2024-001</code><span class="badge-open">Open</span></div>
+    <p style="margin-top:0.75rem;font-weight:600">Broken streetlight on Main St</p>
+    <p style="color:var(--muted);font-size:0.85rem">Electricity · Downtown</p>
+  </div>
+
+  <h2>Feedback / Profile</h2>
+  <div class="card">
+    <h3>Submit Feedback</h3>
+    <label>Problem category</label><input class="input" />
+    <label style="display:block;margin-top:1rem">Your feedback</label><textarea class="input" rows="3"></textarea>
+    <button class="btn" style="width:100%;margin-top:1rem">Submit Feedback</button>
+  </div>
+</body>
+</html>

@@ -128,6 +128,7 @@ Transform a 2018 college Django project into a professional full-stack portfolio
 | 2026-06-14 | 1–7 | Full enhancement implemented: DRF API, React SPA, Docker Compose, tests, docs. |
 | 2026-06-15 | 8 | Backend optimization: Query optimization, validation, logging, error handling, containerization fixes. |
 | 2026-06-16 | 9 | Phase 8.1–8.3: Error handling, JWT cookies, rate limiting, pagination, Django 5 upgrade, Swagger, status transitions, stats caching. |
+| 2026-06-23 | 12 | Reconciled task.md inaccuracies; Stitch UI redesign complete (Civic Hybrid, teal tokens, theme toggle, all 13 pages); build passes. |
 
 ---
 
@@ -213,7 +214,7 @@ A comprehensive audit identified **81 distinct issues** across code quality, sec
 | Soft deletes + audit trail | ❌ Deferred | 🟠 High | High scope; not implemented |
 | Email notifications | ❌ Deferred | 🟠 High | Requires Celery/SMTP setup |
 | Multi-language support | ❌ Deferred | 🟠 High | English only |
-| Dark/light mode toggle | ✅ Done | 🟢 Low | Navbar toggle, localStorage persistence, Tailwind dark class |
+| Dark/light mode toggle | ✅ Done | 🟢 Low | Navbar ☀️/🌙 toggle + `theme.js` localStorage persistence (Phase 12) |
 
 ---
 
@@ -258,22 +259,22 @@ A comprehensive audit identified **81 distinct issues** across code quality, sec
 
 ### **Phase 8.3 — Medium Priority Fixes (3–5 days)**
 16. ✅ Add status transition validation
-17. ✅ Add caching (Redis) for stats endpoint
+17. ✅ Add stats endpoint caching (locmem in `settings.py`; satisfies PERF-001 partially — Redis/PERF-002 still pending)
 18. ✅ Add Swagger/OpenAPI documentation
-19. ✅ Extract service layer for business logic
-20. ✅ Add soft deletes and audit logging
+19. ⏳ Extract service layer for business logic (ARCH-007 still pending)
+20. ❌ Add soft deletes and audit logging (deferred — see Incomplete Features)
 
 ### **Phase 8.4 — Low Priority + Enhancements (Backlog)**
-21. ✅ Add unit tests (Jest/Vitest)
-22. ✅ Add linting (ESLint, Black, Flake8)
-23. ✅ Implement email notifications (Celery)
+21. ⏳ Add unit tests (Jest/Vitest) — TESTING-001 pending
+22. ⏳ Add linting (ESLint, Black, Flake8) — LINTING-001/002 pending
+23. ❌ Implement email notifications (Celery) — deferred
 24. ✅ Add image preview before upload
 25. ✅ Add text search functionality
-26. ✅ Add multi-language support
-27. ✅ Add light mode toggle
-28. ✅ Implement CSV/PDF export
+26. ❌ Add multi-language support — deferred
+27. ✅ Add light/dark mode toggle — Phase 12 Civic Hybrid redesign
+28. ✅ Implement CSV export (PDF deferred)
 29. ✅ Add user profile page
-30. ✅ Add admin settings panel
+30. ❌ Add admin settings panel — deferred
 
 ---
 
@@ -346,3 +347,92 @@ A comprehensive audit identified **81 distinct issues** across code quality, sec
 | SMS OTP after password (login + register) | ✅ Done | Twilio integration + dev console fallback; `UserProfile.phone` model |
 | Remove photo upload from complaint form | ✅ Done | Google Drive/Docs link only; JSON POST |
 | Staff complaint Drive URL as hyperlink | ✅ Done | Full URL shown and clickable in detail + list views |
+
+---
+
+## Phase 12 — Stitch Design Analysis & UI Redesign (2026-06-23)
+
+### Design brief
+
+| Item | Detail |
+|------|--------|
+| **App** | Smart City Management System (SCMS) — urban complaint portal |
+| **Roles** | citizen, staff, admin |
+| **Categories** | air_pollution, electricity, road, sewage, waste, others |
+| **Routes (13)** | `/`, `/login`, `/register`, `/complaints`, `/complaints/new/:category`, `/my-complaints`, `/feedback`, `/profile`, `/staff`, `/staff/complaints`, `/staff/complaints/:id`, `/staff/feedback` |
+| **Key flows** | JWT + SMS OTP auth, complaint submit (Drive link), staff bulk status, stats dashboard |
+
+### Stitch MCP status
+
+| Check | Result |
+|-------|--------|
+| Stitch API via curl (`https://stitch.googleapis.com/mcp`) | ✅ API key auth works; `list_projects`, `create_project` succeed |
+| Stitch project | ✅ `projects/16308196752677021907` ("SCMS Urban Services") |
+| `generate_screen_from_text` | ❌ Timed out (~61s); no screens created |
+| Stitch MCP in Cursor subagent | ❌ Not in enabled MCP server list — used curl fallback |
+| Design fallback | Manual **Civic Hybrid** design system (teal civic palette, light default + dark toggle) |
+
+### Design directions compared
+
+| Variant | Palette | Strengths | Weaknesses | Score |
+|---------|---------|-----------|------------|-------|
+| **A — Civic Hybrid** (winner) | Teal on slate, light default + dark toggle | High contrast, civic trust, WCAG-friendly, category top-borders, staff badges | Slightly less dramatic than gradient options | **5/5** |
+| B — Indigo Night | Indigo/slate dark-only | Familiar (pre-redesign), cohesive dark | No light mode, lower civic warmth | 3.5/5 |
+| C — Emerald Gradient | Green gradients + glass | Modern, portfolio polish | Category distinction weaker, contrast risks | 3.5/5 |
+
+**Winner: Civic Hybrid** — best balance of accessibility, category discoverability, mobile-first card layout, and staff/citizen visual separation.
+
+### Stitch project / screen inventory
+
+| Item | Value |
+|------|-------|
+| Stitch project | `projects/16308196752677021907` |
+| Stitch screen IDs | None (generation timed out) |
+| Reference assets | `frontend/design/stitch/` (`README.md`, `home.html`, `screen-patterns.html`) |
+
+### Implementation checklist
+
+| Page / Component | Status |
+|------------------|--------|
+| Design tokens (`tailwind.config.js`, `index.css`) | ✅ Done |
+| Theme toggle (`Navbar.jsx`, `theme.js`) | ✅ Done |
+| `Navbar.jsx` | ✅ Done |
+| `ComplaintCard.jsx` | ✅ Done |
+| `PasswordInput.jsx` | ✅ Done |
+| `OtpInput.jsx` | ✅ Done |
+| `Home.jsx` | ✅ Done |
+| `Login.jsx` / `Register.jsx` | ✅ Done |
+| `ComplaintHub.jsx` / `SubmitComplaint.jsx` | ✅ Done |
+| `MyComplaints.jsx` / `FeedbackPage.jsx` / `Profile.jsx` | ✅ Done |
+| `StaffDashboard.jsx` / `ComplaintList.jsx` / `ComplaintDetail.jsx` / `StaffFeedback.jsx` | ✅ Done |
+| `npm run build` | ✅ Pass (2026-06-23) |
+| References in `frontend/design/stitch/` | ✅ Done (manual HTML refs) |
+
+### Design tokens (before → after)
+
+| Token | Before | After (Civic Hybrid) |
+|-------|--------|----------------------|
+| Primary | `#6366f1` (indigo) | `#0d9488` (teal) |
+| Background (light) | n/a (dark only) | `#f8fafc` (slate-50) |
+| Background (dark) | `#0f172a` (slate-900) | `#0f172a` (unchanged) |
+| Card | `slate-800` border | white / `slate-800` with `rounded-2xl` |
+| Badge open | yellow-900 | amber-100 / amber-900 dark |
+| Badge resolved | green-900 | emerald-100 / emerald-900 dark |
+| Theme toggle | none | Navbar + `localStorage` |
+
+---
+
+## Phase 12.1 — Home UX & Light Mode (2026-06-23)
+
+| Change | Status | Notes |
+|--------|--------|-------|
+| Category cards → direct submit (`/complaints/new/:category`) | ✅ Done | Guest → login with return URL |
+| Remove navbar "File Complaint" | ✅ Done | `/complaints` redirects to `/` |
+| Hero layout 40/60 (2fr/3fr), taller slideshow | ✅ Done | `Home.jsx` |
+| Light mode softened (Stitch Civic Light tokens) | ✅ Done | Phase 12.1: darker elevated boxes (`#dae2fd` cards on `#eef0ff` canvas) |
+| Login post-auth redirect to intended URL | ✅ Done | `PrivateRoute` + `Login.jsx` |
+| Stitch MCP | — | Reused project `16308196752677021907` tokens only; no screen regen |
+
+| Date | Phase | Change Summary |
+|------|-------|---------------|
+| 2026-06-23 | 12.1 | Home category-click complaint flow, hero layout, softer light mode, nav cleanup. Build passes. |

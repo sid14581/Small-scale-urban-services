@@ -133,9 +133,12 @@ export default function ComplaintList() {
   return (
     <>
       <Navbar />
-      <main className="max-w-4xl mx-auto px-4 py-8">
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
-          <h1 className="text-3xl font-bold">All Complaints</h1>
+      <main className="max-w-5xl mx-auto px-4 py-8 md:py-12">
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
+          <div>
+            <span className="staff-badge mb-2">Staff Portal</span>
+            <h1 className="page-header">All Complaints</h1>
+          </div>
           <button
             type="button"
             onClick={handleExportCsv}
@@ -147,7 +150,7 @@ export default function ComplaintList() {
         </div>
         <div className="card mb-6 flex flex-wrap gap-3">
           <input
-            className="input w-auto min-w-[12rem]"
+            className="input w-auto min-w-[12rem] flex-1"
             placeholder="Search description, area, address"
             value={search}
             onChange={(e) => updateFilter('search', e.target.value)}
@@ -166,7 +169,7 @@ export default function ComplaintList() {
             onChange={(e) => updateFilter('area', e.target.value)} />
         </div>
         {selectedIds.size > 0 && (
-          <div className="card mb-4 flex flex-wrap items-center gap-3">
+          <div className="card mb-4 flex flex-wrap items-center gap-3 border-primary/30">
             <span className="text-sm text-muted">{selectedIds.size} selected</span>
             <select className="input w-auto" value={bulkStatus} onChange={(e) => setBulkStatus(e.target.value)}>
               <option value="in_progress">In Progress</option>
@@ -187,13 +190,14 @@ export default function ComplaintList() {
           </div>
         )}
         {loading && <p className="text-muted">Loading...</p>}
-        {error && <p className="text-error text-sm mb-4">{error}</p>}
+        {error && <p className="text-error text-sm mb-4 p-3 rounded-xl bg-red-50 dark:bg-red-900/20">{error}</p>}
         {!loading && !error && (
           <>
             {complaints.length > 0 && (
               <label className="flex items-center gap-2 mb-3 text-sm text-muted">
                 <input
                   type="checkbox"
+                  className="accent-primary w-4 h-4 rounded"
                   checked={allSelected}
                   onChange={(e) => toggleSelectAll(e.target.checked)}
                 />
@@ -202,7 +206,9 @@ export default function ComplaintList() {
             )}
             <div className="grid gap-4">
               {complaints.length === 0 ? (
-                <p className="text-muted">No complaints match your filters.</p>
+                <div className="card text-center py-12">
+                  <p className="text-muted">No complaints match your filters.</p>
+                </div>
               ) : (
                 complaints.map((c) => (
                   <ComplaintCard
@@ -217,14 +223,14 @@ export default function ComplaintList() {
               )}
             </div>
             {totalCount > 0 && (
-              <div className="flex items-center justify-between mt-6">
+              <div className="flex items-center justify-between mt-8 pt-4 border-t border-slate-200 dark:border-slate-700">
                 <p className="text-muted text-sm">
                   Page {page} of {totalPages} ({totalCount} total)
                 </p>
                 <div className="flex gap-2">
                   <button
                     type="button"
-                    className="btn-primary opacity-80 disabled:opacity-40"
+                    className="btn-outline text-sm disabled:opacity-40"
                     disabled={!hasPrev}
                     onClick={() => setPage((p) => Math.max(1, p - 1))}
                   >
@@ -232,7 +238,7 @@ export default function ComplaintList() {
                   </button>
                   <button
                     type="button"
-                    className="btn-primary opacity-80 disabled:opacity-40"
+                    className="btn-primary text-sm disabled:opacity-40"
                     disabled={!hasNext}
                     onClick={() => setPage((p) => p + 1)}
                   >
