@@ -8,9 +8,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from scmgs.auth_views import AuthRateThrottle, set_jwt_cookies
+from scmgs.views.auth_views import AuthRateThrottle, set_jwt_cookies
 from scmgs.models import UserProfile
-from scmgs.otp_service import create_otp_session, verify_otp_session
+from scmgs.services.otp_service import create_otp_session, verify_otp_session
 from scmgs.serializers import UserRegisterSerializer, UserSerializer
 
 logger = logging.getLogger(__name__)

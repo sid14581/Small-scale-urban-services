@@ -28,7 +28,7 @@ Browser (React SPA) → Nginx → Django REST API + JWT → MySQL
 
 ```bash
 cp .env.example .env
-mkdir -p db_data media
+mkdir -p db_data backend/media
 docker compose up --build
 ```
 
@@ -48,12 +48,12 @@ Created automatically by `python manage.py seed_groups`. Public registration cre
 
 ### Docker Compose (full stack)
 
-The backend service bind-mounts your project directory (`.:/app`), so **Python code changes apply without rebuilding the image**. Gunicorn runs with `--reload` by default (`GUNICORN_RELOAD=1` in `docker-compose.yml`).
+The backend service bind-mounts `./backend:/app`, so **Python code changes apply without rebuilding the image**. Gunicorn runs with `--reload` by default (`GUNICORN_RELOAD=1` in `docker-compose.yml`).
 
 | Change type | Action |
 |-------------|--------|
-| Python code (`scmgs/`, `settings.py`, etc.) | Save file — gunicorn reloads automatically |
-| `requirements.txt` or `Dockerfile` | `docker compose build backend && docker compose up -d backend` |
+| Python code (`backend/scmgs/`, `settings.py`, etc.) | Save file — gunicorn reloads automatically |
+| `requirements.txt` or `backend/Dockerfile` | `docker compose build backend && docker compose up -d backend` |
 | Frontend (still image-baked) | `docker compose build frontend` or use `npm run dev` below |
 
 Set `GUNICORN_RELOAD=0` in `docker-compose.yml` for production-like deployments without auto-reload.
@@ -61,8 +61,9 @@ Set `GUNICORN_RELOAD=0` in `docker-compose.yml` for production-like deployments 
 ### Backend only
 
 ```bash
+cd backend
 pip install -r requirements.txt
-cp .env.example .env
+cp ../.env.example ../.env
 # Start MySQL locally, set DB_HOST=127.0.0.1
 python manage.py migrate
 python manage.py seed_groups
@@ -94,22 +95,24 @@ npm run dev   # http://localhost:5173 (proxies /api to :8000)
 ## Project Structure
 
 ```
-├── scmgs/              # Django app (models, API views, serializers)
+├── backend/            # Django app (scmgs/, settings, manage.py)
 ├── frontend/           # React SPA (Vite + Tailwind)
-├── nginx/              # Reverse proxy config
-├── deploy_files/legacy/ # Original K8s manifests (reference)
-├── decisions/task.md   # Architecture decisions & task tracker
+├── shared/assets/      # Canonical category images
+├── infrastructure/     # nginx, K8s manifests, CI, scripts
+├── docs/               # decisions, design mockups
+├── legacy/             # Archived templates & Bootstrap static
 └── docker-compose.yml  # Full stack (db + backend + frontend + nginx)
 ```
 
 ## Running Tests
 
 ```bash
-# Local venv
-python manage.py test scmgs
+# Local venv (from backend/)
+cd backend
+python manage.py test tests
 
 # Docker (uses bind-mounted source)
-docker compose run --rm backend python manage.py test scmgs.tests
+docker compose run --rm backend python manage.py test tests
 ```
 
 ## Admin Panel

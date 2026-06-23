@@ -2,7 +2,7 @@ from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.routers import DefaultRouter
 
-from scmgs.api_views import (
+from scmgs.views.api_views import (
     ComplaintViewSet,
     FeedBackViewSet,
     HealthView,
@@ -10,8 +10,8 @@ from scmgs.api_views import (
     RegisterView,
     StatsView,
 )
-from scmgs.auth_views import CookieTokenObtainPairView, CookieTokenRefreshView, LogoutView
-from scmgs.otp_views import LoginInitView, OtpVerifyView, RegisterInitView
+from scmgs.views.auth_views import CookieTokenObtainPairView, CookieTokenRefreshView, LogoutView
+from scmgs.views.otp_views import LoginInitView, OtpVerifyView, RegisterInitView
 
 router = DefaultRouter()
 router.register(r'complaints', ComplaintViewSet, basename='complaint')

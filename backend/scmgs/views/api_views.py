@@ -11,7 +11,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from scmgs.auth_views import AuthRateThrottle
+from scmgs.views.auth_views import AuthRateThrottle
 from scmgs.models import Complaint, ComplaintCategory, ComplaintStatus, FeedBack
 from scmgs.permissions import IsStaff, IsStaffOrReadOwn, is_staff_member
 from scmgs.serializers import (

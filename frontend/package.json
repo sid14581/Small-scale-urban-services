@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "sync-images": "rm -rf public/assets && mkdir -p public/assets && find ../static -maxdepth 1 -type f \\( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \\) -exec cp {} public/assets/ \\;",
+    "sync-images": "rm -rf public/assets && mkdir -p public/assets && find ../shared/assets -maxdepth 1 -type f \\( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \\) -exec cp {} public/assets/ \\;",
     "predev": "npm run sync-images",
     "prebuild": "npm run sync-images",
     "dev": "vite",
