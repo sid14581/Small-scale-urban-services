@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SCMS - Complaint Detail Workspace</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#0b1c30",
+                        "on-tertiary-container": "#fbfdff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "background": "#f8f9ff",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed": "#00201d",
+                        "on-primary-container": "#f4fffc",
+                        "tertiary": "#595c5e",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "outline-variant": "#bcc9c6",
+                        "on-error-container": "#93000a",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-high": "#dce9ff",
+                        "primary-container": "#008378",
+                        "surface-container-low": "#eff4ff",
+                        "surface-dim": "#cbdbf5",
+                        "outline": "#6d7a77",
+                        "on-surface-variant": "#3d4947",
+                        "tertiary-fixed-dim": "#c4c7c9",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "primary-fixed-dim": "#6bd8cb",
+                        "surface-variant": "#d3e4fe",
+                        "on-background": "#0b1c30",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-primary-fixed-variant": "#005049",
+                        "on-secondary-container": "#5c647a",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container": "#e5eeff",
+                        "secondary": "#565e74",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "on-tertiary-fixed": "#191c1e",
+                        "inverse-surface": "#213145",
+                        "secondary-container": "#dae2fd",
+                        "secondary-fixed": "#dae2fd",
+                        "on-secondary-fixed": "#131b2e",
+                        "primary": "#0d9488", 
+                        "tertiary-fixed": "#e0e3e5",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#006a61",
+                        "inverse-primary": "#6bd8cb",
+                        "error-container": "#ffdad6",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed": "#89f5e7",
+                        "surface": "#f8f9ff",
+                        "tertiary-container": "#727577"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "unit": "4px",
+                        "margin-mobile": "16px",
+                        "stack-md": "16px",
+                        "stack-sm": "8px",
+                        "margin-desktop": "40px",
+                        "stack-lg": "32px",
+                        "container-max": "1440px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "label-sm": ["Plus Jakarta Sans"],
+                        "caption": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                        "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; /* Slate 50 approx */ }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .material-symbols-outlined.filled { font-variation-settings: 'FILL' 1; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<!-- TopNavBar (Derived from JSON) -->
+<header class="bg-surface dark:bg-on-surface docked full-width top-0 border-b border-slate-200 flat no shadows flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop h-16 sticky z-50">
+<div class="flex items-center gap-4">
+<span class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed-dim">SmartCity Admin</span>
+</div>
+<!-- Navigation Links (Web only) -->
+<nav class="hidden md:flex gap-8 items-center h-full">
+<a class="text-primary dark:text-primary-fixed-dim border-b-2 border-primary dark:border-primary-fixed-dim pb-1 h-full flex items-center font-label-md text-label-md active:opacity-80 transition-opacity" href="#">Infrastructure</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-low dark:hover:bg-on-secondary-fixed-variant transition-colors duration-150 h-full flex items-center px-2 font-label-md text-label-md active:opacity-80 transition-opacity" href="#">Public Safety</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-low dark:hover:bg-on-secondary-fixed-variant transition-colors duration-150 h-full flex items-center px-2 font-label-md text-label-md active:opacity-80 transition-opacity" href="#">Transportation</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-low dark:hover:bg-on-secondary-fixed-variant transition-colors duration-150 h-full flex items-center px-2 font-label-md text-label-md active:opacity-80 transition-opacity" href="#">Environment</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-low dark:hover:bg-on-secondary-fixed-variant transition-colors duration-150 h-full flex items-center px-2 font-label-md text-label-md active:opacity-80 transition-opacity" href="#">Utilities</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="hidden md:flex items-center gap-2 bg-surface border border-slate-200 px-4 py-2 rounded text-label-md font-label-md hover:bg-slate-50 transition-colors">
+                System Status
+            </button>
+<button class="text-on-surface-variant hover:bg-surface-container-low p-2 rounded transition-colors" data-icon="notifications">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-container-low p-2 rounded transition-colors" data-icon="settings">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<img alt="Administrator Profile" class="w-8 h-8 rounded-full object-cover border border-slate-200" data-alt="A small, professional headshot photo of an administrator wearing a dark suit against a neutral white background, well-lit, corporate style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3f5-BF3tNpm_lY2WQgnPIXHpIbQexZAImDGBmYnSUkW1wfsr66dBOWSZUZyJB8xgvjAAmIDQqSOTD48VueH_hyabibvbikoV8FaFJ-G3sa9j3r5jetpcLBSXKhZLvEpKXtVL2E4p0VuKJboB51bqV2ZYbL6Dz6_xCYRZqfu0CKq6PhL6aRRo5CxFJb-AJSrt0zd73ebIWT-1ykjjK11Nfw72wf4u7oDoTnqo_aT2o0WXSt5G5HScRkiYF6gS-pILRE1Pk99R3vQ"/>
+</div>
+</header>
+<!-- Main Workspace -->
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg">
+<!-- Header Section -->
+<div class="mb-stack-lg">
+<div class="flex items-center gap-2 text-on-surface-variant mb-2">
+<a class="font-label-sm text-label-sm hover:underline" href="#">Complaints</a>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="font-label-sm text-label-sm">Infrastructure</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg md:font-display-lg md:text-display-lg text-on-surface">Complaint Details</h1>
+</div>
+<!-- 2-Column Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Left Column: Complaint Facts -->
+<div class="lg:col-span-8 space-y-stack-md">
+<div class="bg-surface-container-lowest border border-slate-200 rounded p-stack-md md:p-gutter no-shadow">
+<div class="flex justify-between items-start mb-stack-md pb-stack-sm border-b border-slate-100">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Reference ID</p>
+<p class="font-headline-md text-headline-md text-on-surface">SCMS-A1B2C3D4</p>
+</div>
+<div>
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-blue-50 text-blue-800 border border-blue-200 font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px] mr-1">sync</span>
+                                In Progress
+                            </span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md mb-stack-md pb-stack-md border-b border-slate-100">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Category</p>
+<p class="font-body-md text-body-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary">construction</span>
+                                Road Construction
+                            </p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Date Reported</p>
+<p class="font-body-md text-body-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary">calendar_today</span>
+                                Oct 12, 2024
+                            </p>
+</div>
+</div>
+<div class="mb-stack-md pb-stack-md border-b border-slate-100">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Description</p>
+<div class="bg-surface p-4 rounded border border-slate-100">
+<p class="font-body-md text-body-md text-on-surface italic">"Deep pothole reported near the intersection of 5th and Main. Causing traffic delays and potential vehicle damage."</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Contact Information</p>
+<p class="font-body-md text-body-md text-on-surface flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-tertiary">call</span>
+                                +1 (555) 012-3456
+                            </p>
+<p class="font-body-md text-body-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary">mail</span>
+                                citizen@example.com
+                            </p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Location Details</p>
+<p class="font-body-md text-body-md text-on-surface flex items-start gap-2 mb-2">
+<span class="material-symbols-outlined text-tertiary mt-1">location_on</span>
+<span>123 Main St, Central District<br/>North District</span>
+</p>
+</div>
+</div>
+</div>
+<!-- Map Visualization -->
+<div class="bg-surface-container-lowest border border-slate-200 rounded p-stack-sm no-shadow">
+<div class="w-full h-64 rounded bg-slate-100 relative overflow-hidden" data-location="Central District, City" style="">
+<img class="w-full h-full object-cover" data-alt="A clean, minimalist street map UI showing an urban intersection with a red pin marker indicating a location. Light mode styling, soft slate and teal tones, professional geographic visualization." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDasgNJ4l4CW-mrg1unyY-tsJemXofKq5cbsdkWr2-sd4yloqroVxHikHfN2DKbckmjmYBoBb8GQbzfnuElFvNKDQ0tFSWCvsfF1QjnKxspnjfl5F3PAc0l5iivlvGplkVuenLKxfeFMW-L_Aq9AJMQiHc84cOJM8OmKnS2i9NYYN6fdHySlnsCvjreZ3-IVI6prHGociwYZXLsEVg3MHg3dVnzniTkm1QRapTjsiA6rZRBPMPIp7l7CY6BBV2iuM57AhkFiKKAuA"/>
+</div>
+</div>
+</div>
+<!-- Right Column: Update Status Panel -->
+<div class="lg:col-span-4 sticky top-[88px]">
+<div class="bg-surface-container-lowest border border-slate-200 rounded p-stack-md no-shadow">
+<h2 class="font-headline-md text-headline-md text-on-surface border-b border-slate-100 pb-stack-sm mb-stack-md">Update Status</h2>
+<form>
+<div class="mb-stack-md">
+<label class="block font-label-sm text-label-sm text-on-surface mb-2" for="status">Current Status</label>
+<select class="w-full bg-surface border-slate-300 rounded font-body-md text-body-md focus:border-primary focus:ring-primary focus:ring-2 focus:ring-offset-2 transition-all" id="status" name="status">
+<option value="open">Open</option>
+<option selected="" value="in_progress">In Progress</option>
+<option value="resolved">Resolved</option>
+<option value="rejected">Rejected</option>
+</select>
+</div>
+<div class="mb-stack-lg">
+<label class="block font-label-sm text-label-sm text-on-surface mb-2" for="notes">Internal Notes</label>
+<textarea class="w-full bg-surface border-slate-300 rounded font-body-md text-body-md focus:border-primary focus:ring-primary focus:ring-2 focus:ring-offset-2 transition-all resize-none" id="notes" name="notes" placeholder="Add administrative notes here..." rows="4"></textarea>
+</div>
+<button class="w-full bg-primary hover:bg-surface-tint text-white font-label-md text-label-md py-3 px-4 rounded transition-colors duration-150 flex justify-center items-center gap-2" type="button">
+<span class="material-symbols-outlined">save</span>
+                            Save Changes
+                        </button>
+</form>
+</div>
+<div class="mt-stack-md bg-surface-container-lowest border border-slate-200 rounded p-stack-md no-shadow">
+<h3 class="font-label-md text-label-md text-on-surface mb-stack-sm">Activity Log</h3>
+<ul class="space-y-4">
+<li class="flex gap-3 text-sm">
+<div class="mt-1"><span class="material-symbols-outlined text-[16px] text-tertiary">history</span></div>
+<div>
+<p class="font-body-md text-body-md text-on-surface">Status changed to <strong class="font-semibold">In Progress</strong></p>
+<p class="font-caption text-caption text-on-surface-variant">Admin JD - Oct 13, 09:41 AM</p>
+</div>
+</li>
+<li class="flex gap-3 text-sm">
+<div class="mt-1"><span class="material-symbols-outlined text-[16px] text-tertiary">add_circle</span></div>
+<div>
+<p class="font-body-md text-body-md text-on-surface">Complaint logged</p>
+<p class="font-caption text-caption text-on-surface-variant">System - Oct 12, 14:22 PM</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer (Derived from JSON) -->
+<footer class="bg-surface-container-lowest dark:bg-on-surface full-width bottom-0 border-t border-slate-200 flat no shadows w-full py-stack-md px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-stack-sm mt-auto">
+<div class="font-label-md text-label-md font-bold text-on-surface dark:text-on-primary-container">
+            SmartCity Admin
+        </div>
+<div class="font-caption text-caption text-secondary dark:text-secondary-fixed-dim text-center md:text-left">
+            © 2024 Municipal Governance Authority. All rights reserved. Official SCMS Portal.
+        </div>
+<div class="flex flex-wrap justify-center gap-4">
+<a class="font-label-sm text-label-sm text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim underline transition-all cursor-pointer" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim underline transition-all cursor-pointer" href="#">Terms of Service</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim underline transition-all cursor-pointer" href="#">Accessibility</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim underline transition-all cursor-pointer" href="#">Contact Support</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim underline transition-all cursor-pointer" href="#">Security Audit</a>
+</div>
+</footer>
+</body></html>

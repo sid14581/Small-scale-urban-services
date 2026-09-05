@@ -4,6 +4,7 @@ import uuid
 
 from django.conf import settings
 from django.core.cache import cache
+from django.core.mail import send_mail
 
 from scmgs.models import AuthAuditEvent
 from scmgs.services.audit_logger import log_auth_event
@@ -32,6 +33,10 @@ def _use_twilio_verify():
     account_sid, auth_token = _twilio_credentials()
     verify_sid = getattr(settings, 'TWILIO_VERIFY_SERVICE_SID', '') or ''
     return bool(account_sid and auth_token and verify_sid)
+
+
+def is_email_configured():
+    return bool(getattr(settings, 'EMAIL_HOST', '') or '')
 
 
 def _cache_key(session_id):
@@ -142,8 +147,47 @@ def send_sms_otp(phone, code):
         return True
 
 
-def create_otp_session(flow, phone, *, user_id=None, register_data=None, rate_subject=None):
-    subject = rate_subject or (f'user:{user_id}' if user_id else phone)
+def send_email_otp(email, code):
+    if not is_email_configured():
+        logger.error('EMAIL_HOST not configured — cannot send OTP to %s', email)
+        return False
+
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', '') or 'noreply@scms.local'
+    try:
+        send_mail(
+            subject='SCMS password reset code',
+            message=f'Your SCMS password reset code is: {code}\n\nThis code expires in 10 minutes.',
+            from_email=from_email,
+            recipient_list=[email],
+            fail_silently=False,
+        )
+        logger.info('Email OTP sent to %s', email)
+        return True
+    except Exception as exc:
+        logger.error('Failed to send email OTP to %s: %s', email, exc)
+        return False
+
+
+def create_otp_session(
+    flow,
+    phone='',
+    *,
+    user_id=None,
+    register_data=None,
+    rate_subject=None,
+    channel='sms',
+    email='',
+):
+    """Create an OTP session.
+
+    channel: 'sms' (default, Twilio) or 'email' (django send_mail).
+    Email channel is used for password_reset; login/register keep SMS.
+    """
+    channel = (channel or 'sms').lower()
+    if channel not in ('sms', 'email'):
+        raise ValueError('invalid_channel')
+
+    subject = rate_subject or (f'user:{user_id}' if user_id else (email or phone))
     username = ''
     if user_id:
         from django.contrib.auth.models import User
@@ -154,20 +198,37 @@ def create_otp_session(flow, phone, *, user_id=None, register_data=None, rate_su
     if not check_rate_limit(subject, username=username):
         raise ValueError('rate_limit')
 
-    use_verify = _use_twilio_verify()
+    if channel == 'email':
+        if not email:
+            raise ValueError('email_required')
+        if not is_email_configured():
+            raise ValueError('email_not_configured')
+        use_verify = False
+        code = generate_otp_code()
+    else:
+        if not phone:
+            raise ValueError('phone_required')
+        use_verify = _use_twilio_verify()
+        code = None if use_verify else generate_otp_code()
+
     session_id = uuid.uuid4().hex
-    code = None if use_verify else generate_otp_code()
     payload = {
         'code': code,
         'verify': use_verify,
         'flow': flow,
-        'phone': phone,
+        'channel': channel,
+        'phone': phone or '',
+        'email': email or '',
         'user_id': user_id,
         'register_data': register_data,
     }
     cache.set(_cache_key(session_id), payload, OTP_TTL)
 
-    if use_verify:
+    if channel == 'email':
+        if not send_email_otp(email, code):
+            cache.delete(_cache_key(session_id))
+            raise ValueError('email_failed')
+    elif use_verify:
         if not send_verify_otp(phone):
             cache.delete(_cache_key(session_id))
             raise ValueError('sms_failed')
@@ -175,7 +236,11 @@ def create_otp_session(flow, phone, *, user_id=None, register_data=None, rate_su
         cache.delete(_cache_key(session_id))
         raise ValueError('sms_failed')
 
-    log_auth_event(None, AuthAuditEvent.OTP_SENT, username=username, detail=f'{flow} OTP session created')
+    log_auth_event(
+        None, AuthAuditEvent.OTP_SENT,
+        username=username,
+        detail=f'{flow} OTP session created via {channel}',
+    )
     return session_id
 
 

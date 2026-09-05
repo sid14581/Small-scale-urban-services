@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SCMS - Complaint Management</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration (Theme injected) -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+              "on-tertiary-fixed": "#370e00",
+              "on-secondary-container": "#5c647a",
+              "error-container": "#ffdad6",
+              "on-background": "#0b1c30",
+              "on-secondary-fixed-variant": "#3f465c",
+              "tertiary-fixed-dim": "#ffb59a",
+              "surface-container": "#e5eeff",
+              "on-primary": "#ffffff",
+              "secondary-fixed-dim": "#bec6e0",
+              "on-tertiary-container": "#fffbff",
+              "outline-variant": "#bcc9c6",
+              "error": "#ba1a1a",
+              "on-secondary-fixed": "#131b2e",
+              "on-secondary": "#ffffff",
+              "primary-container": "#008378",
+              "primary-fixed": "#89f5e7",
+              "on-primary-fixed": "#00201d",
+              "surface-container-lowest": "#ffffff",
+              "surface-variant": "#d3e4fe",
+              "on-primary-fixed-variant": "#005049",
+              "inverse-primary": "#6bd8cb",
+              "inverse-surface": "#213145",
+              "on-surface-variant": "#3d4947",
+              "secondary-fixed": "#dae2fd",
+              "tertiary-container": "#b05e3d",
+              "primary-fixed-dim": "#6bd8cb",
+              "surface-tint": "#006a61",
+              "secondary-container": "#dae2fd",
+              "on-error": "#ffffff",
+              "background": "#f8f9ff",
+              "on-primary-container": "#f4fffc",
+              "surface-dim": "#cbdbf5",
+              "surface-bright": "#f8f9ff",
+              "surface-container-highest": "#d3e4fe",
+              "primary": "#00685f",
+              "on-tertiary-fixed-variant": "#773215",
+              "surface": "#f8f9ff",
+              "inverse-on-surface": "#eaf1ff",
+              "secondary": "#565e74",
+              "on-surface": "#0b1c30",
+              "on-error-container": "#93000a",
+              "outline": "#6d7a77",
+              "surface-container-high": "#dce9ff",
+              "on-tertiary": "#ffffff",
+              "tertiary-fixed": "#ffdbce",
+              "tertiary": "#924628",
+              "surface-container-low": "#eff4ff"
+            },
+            "borderRadius": {
+              "DEFAULT": "0.125rem",
+              "lg": "0.25rem",
+              "xl": "0.5rem",
+              "full": "0.75rem"
+            },
+            "spacing": {
+              "gutter": "1.5rem",
+              "container-max": "1440px",
+              "margin-desktop": "2rem",
+              "stack-dense": "0.5rem",
+              "stack-default": "1rem",
+              "inset-table": "0.75rem 1rem",
+              "margin-mobile": "1rem"
+            },
+            "fontFamily": {
+              "headline-lg": ["Plus Jakarta Sans"],
+              "headline-md": ["Plus Jakarta Sans"],
+              "body-lg": ["Plus Jakarta Sans"],
+              "headline-xl": ["Plus Jakarta Sans"],
+              "label-md": ["Plus Jakarta Sans"],
+              "label-sm": ["Plus Jakarta Sans"],
+              "body-md": ["Plus Jakarta Sans"],
+              "data-tabular": ["Plus Jakarta Sans"],
+              "body-sm": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+              "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+              "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+              "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+              "headline-xl": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+              "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+              "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "700"}],
+              "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+              "data-tabular": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+              "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .icon-fill {
+        font-variation-settings: 'FILL' 1;
+      }
+    </style>
+</head>
+<body class="bg-background text-on-surface antialiased flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<nav class="bg-surface dark:bg-surface-dim font-body-md text-body-md border-b border-outline-variant dark:border-outline flat no shadows flex justify-between items-center w-full px-margin-desktop max-w-container-max mx-auto h-16 w-full top-0">
+<div class="flex items-center gap-6">
+<div class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed">
+                SCMS
+            </div>
+<div class="hidden md:flex gap-6 h-full items-center">
+<a class="text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors px-2 py-1 rounded" href="#">Overview</a>
+<a class="text-primary dark:text-primary-fixed border-b-2 border-primary dark:border-primary-fixed pb-1 opacity-80 hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors" href="#">Complaints</a>
+<a class="text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors px-2 py-1 rounded" href="#">Infrastructure</a>
+<a class="text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors px-2 py-1 rounded" href="#">Analytics</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-2 bg-tertiary-container/10 px-3 py-1 rounded-full border border-tertiary-container/20">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="text-label-sm font-label-sm text-tertiary">Staff Portal</span>
+</div>
+<div class="flex items-center gap-2 bg-surface-container px-3 py-1.5 rounded-full border border-outline-variant focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm p-0 w-32 placeholder-on-surface-variant/50" placeholder="Search..." type="text"/>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-desktop py-8 flex flex-col gap-6">
+<!-- Header Section -->
+<header class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-outline-variant pb-4">
+<div>
+<h1 class="text-headline-lg font-headline-lg text-on-surface mb-1">Complaint Management</h1>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Reviewing <span class="font-bold">142</span> active complaints requiring attention.</p>
+</div>
+<div class="flex gap-3">
+<button class="bg-surface-container text-on-surface border border-outline-variant hover:bg-surface-container-low transition-colors px-4 py-2 rounded font-label-md text-label-md flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">download</span>
+                    Export CSV
+                </button>
+<button class="bg-primary text-on-primary hover:bg-surface-tint transition-colors px-4 py-2 rounded font-label-md text-label-md flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span>
+                    New Entry
+                </button>
+</div>
+</header>
+<!-- Filters & Bulk Actions -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 flex flex-col lg:flex-row gap-4 justify-between items-center shadow-sm">
+<!-- Filters -->
+<div class="flex flex-wrap items-center gap-4 w-full lg:w-auto">
+<div class="flex flex-col gap-1 w-full sm:w-48">
+<label class="text-label-sm font-label-sm text-on-surface-variant">Search Reference or Issue</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-2 text-on-surface-variant text-sm">search</span>
+<input class="w-full pl-9 pr-3 py-1.5 bg-surface-container border border-outline-variant rounded text-body-sm focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. SC-4521" type="text"/>
+</div>
+</div>
+<div class="flex flex-col gap-1 w-full sm:w-40">
+<label class="text-label-sm font-label-sm text-on-surface-variant">Category</label>
+<select class="w-full px-3 py-1.5 bg-surface-container border border-outline-variant rounded text-body-sm focus:border-primary focus:ring-1 focus:ring-primary transition-colors appearance-none">
+<option>All Categories</option>
+<option>Roads &amp; Pavements</option>
+<option>Waste &amp; Recycling</option>
+<option>Street Lighting</option>
+<option>Parks &amp; Greenspace</option>
+</select>
+</div>
+<div class="flex flex-col gap-1 w-full sm:w-40">
+<label class="text-label-sm font-label-sm text-on-surface-variant">Status</label>
+<select class="w-full px-3 py-1.5 bg-surface-container border border-outline-variant rounded text-body-sm focus:border-primary focus:ring-1 focus:ring-primary transition-colors appearance-none">
+<option>All Active</option>
+<option>Open</option>
+<option>In Progress</option>
+<option>Urgent</option>
+</select>
+</div>
+<div class="flex items-end h-full pt-5">
+<button class="text-label-sm font-label-sm text-primary hover:underline px-2">Clear All</button>
+</div>
+</div>
+<!-- Bulk Actions (Visible when items selected, shown here for demonstration) -->
+<div class="flex items-center gap-3 border-l border-outline-variant pl-4 py-2">
+<span class="text-label-sm font-label-sm text-on-surface-variant"><span class="font-bold text-on-surface">2</span> selected</span>
+<button class="bg-surface-container border border-outline-variant text-on-surface hover:bg-surface-container-high transition-colors px-3 py-1.5 rounded text-label-sm font-label-sm">
+                    Update Status
+                </button>
+<button class="bg-surface-container border border-outline-variant text-on-surface hover:bg-surface-container-high transition-colors px-3 py-1.5 rounded text-label-sm font-label-sm">
+                    Assign Staff
+                </button>
+</div>
+</section>
+<!-- Data Table -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse min-w-[800px]">
+<thead class="bg-surface-container-low border-b border-outline-variant font-label-sm text-label-sm text-on-surface-variant sticky top-0">
+<tr>
+<th class="p-inset-table w-12"><input class="rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/></th>
+<th class="p-inset-table cursor-pointer hover:bg-surface-container-high transition-colors group w-32">
+<div class="flex items-center gap-1">Reference <span class="material-symbols-outlined text-[16px] opacity-50 group-hover:opacity-100">arrow_downward</span></div>
+</th>
+<th class="p-inset-table cursor-pointer hover:bg-surface-container-high transition-colors group">
+<div class="flex items-center gap-1">Issue</div>
+</th>
+<th class="p-inset-table w-40">Category</th>
+<th class="p-inset-table w-40">Area</th>
+<th class="p-inset-table w-32">Status</th>
+<th class="p-inset-table cursor-pointer hover:bg-surface-container-high transition-colors group w-32">
+<div class="flex items-center gap-1">Reported <span class="material-symbols-outlined text-[16px] opacity-50 group-hover:opacity-100">swap_vert</span></div>
+</th>
+<th class="p-inset-table w-20 text-right">Action</th>
+</tr>
+</thead>
+<tbody class="font-data-tabular text-data-tabular text-on-surface divide-y divide-outline-variant/50">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container/50 transition-colors bg-primary/5">
+<td class="p-inset-table"><input checked="" class="rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="p-inset-table font-semibold text-primary">#SC-4521</td>
+<td class="p-inset-table truncate max-w-xs">Broken streetlight on Main St causing visibility hazard</td>
+<td class="p-inset-table text-on-surface-variant">Lighting</td>
+<td class="p-inset-table text-on-surface-variant">Central</td>
+<td class="p-inset-table">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold tracking-wide uppercase bg-error/10 text-error border border-error/20">Urgent</span>
+</td>
+<td class="p-inset-table text-on-surface-variant">Oct 24, 08:30</td>
+<td class="p-inset-table text-right">
+<button class="text-primary hover:bg-primary-container/20 p-1 rounded transition-colors" title="View Details">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container/50 transition-colors">
+<td class="p-inset-table"><input class="rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="p-inset-table font-semibold text-primary">#SC-4522</td>
+<td class="p-inset-table truncate max-w-xs">Missed waste collection - Multi-unit dwelling</td>
+<td class="p-inset-table text-on-surface-variant">Waste</td>
+<td class="p-inset-table text-on-surface-variant">North District</td>
+<td class="p-inset-table">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold tracking-wide uppercase bg-surface border border-outline-variant text-on-surface-variant">Open</span>
+</td>
+<td class="p-inset-table text-on-surface-variant">Oct 24, 09:15</td>
+<td class="p-inset-table text-right">
+<button class="text-primary hover:bg-primary-container/20 p-1 rounded transition-colors" title="View Details">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container/50 transition-colors bg-primary/5">
+<td class="p-inset-table"><input checked="" class="rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="p-inset-table font-semibold text-primary">#SC-4523</td>
+<td class="p-inset-table truncate max-w-xs">Pothole expanding on 4th Ave near school zone</td>
+<td class="p-inset-table text-on-surface-variant">Roads</td>
+<td class="p-inset-table text-on-surface-variant">Westside</td>
+<td class="p-inset-table">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold tracking-wide uppercase bg-surface-container-high text-primary border border-primary/20">In Progress</span>
+</td>
+<td class="p-inset-table text-on-surface-variant">Oct 23, 14:20</td>
+<td class="p-inset-table text-right">
+<button class="text-primary hover:bg-primary-container/20 p-1 rounded transition-colors" title="View Details">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container/50 transition-colors">
+<td class="p-inset-table"><input class="rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="p-inset-table font-semibold text-primary">#SC-4524</td>
+<td class="p-inset-table truncate max-w-xs">Fallen branch blocking pedestrian path</td>
+<td class="p-inset-table text-on-surface-variant">Parks</td>
+<td class="p-inset-table text-on-surface-variant">South End</td>
+<td class="p-inset-table">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold tracking-wide uppercase bg-surface border border-outline-variant text-on-surface-variant">Open</span>
+</td>
+<td class="p-inset-table text-on-surface-variant">Oct 23, 16:45</td>
+<td class="p-inset-table text-right">
+<button class="text-primary hover:bg-primary-container/20 p-1 rounded transition-colors" title="View Details">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-surface-container/50 transition-colors">
+<td class="p-inset-table"><input class="rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="p-inset-table font-semibold text-primary">#SC-4525</td>
+<td class="p-inset-table truncate max-w-xs">Traffic light stuck on red at Oak/Pine intersection</td>
+<td class="p-inset-table text-on-surface-variant">Roads</td>
+<td class="p-inset-table text-on-surface-variant">Central</td>
+<td class="p-inset-table">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold tracking-wide uppercase bg-error/10 text-error border border-error/20">Urgent</span>
+</td>
+<td class="p-inset-table text-on-surface-variant">Oct 23, 18:10</td>
+<td class="p-inset-table text-right">
+<button class="text-primary hover:bg-primary-container/20 p-1 rounded transition-colors" title="View Details">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 6 -->
+<tr class="hover:bg-surface-container/50 transition-colors opacity-70">
+<td class="p-inset-table"><input class="rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="p-inset-table font-semibold text-primary">#SC-4526</td>
+<td class="p-inset-table truncate max-w-xs">Graffiti on public library facade</td>
+<td class="p-inset-table text-on-surface-variant">Facilities</td>
+<td class="p-inset-table text-on-surface-variant">Downtown</td>
+<td class="p-inset-table">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold tracking-wide uppercase bg-primary/10 text-primary-fixed-dim border border-primary/20">Resolved</span>
+</td>
+<td class="p-inset-table text-on-surface-variant">Oct 22, 10:00</td>
+<td class="p-inset-table text-right">
+<button class="text-primary hover:bg-primary-container/20 p-1 rounded transition-colors" title="View Details">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination Placeholder -->
+<div class="border-t border-outline-variant bg-surface-container-lowest p-3 flex justify-between items-center text-label-sm font-label-sm text-on-surface-variant">
+<span>Showing 1-6 of 142 entries</span>
+<div class="flex gap-2">
+<button class="px-2 py-1 border border-outline-variant rounded hover:bg-surface-container disabled:opacity-50" disabled="">Prev</button>
+<button class="px-2 py-1 bg-primary text-on-primary rounded hover:bg-surface-tint">1</button>
+<button class="px-2 py-1 border border-outline-variant rounded hover:bg-surface-container">2</button>
+<button class="px-2 py-1 border border-outline-variant rounded hover:bg-surface-container">3</button>
+<button class="px-2 py-1 border border-outline-variant rounded hover:bg-surface-container">Next</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-on-background text-secondary dark:text-secondary-fixed font-body-sm text-body-sm border-t border-outline-variant dark:border-outline flat no shadows w-full py-8 px-margin-desktop max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center mt-auto">
+<div class="text-label-sm font-label-sm font-bold uppercase tracking-widest mb-4 md:mb-0">
+            © 2024 Municipal Infrastructure Authority. All rights reserved.
+        </div>
+<div class="flex flex-wrap gap-4 justify-center">
+<a class="text-on-surface-variant dark:text-on-secondary-fixed-variant hover:text-primary dark:hover:text-primary-fixed underline transition-opacity duration-200" href="#">Accessibility Statement</a>
+<a class="text-on-surface-variant dark:text-on-secondary-fixed-variant hover:text-primary dark:hover:text-primary-fixed underline transition-opacity duration-200" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant dark:text-on-secondary-fixed-variant hover:text-primary dark:hover:text-primary-fixed underline transition-opacity duration-200" href="#">Staff Directory</a>
+<a class="text-on-surface-variant dark:text-on-secondary-fixed-variant hover:text-primary dark:hover:text-primary-fixed underline transition-opacity duration-200" href="#">Emergency Protocols</a>
+</div>
+</footer>
+</body></html>

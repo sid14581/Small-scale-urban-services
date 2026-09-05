@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>My Complaints - Smart City Management System</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-primary": "#ffffff",
+            "surface-container-high": "#e6e8ea",
+            "tertiary": "#4f5d72",
+            "on-error-container": "#93000a",
+            "tertiary-container": "#67758c",
+            "on-primary-fixed": "#00201d",
+            "secondary": "#565e74",
+            "surface-bright": "#f7f9fb",
+            "on-primary-fixed-variant": "#005049",
+            "surface-container-low": "#f2f4f6",
+            "secondary-fixed-dim": "#bec6e0",
+            "inverse-primary": "#6bd8cb",
+            "surface-dim": "#d8dadc",
+            "inverse-surface": "#2d3133",
+            "error": "#ba1a1a",
+            "tertiary-fixed-dim": "#b9c7e0",
+            "on-secondary-fixed": "#131b2e",
+            "on-secondary-fixed-variant": "#3f465c",
+            "surface-container": "#eceef0",
+            "surface": "#f7f9fb",
+            "surface-container-highest": "#e0e3e5",
+            "secondary-fixed": "#dae2fd",
+            "secondary-container": "#dae2fd",
+            "on-tertiary": "#ffffff",
+            "on-background": "#191c1e",
+            "surface-variant": "#e0e3e5",
+            "primary-fixed-dim": "#6bd8cb",
+            "background": "#f7f9fb",
+            "error-container": "#ffdad6",
+            "primary-fixed": "#89f5e7",
+            "on-surface-variant": "#3d4947",
+            "primary-container": "#008378",
+            "on-tertiary-container": "#fdfcff",
+            "tertiary-fixed": "#d5e3fd",
+            "on-tertiary-fixed-variant": "#3a485c",
+            "on-error": "#ffffff",
+            "surface-container-lowest": "#ffffff",
+            "outline-variant": "#bcc9c6",
+            "on-primary-container": "#f4fffc",
+            "primary": "#0d9488", /* Teal Override from prompt */
+            "inverse-on-surface": "#eff1f3",
+            "outline": "#6d7a77",
+            "on-surface": "#191c1e",
+            "surface-tint": "#006a61",
+            "on-secondary-container": "#5c647a",
+            "on-secondary": "#ffffff",
+            "on-tertiary-fixed": "#0d1c2f"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "unit": "4px",
+            "stack-lg": "32px",
+            "margin-mobile": "16px",
+            "stack-md": "16px",
+            "gutter": "24px",
+            "margin-desktop": "40px",
+            "stack-sm": "8px",
+            "container-max": "1440px"
+          },
+          "fontFamily": {
+            "label-md": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+            "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+            "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+            "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+            "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+            "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+            "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+            "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      background-color: #f8fafc; /* Light Slate Canvas */
+    }
+  </style>
+</head>
+<body class="text-on-surface antialiased min-h-screen flex flex-col">
+<!-- TopNavBar (Shared Component) -->
+<nav class="bg-surface-container-lowest text-primary font-body-md text-body-md docked full-width top-0 border-b border-outline-variant flat no shadows flex justify-between items-center w-full px-margin-desktop max-w-container-max mx-auto h-16 sticky z-50">
+<div class="flex items-center gap-gutter">
+<!-- Wordmark -->
+<a class="font-headline-md text-headline-md font-bold text-on-surface flex items-center" href="#">
+<span class="text-primary">SC</span><span class="text-on-surface">MS</span>
+</a>
+<!-- Navigation Links (Web only) -->
+<div class="hidden md:flex gap-stack-lg items-center ml-stack-lg">
+<a class="text-secondary hover:text-primary transition-colors duration-200 py-4" data-label="Dashboard" href="#">Dashboard</a>
+<a class="text-secondary hover:text-primary transition-colors duration-200 py-4" data-label="Services" href="#">Services</a>
+<a class="text-primary border-b-2 border-primary pb-[14px]" data-label="My Requests" href="#">My Requests</a>
+</div>
+</div>
+<!-- Trailing Actions -->
+<div class="flex items-center gap-stack-md">
+<button aria-label="Notifications" class="text-secondary hover:text-primary transition-colors duration-200 cursor-pointer active:opacity-80 transition-opacity p-2 rounded-full hover:bg-surface-container-low">
+<span class="material-symbols-outlined" data-icon="notifications" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant bg-surface-container-highest flex items-center justify-center cursor-pointer">
+<!-- Placeholder for Profile Image, using icon fallback if empty -->
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">person</span>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg flex flex-col gap-stack-lg">
+<!-- Page Header -->
+<header class="flex flex-col md:flex-row md:items-center justify-between gap-stack-md border-b border-surface-variant pb-stack-md">
+<div>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">My Complaints</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-unit">Track and manage your reported issues.</p>
+</div>
+<button class="bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md py-3 px-6 rounded transition-colors duration-200 flex items-center justify-center gap-2 w-full md:w-auto self-start md:self-auto shadow-sm active:opacity-80">
+<span class="material-symbols-outlined text-[18px]">add</span>
+        Report an issue
+      </button>
+</header>
+<!-- SECTION 1: Empty State Demonstration -->
+<section class="mt-stack-md">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-stack-md">Demonstration: Empty State</h2>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-margin-desktop flex flex-col items-center justify-center text-center min-h-[300px]">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mb-stack-md">
+<span class="material-symbols-outlined text-tertiary-container text-4xl">inbox</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-unit">No complaints yet</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md mx-auto mb-stack-lg">
+                You haven't reported any issues. If you notice a problem like a pothole, broken streetlight, or missed waste collection, you can report it here.
+            </p>
+<button class="border border-on-surface text-on-surface hover:bg-surface-container font-label-md text-label-md py-3 px-6 rounded transition-colors duration-200">
+                Report an issue
+            </button>
+</div>
+</section>
+<!-- SECTION 2: Active List Demonstration -->
+<section class="mt-stack-lg">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-stack-md gap-stack-md">
+<h2 class="font-headline-md text-headline-md text-on-surface">Demonstration: Active List</h2>
+<!-- Simple Filter/Search placeholder to show high-end UI thought -->
+<div class="relative w-full md:w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-10 pr-4 py-2 border border-outline-variant rounded bg-surface-container-lowest font-body-md text-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-shadow" placeholder="Search references..." type="text"/>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse min-w-[800px]">
+<thead>
+<tr class="border-b border-outline-variant bg-surface-bright">
+<th class="py-4 px-6 font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Reference ID</th>
+<th class="py-4 px-6 font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Category</th>
+<th class="py-4 px-6 font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Status</th>
+<th class="py-4 px-6 font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Area</th>
+<th class="py-4 px-6 font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Date Reported</th>
+<th class="py-4 px-6 font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant text-right">Action</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md">
+<!-- Row 1: Open -->
+<tr class="border-b border-surface-variant hover:bg-surface-container-low transition-colors duration-150 cursor-pointer group">
+<td class="py-4 px-6 font-label-md text-label-md text-on-surface">#SC-4521</td>
+<td class="py-4 px-6 text-on-surface-variant">Waste Management</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full font-label-sm text-label-sm bg-[#e6f4f1] text-[#0d9488] border border-[#b2dfdb]">
+                                    Open
+                                </span>
+</td>
+<td class="py-4 px-6 text-on-surface-variant">North District</td>
+<td class="py-4 px-6 text-on-surface-variant">Oct 12, 2024</td>
+<td class="py-4 px-6 text-right">
+<button class="text-primary hover:text-primary-container font-label-md text-label-md underline opacity-0 group-hover:opacity-100 transition-opacity">View details</button>
+</td>
+</tr>
+<!-- Row 2: In Progress -->
+<tr class="border-b border-surface-variant hover:bg-surface-container-low transition-colors duration-150 cursor-pointer group">
+<td class="py-4 px-6 font-label-md text-label-md text-on-surface">#SC-4498</td>
+<td class="py-4 px-6 text-on-surface-variant">Road Repair</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full font-label-sm text-label-sm bg-[#e1effe] text-[#1e40af] border border-[#bfdbfe]">
+                                    In Progress
+                                </span>
+</td>
+<td class="py-4 px-6 text-on-surface-variant">East End</td>
+<td class="py-4 px-6 text-on-surface-variant">Oct 08, 2024</td>
+<td class="py-4 px-6 text-right">
+<button class="text-primary hover:text-primary-container font-label-md text-label-md underline opacity-0 group-hover:opacity-100 transition-opacity">View details</button>
+</td>
+</tr>
+<!-- Row 3: Resolved -->
+<tr class="border-b border-surface-variant hover:bg-surface-container-low transition-colors duration-150 cursor-pointer group">
+<td class="py-4 px-6 font-label-md text-label-md text-on-surface">#SC-4310</td>
+<td class="py-4 px-6 text-on-surface-variant">Street Lighting</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full font-label-sm text-label-sm bg-[#f3f4f6] text-[#4b5563] border border-[#d1d5db]">
+                                    Resolved
+                                </span>
+</td>
+<td class="py-4 px-6 text-on-surface-variant">City Center</td>
+<td class="py-4 px-6 text-on-surface-variant">Sep 28, 2024</td>
+<td class="py-4 px-6 text-right">
+<button class="text-primary hover:text-primary-container font-label-md text-label-md underline opacity-0 group-hover:opacity-100 transition-opacity">View details</button>
+</td>
+</tr>
+<!-- Row 4: Open -->
+<tr class="hover:bg-surface-container-low transition-colors duration-150 cursor-pointer group">
+<td class="py-4 px-6 font-label-md text-label-md text-on-surface">#SC-4533</td>
+<td class="py-4 px-6 text-on-surface-variant">Public Park Maintenance</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full font-label-sm text-label-sm bg-[#e6f4f1] text-[#0d9488] border border-[#b2dfdb]">
+                                    Open
+                                </span>
+</td>
+<td class="py-4 px-6 text-on-surface-variant">Southside</td>
+<td class="py-4 px-6 text-on-surface-variant">Oct 14, 2024</td>
+<td class="py-4 px-6 text-right">
+<button class="text-primary hover:text-primary-container font-label-md text-label-md underline opacity-0 group-hover:opacity-100 transition-opacity">View details</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination Footer -->
+<div class="border-t border-outline-variant bg-surface-bright p-4 flex items-center justify-between">
+<span class="font-body-md text-body-md text-on-surface-variant text-sm">Showing 1 to 4 of 12 entries</span>
+<div class="flex gap-2">
+<button class="px-3 py-1 border border-outline-variant rounded bg-surface-container-lowest text-on-surface-variant disabled:opacity-50 cursor-not-allowed" disabled="">Previous</button>
+<button class="px-3 py-1 border border-outline-variant rounded bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-colors">Next</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="bg-surface-container-high text-secondary font-label-sm text-label-sm full-width border-t-4 border-primary w-full py-stack-lg px-margin-desktop max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-stack-md mt-stack-lg">
+<div class="flex flex-col items-center md:items-start gap-stack-sm">
+<div class="font-headline-md text-headline-md font-bold text-on-surface">
+<span class="text-primary">SC</span><span class="text-on-surface">MS</span>
+</div>
+<p class="text-on-surface-variant">© 2024 Smart City Management System. All rights reserved.</p>
+</div>
+<div class="flex flex-wrap justify-center md:justify-end gap-x-6 gap-y-2">
+<a class="text-on-surface-variant hover:underline hover:text-primary transition-colors" href="#">Accessibility Statement</a>
+<a class="text-on-surface-variant hover:underline hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:underline hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:underline hover:text-primary transition-colors" href="#">Official Government Links</a>
+</div>
+</footer>
+</body></html>

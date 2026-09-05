@@ -10,4 +10,10 @@ export default defineConfig({
       '/media': { target: 'http://localhost:8000', changeOrigin: true },
     },
   },
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: './test/setup.js',
+    include: ['test/**/*.{test,spec}.{js,jsx}'],
+  },
 })

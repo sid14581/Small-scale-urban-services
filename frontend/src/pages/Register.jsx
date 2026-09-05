@@ -3,9 +3,15 @@ import { Link, useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import PasswordInput from '../components/PasswordInput'
 import OtpInput, { isOtpComplete } from '../components/OtpInput'
-import { useAuth } from '../context/AuthContext'
+import { useAuth, getDefaultRoute } from '../context/AuthContext'
 import { getApiErrorMessage } from '../utils/apiError'
 import { BRANDING } from '../constants'
+
+function maskPhone(phone) {
+  const digits = (phone || '').replace(/\D/g, '')
+  if (digits.length < 4) return phone || 'your phone'
+  return `•••• ${digits.slice(-4)}`
+}
 
 export default function Register() {
   const { registerInit, verifyOtp } = useAuth()
@@ -44,8 +50,8 @@ export default function Register() {
     setError('')
     setSubmitting(true)
     try {
-      await verifyOtp(otpSession, otpCode)
-      navigate('/')
+      const profile = await verifyOtp(otpSession, otpCode)
+      navigate(getDefaultRoute(profile), { replace: true })
     } catch (err) {
       setError(getApiErrorMessage(err, 'Invalid or expired OTP.'))
     } finally {
@@ -79,43 +85,131 @@ export default function Register() {
               className="w-full max-h-72 object-contain mb-4 rounded-2xl"
             />
             <p className="text-muted text-center text-sm max-w-xs">
-              Join your community in building a smarter city
+              Create a citizen account to file complaints and track city responses.
             </p>
           </div>
           <div className="card">
+            <p className="text-primary font-bold text-xs uppercase tracking-[0.18em] mb-2">SCMS</p>
             <img
               src={BRANDING.hero}
-              alt="SCMS"
+              alt=""
               className="w-12 h-12 mx-auto mb-4 md:hidden rounded-xl ring-2 ring-primary/20"
             />
-            <h2 className="text-2xl font-bold mb-1 text-slate-900 dark:text-white">Register</h2>
-            <p className="text-muted text-sm mb-6">Create a citizen account to file complaints and feedback.</p>
-            {error && <p className="text-error mb-4 text-sm p-3 rounded-xl bg-red-50 dark:bg-red-900/20">{error}</p>}
+            <h1 className="text-2xl font-bold mb-1 text-slate-900 dark:text-white">
+              {step === 1 ? 'Register' : 'Verify your phone'}
+            </h1>
+            <p className="text-muted text-sm mb-6">
+              {step === 1
+                ? 'Create a Customer account to file complaints and feedback.'
+                : `Enter the SMS code sent to ${maskPhone(form.phone)}.`}
+            </p>
+            {error && <p className="text-error mb-4 text-sm p-3 rounded-xl bg-red-50 dark:bg-red-900/20" role="alert">{error}</p>}
 
             {step === 1 ? (
               <form onSubmit={handleDetailsSubmit} className="space-y-4">
-                <input className="input" placeholder="First Name" value={form.first_name}
-                  onChange={(e) => setForm({ ...form, first_name: e.target.value })} required />
-                <input className="input" type="email" placeholder="Email" value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })} required />
-                <input className="input" placeholder="Username" value={form.username}
-                  onChange={(e) => setForm({ ...form, username: e.target.value })} required />
-                <input className="input" placeholder="Phone (E.164, e.g. +15551234567)" value={form.phone}
-                  onChange={(e) => setForm({ ...form, phone: e.target.value })} required />
-                <PasswordInput placeholder="Password (min 8 chars)" value={form.password}
-                  onChange={(e) => setForm({ ...form, password: e.target.value })} minLength={8} required />
-                <PasswordInput placeholder="Confirm password" value={form.password_confirm}
-                  onChange={(e) => setForm({ ...form, password_confirm: e.target.value })} minLength={8} required />
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="reg-first-name">
+                    First name
+                  </label>
+                  <input
+                    id="reg-first-name"
+                    className="input mt-1"
+                    value={form.first_name}
+                    onChange={(e) => setForm({ ...form, first_name: e.target.value })}
+                    required
+                    autoComplete="given-name"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="reg-email">
+                    Email
+                  </label>
+                  <input
+                    id="reg-email"
+                    className="input mt-1"
+                    type="email"
+                    value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    required
+                    autoComplete="email"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="reg-username">
+                    Username
+                  </label>
+                  <input
+                    id="reg-username"
+                    className="input mt-1"
+                    value={form.username}
+                    onChange={(e) => setForm({ ...form, username: e.target.value })}
+                    required
+                    autoComplete="username"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="reg-phone">
+                    Phone (E.164)
+                  </label>
+                  <input
+                    id="reg-phone"
+                    className="input mt-1"
+                    placeholder="+15551234567"
+                    value={form.phone}
+                    onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                    required
+                    autoComplete="tel"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="reg-password">
+                    Password
+                  </label>
+                  <div className="mt-1">
+                    <PasswordInput
+                      id="reg-password"
+                      placeholder="At least 8 characters"
+                      value={form.password}
+                      onChange={(e) => setForm({ ...form, password: e.target.value })}
+                      minLength={8}
+                      required
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="reg-password-confirm">
+                    Confirm password
+                  </label>
+                  <div className="mt-1">
+                    <PasswordInput
+                      id="reg-password-confirm"
+                      value={form.password_confirm}
+                      onChange={(e) => setForm({ ...form, password_confirm: e.target.value })}
+                      minLength={8}
+                      required
+                    />
+                  </div>
+                </div>
                 <button type="submit" disabled={submitting} className="btn-primary w-full">
-                  {submitting ? 'Sending OTP...' : 'Send OTP'}
+                  {submitting ? 'Sending SMS code...' : 'Send SMS code'}
                 </button>
               </form>
             ) : (
               <form onSubmit={handleOtpSubmit} className="space-y-4">
-                <p className="text-muted text-sm">
-                  Enter the verification code sent to {form.phone}.
-                </p>
-                <OtpInput value={otpCode} onChange={setOtpCode} disabled={submitting} />
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="reg-otp">
+                    Verification code
+                  </label>
+                  <div className="mt-1">
+                    <OtpInput
+                      id="reg-otp"
+                      value={otpCode}
+                      onChange={setOtpCode}
+                      disabled={submitting}
+                      channel="sms"
+                    />
+                  </div>
+                </div>
                 <button type="submit" disabled={submitting || !isOtpComplete(otpCode)} className="btn-primary w-full">
                   {submitting ? 'Verifying...' : 'Verify & Create Account'}
                 </button>
@@ -133,7 +227,7 @@ export default function Register() {
                     disabled={submitting}
                     className="text-link"
                   >
-                    Resend OTP
+                    Resend SMS code
                   </button>
                 </div>
               </form>
