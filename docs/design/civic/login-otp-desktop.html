@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SCMS - OTP Verification</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "on-secondary-container": "#116f65",
+                "on-surface-variant": "#3d4947",
+                "surface-tint": "#006a61",
+                "on-tertiary-container": "#fffbff",
+                "background": "#faf8ff",
+                "on-error-container": "#93000a",
+                "surface-dim": "#d2d9f4",
+                "tertiary-container": "#b05e3d",
+                "on-secondary-fixed": "#00201d",
+                "surface-bright": "#faf8ff",
+                "secondary-fixed-dim": "#85d5c9",
+                "outline": "#6d7a77",
+                "primary-fixed-dim": "#6bd8cb",
+                "tertiary-fixed-dim": "#ffb59a",
+                "on-background": "#131b2e",
+                "inverse-primary": "#6bd8cb",
+                "on-surface": "#131b2e",
+                "surface-variant": "#dae2fd",
+                "surface-container-low": "#f2f3ff",
+                "inverse-on-surface": "#eef0ff",
+                "on-tertiary-fixed": "#370e00",
+                "outline-variant": "#bcc9c6",
+                "on-primary-fixed": "#00201d",
+                "surface-container-high": "#e2e7ff",
+                "inverse-surface": "#283044",
+                "surface-container-highest": "#dae2fd",
+                "on-tertiary-fixed-variant": "#773215",
+                "error-container": "#ffdad6",
+                "on-tertiary": "#ffffff",
+                "surface-container": "#eaedff",
+                "surface": "#faf8ff",
+                "primary-container": "#008378",
+                "on-error": "#ffffff",
+                "secondary-fixed": "#a1f1e5",
+                "on-primary-container": "#f4fffc",
+                "on-secondary": "#ffffff",
+                "on-secondary-fixed-variant": "#005049",
+                "surface-container-lowest": "#ffffff",
+                "secondary": "#066a61",
+                "error": "#ba1a1a",
+                "on-primary": "#ffffff",
+                "primary-fixed": "#89f5e7",
+                "secondary-container": "#9eeee2",
+                "primary": "#00685f",
+                "tertiary-fixed": "#ffdbce",
+                "tertiary": "#924628",
+                "on-primary-fixed-variant": "#005049"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+              },
+              "spacing": {
+                "gutter": "24px",
+                "container-max": "1280px",
+                "margin-mobile": "16px",
+                "margin-desktop": "32px",
+                "unit": "4px"
+              },
+              "fontFamily": {
+                "headline-lg-mobile": ["Plus Jakarta Sans"],
+                "label-md": ["Inter"],
+                "label-sm": ["Inter"],
+                "headline-lg": ["Plus Jakarta Sans"],
+                "body-md": ["Inter"],
+                "body-lg": ["Inter"],
+                "display-lg": ["Plus Jakarta Sans"],
+                "body-sm": ["Inter"],
+                "headline-md": ["Plus Jakarta Sans"]
+              },
+              "fontSize": {
+                "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        /* Base styles to enforce design system rules */
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Hide number input spinners */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex items-center justify-center p-margin-mobile md:p-margin-desktop">
+<!-- Focused Transactional Container -->
+<main class="w-full max-w-[480px] bg-surface-container-lowest border border-outline-variant rounded-xl p-6 md:p-8 flex flex-col gap-8 shadow-sm">
+<!-- Brand Anchor -->
+<div class="flex items-center justify-center mb-2">
+<span class="font-headline-md text-headline-md font-bold text-primary tracking-tight">SCMS</span>
+</div>
+<!-- Header Content -->
+<header class="flex flex-col gap-4 text-center">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-surface">
+                Verify your identity
+            </h1>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                We've sent a 6-digit verification code via SMS to your registered mobile number ending in <strong class="text-on-surface font-semibold">•••• 4582</strong>.
+            </p>
+</header>
+<!-- Verification Form -->
+<form class="flex flex-col gap-8" id="otpForm" onsubmit="event.preventDefault();">
+<div class="flex flex-col gap-4">
+<label class="font-label-md text-label-md text-on-surface text-center md:text-left" for="otp-1">
+                    Verification code
+                </label>
+<!-- Split Input Group -->
+<div class="flex justify-between gap-2" id="otp-container">
+<input aria-label="Digit 1" autocomplete="one-time-code" class="w-full aspect-[4/5] text-center font-headline-md text-headline-md border border-outline-variant rounded-lg bg-surface focus:border-primary focus:ring-2 focus:ring-primary focus:outline-none transition-colors" id="otp-1" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="text"/>
+<input aria-label="Digit 2" class="w-full aspect-[4/5] text-center font-headline-md text-headline-md border border-outline-variant rounded-lg bg-surface focus:border-primary focus:ring-2 focus:ring-primary focus:outline-none transition-colors" id="otp-2" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="text"/>
+<input aria-label="Digit 3" class="w-full aspect-[4/5] text-center font-headline-md text-headline-md border border-outline-variant rounded-lg bg-surface focus:border-primary focus:ring-2 focus:ring-primary focus:outline-none transition-colors" id="otp-3" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="text"/>
+<input aria-label="Digit 4" class="w-full aspect-[4/5] text-center font-headline-md text-headline-md border border-outline-variant rounded-lg bg-surface focus:border-primary focus:ring-2 focus:ring-primary focus:outline-none transition-colors" id="otp-4" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="text"/>
+<input aria-label="Digit 5" class="w-full aspect-[4/5] text-center font-headline-md text-headline-md border border-outline-variant rounded-lg bg-surface focus:border-primary focus:ring-2 focus:ring-primary focus:outline-none transition-colors" id="otp-5" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="text"/>
+<input aria-label="Digit 6" class="w-full aspect-[4/5] text-center font-headline-md text-headline-md border border-outline-variant rounded-lg bg-surface focus:border-primary focus:ring-2 focus:ring-primary focus:outline-none transition-colors" id="otp-6" inputmode="numeric" maxlength="1" pattern="[0-9]*" type="text"/>
+</div>
+</div>
+<!-- Primary Action -->
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-4 rounded-lg hover:bg-secondary transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-offset-surface-container-lowest focus:ring-primary outline-none" type="submit">
+                Verify
+            </button>
+</form>
+<!-- Secondary Actions -->
+<footer class="flex flex-col gap-4 text-center mt-2 border-t border-outline-variant pt-6">
+<a class="font-label-md text-label-md text-primary hover:text-primary-container underline decoration-primary/30 hover:decoration-primary transition-colors inline-flex items-center justify-center gap-2 group" href="#">
+<span class="material-symbols-outlined text-[18px] group-hover:rotate-180 transition-transform duration-300" data-icon="refresh">refresh</span>
+                Resend code
+            </a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface underline decoration-transparent hover:decoration-outline-variant transition-colors inline-flex items-center justify-center gap-2" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="arrow_back">arrow_back</span>
+                Back to login
+            </a>
+</footer>
+</main>
+<script>
+        // Micro-interaction for OTP Split Input auto-advance
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputs = document.querySelectorAll('#otp-container input');
+            
+            inputs.forEach((input, index) => {
+                // Auto-advance on input
+                input.addEventListener('input', (e) => {
+                    const value = e.target.value;
+                    // Ensure only numbers are entered
+                    e.target.value = value.replace(/[^0-9]/g, '');
+                    
+                    if (e.target.value.length === 1 && index < inputs.length - 1) {
+                        inputs[index + 1].focus();
+                    }
+                });
+
+                // Handle backspace navigation
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
+                        inputs[index - 1].focus();
+                        // Optional: Clear the previous input when navigating back
+                        // inputs[index - 1].value = ''; 
+                    }
+                });
+
+                // Handle pasting a full code
+                input.addEventListener('paste', (e) => {
+                    e.preventDefault();
+                    const pastedData = e.clipboardData.getData('text').replace(/[^0-9]/g, '').slice(0, 6);
+                    if (pastedData) {
+                        pastedData.split('').forEach((char, i) => {
+                            if (inputs[i]) {
+                                inputs[i].value = char;
+                                if (i < inputs.length - 1) {
+                                    inputs[i + 1].focus();
+                                } else {
+                                    inputs[i].focus();
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+
+            // Focus the first input on load for immediate interaction
+            if (inputs.length > 0) {
+                inputs[0].focus();
+            }
+        });
+    </script>
+</body></html>

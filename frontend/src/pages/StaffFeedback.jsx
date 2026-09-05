@@ -23,7 +23,7 @@ export default function StaffFeedback() {
       <main className="max-w-4xl mx-auto px-4 py-8 md:py-12">
         <header className="mb-8">
           <span className="staff-badge mb-2">Staff Portal</span>
-          <h1 className="page-header">Citizen Feedback</h1>
+          <h1 className="page-header">Customer Feedback</h1>
           <p className="page-subtitle">Review suggestions from community members.</p>
         </header>
         {loading && <p className="text-muted">Loading...</p>}

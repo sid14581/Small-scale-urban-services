@@ -35,6 +35,7 @@ def invalidate_stats_cache():
 
 class HealthView(APIView):
     permission_classes = [AllowAny]
+    throttle_classes = []
 
     def get(self, request):
         return Response({'status': 'ok'})

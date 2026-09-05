@@ -1,6 +1,6 @@
 export function getDefaultRoute(user) {
   if (!user) return '/login'
-  if (user.role === 'admin') return '/'
+  if (user.role === 'admin') return '/admin-portal'
   if (user.role === 'staff') return '/staff'
   return '/'
 }

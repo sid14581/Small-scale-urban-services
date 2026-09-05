@@ -9,6 +9,15 @@ def is_staff_member(user):
     )
 
 
+def is_admin(user):
+    return user and user.is_authenticated and user.is_superuser
+
+
+class IsAdmin(BasePermission):
+    def has_permission(self, request, view):
+        return is_admin(request.user)
+
+
 class IsStaff(BasePermission):
     def has_permission(self, request, view):
         return is_staff_member(request.user)

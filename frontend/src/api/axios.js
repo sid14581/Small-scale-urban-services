@@ -4,8 +4,14 @@ import { isMockAuthBypass } from '../config/authBypass'
 const baseURL = import.meta.env.VITE_API_BASE_URL || '/api'
 const MAX_RETRIES = 1
 
-const PUBLIC_PATHS = ['/', '/login', '/register']
-const AUTH_PROBE_PATHS = ['/auth/profile/', '/auth/login/', '/auth/register/']
+const PUBLIC_PATHS = ['/', '/login', '/register', '/forgot-password', '/reset-password']
+const AUTH_PROBE_PATHS = [
+  '/auth/profile/',
+  '/auth/login/',
+  '/auth/register/',
+  '/auth/password/forgot/',
+  '/auth/password/reset/',
+]
 
 function shouldRedirectToLogin(config) {
   if (PUBLIC_PATHS.includes(window.location.pathname)) return false

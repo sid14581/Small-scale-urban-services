@@ -33,3 +33,17 @@ class CacheSettingsTests(SimpleTestCase):
                 settings.CACHES['default']['BACKEND'],
                 'django.core.cache.backends.locmem.LocMemCache',
             )
+
+
+class EmailSettingsTests(SimpleTestCase):
+    def test_email_settings_present(self):
+        for name in (
+            'EMAIL_HOST',
+            'EMAIL_PORT',
+            'EMAIL_HOST_USER',
+            'EMAIL_HOST_PASSWORD',
+            'EMAIL_USE_TLS',
+            'DEFAULT_FROM_EMAIL',
+            'EMAIL_BACKEND',
+        ):
+            self.assertTrue(hasattr(settings, name), f'missing {name}')

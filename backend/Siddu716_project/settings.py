@@ -194,6 +194,22 @@ TWILIO_PHONE_NUMBER = config('TWILIO_PHONE_NUMBER', default='')
 OTP_RATE_LIMIT = config('OTP_RATE_LIMIT', default=10 if DEBUG else 3, cast=int)
 OTP_RATE_WINDOW = config('OTP_RATE_WINDOW', default=900, cast=int)
 
+# Email (password-reset OTP via django.core.mail.send_mail)
+EMAIL_HOST = config('EMAIL_HOST', default='')
+EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='noreply@scms.local')
+EMAIL_BACKEND = config(
+    'EMAIL_BACKEND',
+    default=(
+        'django.core.mail.backends.smtp.EmailBackend'
+        if EMAIL_HOST
+        else 'django.core.mail.backends.console.EmailBackend'
+    ),
+)
+
 # OpenAPI / Swagger
 SPECTACULAR_SETTINGS = {
     'TITLE': 'SCMS API',
