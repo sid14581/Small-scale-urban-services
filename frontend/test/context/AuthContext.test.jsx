@@ -40,7 +40,11 @@ describe('AuthContext password helpers', () => {
     let authApi
     render(
       <AuthProvider>
-        <Probe onReady={(auth) => { authApi = auth }} />
+        <Probe
+          onReady={(auth) => {
+            authApi = auth
+          }}
+        />
       </AuthProvider>,
     )
 
@@ -65,7 +69,11 @@ describe('AuthContext password helpers', () => {
     let authApi
     render(
       <AuthProvider>
-        <Probe onReady={(auth) => { authApi = auth }} />
+        <Probe
+          onReady={(auth) => {
+            authApi = auth
+          }}
+        />
       </AuthProvider>,
     )
 
@@ -89,7 +97,11 @@ describe('AuthContext password helpers', () => {
     let authApi
     render(
       <AuthProvider>
-        <Probe onReady={(auth) => { authApi = auth }} />
+        <Probe
+          onReady={(auth) => {
+            authApi = auth
+          }}
+        />
       </AuthProvider>,
     )
 

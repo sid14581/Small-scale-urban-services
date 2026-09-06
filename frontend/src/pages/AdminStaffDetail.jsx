@@ -100,20 +100,42 @@ export default function AdminStaffDetail() {
           <span className="staff-badge mb-2">Admin Portal</span>
           <h1 className="page-header">Edit Staff</h1>
           <p className="page-subtitle">
-            Username: <span className="font-medium text-slate-700 dark:text-slate-200">{username || '…'}</span>
+            Username:{' '}
+            <span className="font-medium text-slate-700 dark:text-slate-200">
+              {username || '…'}
+            </span>
           </p>
         </header>
 
         {loading && <p className="text-muted">Loading...</p>}
-        {error && <p className="text-error text-sm p-3 rounded-xl bg-red-50 dark:bg-red-900/20" role="alert">{error}</p>}
-        {success && <p className="text-success text-sm p-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/20" role="status">{success}</p>}
+        {error && (
+          <p
+            className="text-error text-sm p-3 rounded-xl bg-red-50 dark:bg-red-900/20"
+            role="alert"
+          >
+            {error}
+          </p>
+        )}
+        {success && (
+          <p
+            className="text-success text-sm p-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/20"
+            role="status"
+          >
+            {success}
+          </p>
+        )}
 
         {!loading && (
           <>
             <div className="card">
               <form onSubmit={handleSave} className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="edit-first-name">First name</label>
+                  <label
+                    className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                    htmlFor="edit-first-name"
+                  >
+                    First name
+                  </label>
                   <input
                     id="edit-first-name"
                     className="input mt-1"
@@ -122,7 +144,12 @@ export default function AdminStaffDetail() {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="edit-email">Email</label>
+                  <label
+                    className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                    htmlFor="edit-email"
+                  >
+                    Email
+                  </label>
                   <input
                     id="edit-email"
                     className="input mt-1"
@@ -132,7 +159,12 @@ export default function AdminStaffDetail() {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="edit-phone">Phone</label>
+                  <label
+                    className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                    htmlFor="edit-phone"
+                  >
+                    Phone
+                  </label>
                   <input
                     id="edit-phone"
                     className="input mt-1"
@@ -153,7 +185,11 @@ export default function AdminStaffDetail() {
                   <button type="submit" disabled={saving} className="btn-primary flex-1">
                     {saving ? 'Saving...' : 'Save changes'}
                   </button>
-                  <button type="button" onClick={() => navigate('/admin-portal/staff')} className="btn-outline">
+                  <button
+                    type="button"
+                    onClick={() => navigate('/admin-portal/staff')}
+                    className="btn-outline"
+                  >
                     Back
                   </button>
                 </div>
@@ -161,9 +197,12 @@ export default function AdminStaffDetail() {
             </div>
 
             <div className="card space-y-4">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white">Reset credentials</h2>
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+                Reset credentials
+              </h2>
               <p className="text-muted text-sm">
-                Provide a new password or leave blank for a server-generated one. Shown once in the response.
+                Provide a new password or leave blank for a server-generated one. Shown once in the
+                response.
               </p>
               {oneTimePassword && (
                 <div className="p-3 rounded-xl bg-surface-muted dark:bg-slate-800/60 text-sm space-y-1">
@@ -181,7 +220,10 @@ export default function AdminStaffDetail() {
               )}
               <form onSubmit={handleResetCredentials} className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="reset-staff-password">
+                  <label
+                    className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                    htmlFor="reset-staff-password"
+                  >
                     New password (optional)
                   </label>
                   <div className="mt-1">
@@ -204,7 +246,9 @@ export default function AdminStaffDetail() {
                 </label>
                 {notify && (
                   <fieldset>
-                    <legend className="text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Notify via</legend>
+                    <legend className="text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">
+                      Notify via
+                    </legend>
                     <div className="flex gap-3">
                       {[
                         ['email', 'Email'],
@@ -238,7 +282,9 @@ export default function AdminStaffDetail() {
               </form>
             </div>
 
-            <Link to="/admin-portal/staff" className="text-link text-sm">← Back to staff list</Link>
+            <Link to="/admin-portal/staff" className="text-link text-sm">
+              ← Back to staff list
+            </Link>
           </>
         )}
       </main>

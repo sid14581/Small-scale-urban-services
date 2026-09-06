@@ -29,13 +29,21 @@ export default function AdminStaffList() {
             <p className="page-subtitle">Create and manage staff accounts.</p>
           </div>
           <div className="flex gap-2">
-            <Link to="/admin-portal" className="btn-outline text-sm">Dashboard</Link>
-            <Link to="/admin-portal/staff/new" className="btn-primary text-sm">Create staff</Link>
+            <Link to="/admin-portal" className="btn-outline text-sm">
+              Dashboard
+            </Link>
+            <Link to="/admin-portal/staff/new" className="btn-primary text-sm">
+              Create staff
+            </Link>
           </div>
         </header>
 
         {loading && <p className="text-muted">Loading...</p>}
-        {error && <p className="text-error text-sm mb-4 p-3 rounded-xl bg-red-50 dark:bg-red-900/20">{error}</p>}
+        {error && (
+          <p className="text-error text-sm mb-4 p-3 rounded-xl bg-red-50 dark:bg-red-900/20">
+            {error}
+          </p>
+        )}
 
         {!loading && !error && (
           <div className="card overflow-x-auto">
@@ -52,20 +60,36 @@ export default function AdminStaffList() {
               <tbody>
                 {staff.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="py-6 text-muted text-center">No staff accounts yet.</td>
+                    <td colSpan={5} className="py-6 text-muted text-center">
+                      No staff accounts yet.
+                    </td>
                   </tr>
                 ) : (
                   staff.map((row) => (
-                    <tr key={row.id} className="border-b border-surface-variant/60 dark:border-slate-800">
+                    <tr
+                      key={row.id}
+                      className="border-b border-surface-variant/60 dark:border-slate-800"
+                    >
                       <td className="py-3 pr-3">
-                        <Link to={`/admin-portal/staff/${row.id}`} className="text-link font-medium">
+                        <Link
+                          to={`/admin-portal/staff/${row.id}`}
+                          className="text-link font-medium"
+                        >
                           {row.username}
                         </Link>
                       </td>
-                      <td className="py-3 pr-3 text-slate-700 dark:text-slate-200">{row.email || '—'}</td>
-                      <td className="py-3 pr-3 text-slate-700 dark:text-slate-200">{row.phone || '—'}</td>
+                      <td className="py-3 pr-3 text-slate-700 dark:text-slate-200">
+                        {row.email || '—'}
+                      </td>
+                      <td className="py-3 pr-3 text-slate-700 dark:text-slate-200">
+                        {row.phone || '—'}
+                      </td>
                       <td className="py-3 pr-3">
-                        <span className={row.is_active ? 'text-emerald-600 dark:text-emerald-400' : 'text-muted'}>
+                        <span
+                          className={
+                            row.is_active ? 'text-emerald-600 dark:text-emerald-400' : 'text-muted'
+                          }
+                        >
                           {row.is_active ? 'Yes' : 'No'}
                         </span>
                       </td>

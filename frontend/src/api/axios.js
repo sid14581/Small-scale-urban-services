@@ -40,10 +40,10 @@ api.interceptors.response.use(
     const retryCount = original._retryCount || 0
 
     if (
-      error.response?.status === 401
-      && !original._retry
-      && retryCount < MAX_RETRIES
-      && !isMockAuthBypass()
+      error.response?.status === 401 &&
+      !original._retry &&
+      retryCount < MAX_RETRIES &&
+      !isMockAuthBypass()
     ) {
       original._retry = true
       original._retryCount = retryCount + 1

@@ -60,32 +60,60 @@ export default function AdminStaffCreate() {
 
         {credentials ? (
           <div className="card space-y-4">
-            <h2 className="text-xl font-bold text-slate-900 dark:text-white">Credentials created</h2>
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+              Credentials created
+            </h2>
             <p className="text-muted text-sm">
               Copy these now. The plaintext password is shown only once.
             </p>
             <div className="p-3 rounded-xl bg-surface-muted dark:bg-slate-800/60 text-sm space-y-2">
-              <p><span className="text-muted">Username:</span> <span className="font-medium">{credentials.username}</span></p>
-              <p><span className="text-muted">Password:</span> <span className="font-mono font-medium break-all">{credentials.password}</span></p>
+              <p>
+                <span className="text-muted">Username:</span>{' '}
+                <span className="font-medium">{credentials.username}</span>
+              </p>
+              <p>
+                <span className="text-muted">Password:</span>{' '}
+                <span className="font-mono font-medium break-all">{credentials.password}</span>
+              </p>
               {credentials.notify_status && (
-                <p><span className="text-muted">Notify:</span> <span className="font-medium">{credentials.notify_status}</span></p>
+                <p>
+                  <span className="text-muted">Notify:</span>{' '}
+                  <span className="font-medium">{credentials.notify_status}</span>
+                </p>
               )}
             </div>
             <div className="flex gap-3">
               {credentials.id && (
-                <Link to={`/admin-portal/staff/${credentials.id}`} className="btn-primary flex-1 text-center">
+                <Link
+                  to={`/admin-portal/staff/${credentials.id}`}
+                  className="btn-primary flex-1 text-center"
+                >
                   View staff
                 </Link>
               )}
-              <Link to="/admin-portal/staff" className="btn-outline">Back to list</Link>
+              <Link to="/admin-portal/staff" className="btn-outline">
+                Back to list
+              </Link>
             </div>
           </div>
         ) : (
           <div className="card">
-            {error && <p className="text-error mb-4 text-sm p-3 rounded-xl bg-red-50 dark:bg-red-900/20" role="alert">{error}</p>}
+            {error && (
+              <p
+                className="text-error mb-4 text-sm p-3 rounded-xl bg-red-50 dark:bg-red-900/20"
+                role="alert"
+              >
+                {error}
+              </p>
+            )}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="create-username">Username</label>
+                <label
+                  className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                  htmlFor="create-username"
+                >
+                  Username
+                </label>
                 <input
                   id="create-username"
                   className="input mt-1"
@@ -96,7 +124,12 @@ export default function AdminStaffCreate() {
                 />
               </div>
               <div>
-                <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="create-email">Email</label>
+                <label
+                  className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                  htmlFor="create-email"
+                >
+                  Email
+                </label>
                 <input
                   id="create-email"
                   className="input mt-1"
@@ -106,7 +139,12 @@ export default function AdminStaffCreate() {
                 />
               </div>
               <div>
-                <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="create-first-name">First name</label>
+                <label
+                  className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                  htmlFor="create-first-name"
+                >
+                  First name
+                </label>
                 <input
                   id="create-first-name"
                   className="input mt-1"
@@ -115,7 +153,12 @@ export default function AdminStaffCreate() {
                 />
               </div>
               <div>
-                <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="create-phone">Phone (E.164)</label>
+                <label
+                  className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                  htmlFor="create-phone"
+                >
+                  Phone (E.164)
+                </label>
                 <input
                   id="create-phone"
                   className="input mt-1"
@@ -125,7 +168,12 @@ export default function AdminStaffCreate() {
                 />
               </div>
               <div>
-                <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="create-password">Password (optional)</label>
+                <label
+                  className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                  htmlFor="create-password"
+                >
+                  Password (optional)
+                </label>
                 <div className="mt-1">
                   <PasswordInput
                     id="create-password"
@@ -146,7 +194,9 @@ export default function AdminStaffCreate() {
               </label>
               {form.notify && (
                 <fieldset>
-                  <legend className="text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Notify via</legend>
+                  <legend className="text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">
+                    Notify via
+                  </legend>
                   <div className="flex gap-3">
                     {[
                       ['email', 'Email'],
@@ -178,7 +228,11 @@ export default function AdminStaffCreate() {
                 <button type="submit" disabled={submitting} className="btn-primary flex-1">
                   {submitting ? 'Creating...' : 'Create staff'}
                 </button>
-                <button type="button" onClick={() => navigate('/admin-portal/staff')} className="btn-outline">
+                <button
+                  type="button"
+                  onClick={() => navigate('/admin-portal/staff')}
+                  className="btn-outline"
+                >
                   Cancel
                 </button>
               </div>

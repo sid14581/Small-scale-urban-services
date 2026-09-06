@@ -54,14 +54,26 @@ export default function ForgotPassword() {
           </div>
           <div className="card">
             <p className="text-primary font-bold text-xs uppercase tracking-[0.18em] mb-2">SCMS</p>
-            <h1 className="text-2xl font-bold mb-1 text-slate-900 dark:text-white">Forgot Password</h1>
+            <h1 className="text-2xl font-bold mb-1 text-slate-900 dark:text-white">
+              Forgot Password
+            </h1>
             <p className="text-muted text-sm mb-6">
               Enter your username or email, then choose how to receive a verification code.
             </p>
-            {error && <p className="text-error mb-4 text-sm p-3 rounded-xl bg-red-50 dark:bg-red-900/20" role="alert">{error}</p>}
+            {error && (
+              <p
+                className="text-error mb-4 text-sm p-3 rounded-xl bg-red-50 dark:bg-red-900/20"
+                role="alert"
+              >
+                {error}
+              </p>
+            )}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="forgot-identifier">
+                <label
+                  className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                  htmlFor="forgot-identifier"
+                >
                   Username or email
                 </label>
                 <input
@@ -108,7 +120,10 @@ export default function ForgotPassword() {
               </button>
             </form>
             <p className="mt-6 text-sm text-muted text-center">
-              Remembered it? <Link to="/login" className="text-link font-medium">Back to Login</Link>
+              Remembered it?{' '}
+              <Link to="/login" className="text-link font-medium">
+                Back to Login
+              </Link>
             </p>
           </div>
         </div>

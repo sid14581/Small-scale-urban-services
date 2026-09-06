@@ -35,7 +35,8 @@ export default function AdminPortal() {
   useEffect(() => {
     setLoading(true)
     setStatsError('')
-    api.get('/stats/')
+    api
+      .get('/stats/')
       .then(({ data }) => setStats(data))
       .catch((err) => setStatsError(getApiErrorMessage(err, 'Failed to load stats.')))
       .finally(() => setLoading(false))
@@ -55,7 +56,10 @@ export default function AdminPortal() {
 
         {loading && <p className="text-muted mb-6">Loading stats...</p>}
         {statsError && (
-          <p className="text-error text-sm mb-6 p-3 rounded-xl bg-red-50 dark:bg-red-900/20" role="alert">
+          <p
+            className="text-error text-sm mb-6 p-3 rounded-xl bg-red-50 dark:bg-red-900/20"
+            role="alert"
+          >
             {statsError}
           </p>
         )}

@@ -2,8 +2,10 @@ import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import PasswordInput from '../components/PasswordInput'
-import OtpInput, { isOtpComplete } from '../components/OtpInput'
-import { useAuth, getDefaultRoute } from '../context/AuthContext'
+import OtpInput from '../components/OtpInput'
+import { useAuth } from '../context/AuthContext'
+import { isOtpComplete } from '../utils/otp'
+import { getDefaultRoute } from '../utils/roles'
 import { getApiErrorMessage } from '../utils/apiError'
 import { BRANDING } from '../constants'
 
@@ -99,12 +101,22 @@ export default function Login() {
                 ? 'Enter your username and password to continue.'
                 : `We sent a verification code via ${otpChannel === 'email' ? 'email' : 'SMS'} to your registered ${otpChannel === 'email' ? 'email address' : 'phone number'}.`}
             </p>
-            {error && <p className="text-error mb-4 text-sm p-3 rounded-xl bg-red-50 dark:bg-red-900/20" role="alert">{error}</p>}
+            {error && (
+              <p
+                className="text-error mb-4 text-sm p-3 rounded-xl bg-red-50 dark:bg-red-900/20"
+                role="alert"
+              >
+                {error}
+              </p>
+            )}
 
             {step === 1 ? (
               <form onSubmit={handleCredentialsSubmit} className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="login-username">
+                  <label
+                    className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                    htmlFor="login-username"
+                  >
                     Username
                   </label>
                   <input
@@ -117,7 +129,10 @@ export default function Login() {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="login-password">
+                  <label
+                    className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                    htmlFor="login-password"
+                  >
                     Password
                   </label>
                   <div className="mt-1">
@@ -133,13 +148,18 @@ export default function Login() {
                   {submitting ? 'Sending code...' : 'Continue'}
                 </button>
                 <p className="text-sm text-center">
-                  <Link to="/forgot-password" className="text-link font-medium">Forgot password?</Link>
+                  <Link to="/forgot-password" className="text-link font-medium">
+                    Forgot password?
+                  </Link>
                 </p>
               </form>
             ) : (
               <form onSubmit={handleOtpSubmit} className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="login-otp">
+                  <label
+                    className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                    htmlFor="login-otp"
+                  >
                     Verification code
                   </label>
                   <div className="mt-1">
@@ -152,13 +172,20 @@ export default function Login() {
                     />
                   </div>
                 </div>
-                <button type="submit" disabled={submitting || !isOtpComplete(otpCode)} className="btn-primary w-full">
+                <button
+                  type="submit"
+                  disabled={submitting || !isOtpComplete(otpCode)}
+                  className="btn-primary w-full"
+                >
                   {submitting ? 'Verifying...' : 'Verify & Login'}
                 </button>
                 <div className="flex gap-3 text-sm">
                   <button
                     type="button"
-                    onClick={() => { setStep(1); setError('') }}
+                    onClick={() => {
+                      setStep(1)
+                      setError('')
+                    }}
                     className="text-link"
                   >
                     Back
@@ -176,7 +203,10 @@ export default function Login() {
             )}
 
             <p className="mt-6 text-sm text-muted text-center">
-              No account? <Link to="/register" className="text-link font-medium">Register</Link>
+              No account?{' '}
+              <Link to="/register" className="text-link font-medium">
+                Register
+              </Link>
             </p>
           </div>
         </div>

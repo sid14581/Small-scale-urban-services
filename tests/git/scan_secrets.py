@@ -1,12 +1,20 @@
 #!/usr/bin/env python3
-"""Git-guardian-style secret scan for tracked source files.
+"""Git-guardian-style secret scan for tracked / staged source files.
 
 Exit 0 = clean, exit 1 = real-looking secrets found.
-Run: python3 tests/git/scan_secrets.py
-  or: python3 -m pytest tests/git/test_no_secrets.py
+
+Run (from app root):
+  python3 tests/git/scan_secrets.py           # all git-tracked files
+  python3 tests/git/scan_secrets.py --staged  # index / commit candidates only
+  python3 -m unittest tests.git.test_no_secrets -v
+
+Pre-commit (.githooks/pre-commit) uses --staged so only what you are about to
+commit is checked. Example env templates (*.example) stay scannable; real
+local secret files should stay gitignored and never be force-added.
 """
 from __future__ import annotations
 
+import argparse
 import re
 import subprocess
 import sys
@@ -15,7 +23,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
-# Paths / names never scanned (also skip .env; .env.example is allowed)
+# Directory name segments never scanned (generated / vendor / local data)
 SKIP_DIR_PARTS = {
     ".git",
     "node_modules",
@@ -31,13 +39,57 @@ SKIP_DIR_PARTS = {
     "coverage",
     ".pytest_cache",
     "media",
+    "playwright-report",
+    "test-results",
+    "blob-report",
+    ".auth",  # Playwright storageState under tests/e2e/.auth/
 }
-SKIP_FILE_NAMES = {".env", ".DS_Store"}
-SKIP_SUFFIXES = {".lock", ".pyc", ".pyo", ".so", ".woff", ".woff2", ".png", ".jpg", ".jpeg", ".gif", ".ico", ".webp", ".mp4", ".zip", ".gz"}
+
+# Exact relative path prefixes (posix) — generated reports / local MCP secrets
+SKIP_PATH_PREFIXES = (
+    "tests/TestReport/",  # allowlist exceptions below
+    "infrastructure/security/zap/reports/",
+    "playwright-report/",
+    "test-results/",
+    "blob-report/",
+    "playwright/.cache/",
+    "tests/e2e/.auth/",
+    ".cursor/",  # mcp.secrets.env and other local Cursor secrets stay out of scan noise
+    "db_data/",
+)
+
+# Under TestReport only the push recipe is meant to be tracked / scanned
+TESTREPORT_SCAN_ALLOW = frozenset(
+    {
+        "tests/TestReport/README.md",
+        "tests/TestReport/generate-reports.sh",
+    }
+)
+
+SKIP_FILE_NAMES = {".DS_Store", "mcp.secrets.env"}
+SKIP_SUFFIXES = {
+    ".lock",
+    ".pyc",
+    ".pyo",
+    ".so",
+    ".woff",
+    ".woff2",
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".gif",
+    ".ico",
+    ".webp",
+    ".mp4",
+    ".zip",
+    ".gz",
+    ".har",
+}
 SKIP_PATH_GLOBS = (
     "frontend/package-lock.json",
     "frontend/yarn.lock",
     "frontend/pnpm-lock.yaml",
+    "package-lock.json",
 )
 
 # Documented / clearly fake placeholders — do not fail
@@ -66,6 +118,10 @@ PLACEHOLDER_MARKERS = (
     "<your",
     "${",
     "{{",
+    "localhost",
+    "copylocal",
+    "redacted",
+    "scrubbed",
 )
 
 ALLOWLIST_EXACT = {
@@ -96,23 +152,42 @@ RULES: list[tuple[str, re.Pattern[str]]] = [
     ("slack_token", re.compile(r"\bxox[baprs]-[0-9A-Za-z-]{10,}\b")),
     ("google_api_key", re.compile(r"\bAIza[0-9A-Za-z\-_]{35}\b")),
     ("stripe_live_key", re.compile(r"\bsk_live_[0-9A-Za-z]{20,}\b")),
+    # OpenAI-style secret keys (sk-...) — keep long to avoid short demo OTPs / ids
+    ("openai_style_sk", re.compile(r"\bsk-[A-Za-z0-9]{20,}\b")),
     ("twilio_account_sid", re.compile(r"\bAC[0-9a-fA-F]{32}\b")),
-    ("twilio_auth_token_assignment", re.compile(
-        r"(?i)(TWILIO_AUTH_TOKEN|auth_token)\s*[=:]\s*['\"]([0-9a-fA-F]{32})['\"]"
-    )),
-    ("private_key_block", re.compile(
-        r"-----BEGIN (?:RSA |OPENSSH |EC |DSA |ENCRYPTED )?PRIVATE KEY-----"
-    )),
-    ("jwt_secret_hardcoded", re.compile(
-        r"(?i)(JWT_SECRET|JWT_SECRET_KEY|SIMPLE_JWT_SIGNING_KEY)\s*[=:]\s*['\"]([^'\"]{16,})['\"]"
-    )),
-    ("generic_api_key_assignment", re.compile(
-        r"(?i)(api[_-]?key|api[_-]?secret|access[_-]?token|client[_-]?secret|"
-        r"auth[_-]?token|private[_-]?token)\s*[=:]\s*['\"]([A-Za-z0-9_\-./+=]{20,})['\"]"
-    )),
-    ("django_secret_key_literal", re.compile(
-        r"""SECRET_KEY\s*=\s*['\"]([^'\"]{16,})['\"]"""
-    )),
+    (
+        "twilio_auth_token_assignment",
+        re.compile(
+            r"(?i)(TWILIO_AUTH_TOKEN|auth_token)\s*[=:]\s*['\"]([0-9a-fA-F]{32})['\"]"
+        ),
+    ),
+    (
+        "private_key_block",
+        re.compile(r"-----BEGIN (?:RSA |OPENSSH |EC |DSA |ENCRYPTED )?PRIVATE KEY-----"),
+    ),
+    (
+        "jwt_compact",
+        re.compile(
+            r"\beyJ[A-Za-z0-9_-]{10,}\.eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\b"
+        ),
+    ),
+    (
+        "jwt_secret_hardcoded",
+        re.compile(
+            r"(?i)(JWT_SECRET|JWT_SECRET_KEY|SIMPLE_JWT_SIGNING_KEY)\s*[=:]\s*['\"]([^'\"]{16,})['\"]"
+        ),
+    ),
+    (
+        "generic_api_key_assignment",
+        re.compile(
+            r"(?i)(api[_-]?key|api[_-]?secret|access[_-]?token|client[_-]?secret|"
+            r"auth[_-]?token|private[_-]?token)\s*[=:]\s*['\"]([A-Za-z0-9_\-./+=]{20,})['\"]"
+        ),
+    ),
+    (
+        "django_secret_key_literal",
+        re.compile(r"""SECRET_KEY\s*=\s*['\"]([^'\"]{16,})['\"]"""),
+    ),
 ]
 
 
@@ -130,6 +205,9 @@ def _is_placeholder(value: str) -> bool:
         return True
     if re.fullmatch(r"0+|a+|x+|X+|1+", v):
         return True
+    # Short numeric OTP / PIN style values are not long-lived tokens
+    if re.fullmatch(r"\d{4,8}", v):
+        return True
     return False
 
 
@@ -140,45 +218,80 @@ def _extract_capture(match: re.Match[str], rule: str) -> str:
     return match.group(0)
 
 
-def _should_skip_path(rel: Path) -> bool:
+def _is_env_template(name: str) -> bool:
+    return name.endswith(".example") or name.endswith(".sample") or name.endswith(".template")
+
+
+def _is_local_env_secret_file(name: str) -> bool:
+    """True for .env / .env.e2e / .env.local — false for *.example templates."""
+    if _is_env_template(name):
+        return False
+    if name == ".env" or name.startswith(".env."):
+        return True
+    return False
+
+
+def _should_skip_path(rel: Path, *, walking_filesystem: bool = False) -> bool:
+    rel_posix = rel.as_posix()
     parts = set(rel.parts)
+
     if parts & SKIP_DIR_PARTS:
         return True
+
+    for prefix in SKIP_PATH_PREFIXES:
+        if rel_posix == prefix.rstrip("/") or rel_posix.startswith(prefix):
+            if rel_posix in TESTREPORT_SCAN_ALLOW:
+                return False
+            return True
+
     if rel.name in SKIP_FILE_NAMES:
         return True
     if rel.suffix.lower() in SKIP_SUFFIXES:
         return True
-    if any(str(rel) == g or str(rel).endswith("/" + g) for g in SKIP_PATH_GLOBS):
+    if any(rel_posix == g or rel_posix.endswith("/" + g) for g in SKIP_PATH_GLOBS):
         return True
-    # Binary-ish / lockfiles by name
     if rel.name.endswith(".lock"):
         return True
+
+    # When walking outside git, skip local secret env files (always fail otherwise).
+    # Tracked / staged copies of those files are still scanned — they should not exist.
+    if walking_filesystem and _is_local_env_secret_file(rel.name):
+        return True
+
     if rel.suffix.lower() in {".pem", ".key", ".p12", ".pfx"}:
         # Still scan these — private key material is the point
         return False
     return False
 
 
+def _git_z_paths(root: Path, args: list[str]) -> list[Path]:
+    try:
+        out = subprocess.check_output(
+            ["git", "-C", str(root), *args],
+            stderr=subprocess.DEVNULL,
+        )
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return []
+    paths: list[Path] = []
+    for raw in out.split(b"\0"):
+        if not raw:
+            continue
+        paths.append(Path(raw.decode("utf-8", errors="replace")))
+    return paths
+
+
 def list_scan_targets(root: Path = REPO_ROOT) -> list[Path]:
     """Prefer git-tracked files; fall back to walk excluding noisy paths."""
     files: list[Path] = []
-    try:
-        out = subprocess.check_output(
-            ["git", "-C", str(root), "ls-files", "-z"],
-            stderr=subprocess.DEVNULL,
-        )
-        for raw in out.split(b"\0"):
-            if not raw:
-                continue
-            rel = Path(raw.decode("utf-8", errors="replace"))
+    tracked = _git_z_paths(root, ["ls-files", "-z"])
+    if tracked:
+        for rel in tracked:
             if _should_skip_path(rel):
                 continue
             full = root / rel
             if full.is_file():
                 files.append(full)
         return files
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        pass
 
     for path in root.rglob("*"):
         if not path.is_file():
@@ -187,30 +300,61 @@ def list_scan_targets(root: Path = REPO_ROOT) -> list[Path]:
             rel = path.relative_to(root)
         except ValueError:
             continue
-        if _should_skip_path(rel):
+        if _should_skip_path(rel, walking_filesystem=True):
             continue
         files.append(path)
     return files
 
 
+def list_staged_targets(root: Path = REPO_ROOT) -> list[Path]:
+    """Paths staged for commit (Added/Copied/Modified/Renamed)."""
+    staged = _git_z_paths(
+        root,
+        ["diff", "--cached", "--name-only", "-z", "--diff-filter=ACMR"],
+    )
+    return [rel for rel in staged if not _should_skip_path(rel)]
+
+
+def read_staged_text(rel: Path, root: Path = REPO_ROOT) -> str | None:
+    """Read blob from the index; fall back to working tree if needed."""
+    rel_posix = rel.as_posix()
+    try:
+        raw = subprocess.check_output(
+            ["git", "-C", str(root), "show", f":{rel_posix}"],
+            stderr=subprocess.DEVNULL,
+        )
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        full = root / rel
+        if not full.is_file():
+            return None
+        try:
+            raw = full.read_bytes()
+        except OSError:
+            return None
+    if b"\0" in raw[:4096]:
+        return None
+    try:
+        return raw.decode("utf-8")
+    except UnicodeDecodeError:
+        try:
+            return raw.decode("latin-1")
+        except UnicodeDecodeError:
+            return None
+
+
 def scan_text(rel_path: str, text: str) -> list[Finding]:
     findings: list[Finding] = []
     for i, line in enumerate(text.splitlines(), start=1):
-        # Skip obvious comments that only document patterns (not values)
-        stripped = line.strip()
-        if stripped.startswith("#") and "BEGIN" not in stripped and "AKIA" not in stripped:
-            # Still scan comments for real tokens (AKIA / BEGIN already handled)
-            pass
         for rule, pattern in RULES:
             for match in pattern.finditer(line):
                 value = _extract_capture(match, rule)
                 if _is_placeholder(value):
                     continue
-                # django SECRET_KEY via config()/env — assignment of default placeholder already filtered
                 if rule == "django_secret_key_literal":
-                    # Ignore if line is only documenting insecure defaults in a set/list
                     if "config(" in line or "os.environ" in line or "getenv(" in line:
                         continue
+                # Compact JWTs in docs/tests sometimes use obvious padding; still
+                # flag anything that is not clearly placeholder-marked above.
                 snippet = line.strip()
                 if len(snippet) > 160:
                     snippet = snippet[:157] + "..."
@@ -224,7 +368,6 @@ def scan_file(path: Path, root: Path = REPO_ROOT) -> list[Finding]:
         raw = path.read_bytes()
     except OSError:
         return []
-    # Skip likely-binary
     if b"\0" in raw[:4096]:
         return []
     try:
@@ -244,12 +387,36 @@ def scan_repo(root: Path = REPO_ROOT) -> list[Finding]:
     return findings
 
 
+def scan_staged(root: Path = REPO_ROOT) -> list[Finding]:
+    findings: list[Finding] = []
+    for rel in list_staged_targets(root):
+        text = read_staged_text(rel, root)
+        if text is None:
+            continue
+        findings.extend(scan_text(rel.as_posix(), text))
+    return findings
+
+
 def main(argv: list[str] | None = None) -> int:
-    argv = argv if argv is not None else sys.argv[1:]
-    root = Path(argv[0]).resolve() if argv else REPO_ROOT
-    findings = scan_repo(root)
+    parser = argparse.ArgumentParser(description="Scan repo for real-looking secrets")
+    parser.add_argument(
+        "root",
+        nargs="?",
+        default=None,
+        help="Repo root (default: app root containing tests/git/)",
+    )
+    parser.add_argument(
+        "--staged",
+        action="store_true",
+        help="Scan only staged index blobs (for pre-commit)",
+    )
+    args = parser.parse_args(argv if argv is not None else sys.argv[1:])
+    root = Path(args.root).resolve() if args.root else REPO_ROOT
+
+    findings = scan_staged(root) if args.staged else scan_repo(root)
+    scope = "staged files" if args.staged else "tracked source"
     if not findings:
-        print("secret-scan: OK (no real-looking secrets in tracked source)")
+        print(f"secret-scan: OK (no real-looking secrets in {scope})")
         return 0
     print(f"secret-scan: FAILED ({len(findings)} finding(s))", file=sys.stderr)
     for f in findings:

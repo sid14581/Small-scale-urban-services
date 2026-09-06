@@ -31,7 +31,9 @@ export default function ComplaintCard({
           )}
           <span className="text-link font-mono text-sm">{complaint.reference_id}</span>
         </div>
-        <span className={STATUS_CLASS[complaint.status] || 'badge'}>{complaint.status_display}</span>
+        <span className={STATUS_CLASS[complaint.status] || 'badge'}>
+          {complaint.status_display}
+        </span>
       </div>
       <h3 className="font-semibold text-lg text-slate-900 dark:text-white group-hover:text-primary dark:group-hover:text-primary-light transition-colors">
         {complaint.complain}
@@ -54,7 +56,10 @@ export default function ComplaintCard({
         {new Date(complaint.created_at).toLocaleDateString()}
       </p>
       {staffView && (
-        <Link to={`/staff/complaints/${complaint.id}`} className="btn-primary text-xs mt-4 inline-flex min-h-0 py-2">
+        <Link
+          to={`/staff/complaints/${complaint.id}`}
+          className="btn-primary text-xs mt-4 inline-flex min-h-0 py-2"
+        >
           View / Update
         </Link>
       )}
