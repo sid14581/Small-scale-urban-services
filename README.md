@@ -155,7 +155,16 @@ python manage.py test tests
 docker compose run --rm backend python manage.py test tests
 ```
 
-Local-only secret-scan / hook tooling is gitignored (`tests/git/`, `.githooks/`, `.pre-commit-config.yaml`) and not part of the shared repo. Run: `python3 tests/git/scan_secrets.py`.
+Secret scan before commit (see `tests/git/README.md`): `python3 tests/git/scan_secrets.py` or `python3 tests/git/scan_secrets.py --staged`. Hooks live in `.githooks/` (`git config core.hooksPath .githooks`).
+
+### Local DAST (OWASP ZAP baseline)
+
+Passive baseline scan against **http://localhost:8080** only (Docker). See [`infrastructure/security/zap/README.md`](infrastructure/security/zap/README.md).
+
+```bash
+docker compose up --build -d
+./infrastructure/security/zap/zap-baseline.sh
+```
 
 ## Admin Panel
 

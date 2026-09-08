@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Fail commit if local secret scan finds real-looking secrets.
+# Fail commit if staged changes contain real-looking secrets.
 set -euo pipefail
 
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || true)"
@@ -13,5 +13,5 @@ if [[ ! -f tests/git/scan_secrets.py ]]; then
   exit 1
 fi
 
-echo "pre-commit: running secret scan..."
-python3 tests/git/scan_secrets.py
+echo "pre-commit: running secret scan on staged files..."
+python3 tests/git/scan_secrets.py --staged

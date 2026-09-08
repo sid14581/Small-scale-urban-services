@@ -18,7 +18,8 @@ export default function MyComplaints() {
   useEffect(() => {
     setLoading(true)
     setError('')
-    api.get('/complaints/')
+    api
+      .get('/complaints/')
       .then(({ data }) => setComplaints(data.results || data))
       .catch((err) => setError(getApiErrorMessage(err, 'Failed to load complaints.')))
       .finally(() => setLoading(false))
@@ -34,17 +35,31 @@ export default function MyComplaints() {
             <h1 className="page-header">My Complaints</h1>
             <p className="page-subtitle">Track the status of your submitted reports.</p>
           </div>
-          <Link to="/" className="btn-primary text-sm">Report an issue</Link>
+          <Link to="/" className="btn-primary text-sm">
+            Report an issue
+          </Link>
         </header>
         {loading && <p className="text-muted">Loading...</p>}
-        {error && <p className="text-error text-sm mb-4 p-3 rounded-xl bg-red-50 dark:bg-red-900/20" role="alert">{error}</p>}
+        {error && (
+          <p
+            className="text-error text-sm mb-4 p-3 rounded-xl bg-red-50 dark:bg-red-900/20"
+            role="alert"
+          >
+            {error}
+          </p>
+        )}
         {!loading && !error && complaints.length === 0 && (
           <div className="border border-dashed border-surface-variant dark:border-slate-700 rounded-2xl px-6 py-14 text-center bg-surface-muted/40 dark:bg-slate-900/40">
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">No complaints yet</h2>
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
+              No complaints yet
+            </h2>
             <p className="text-muted text-sm mb-6 max-w-md mx-auto">
-              When you report an urban service issue, it will appear here with a reference ID and status.
+              When you report an urban service issue, it will appear here with a reference ID and
+              status.
             </p>
-            <Link to="/" className="btn-primary">Browse categories</Link>
+            <Link to="/" className="btn-primary">
+              Browse categories
+            </Link>
           </div>
         )}
         {!loading && !error && complaints.length > 0 && (

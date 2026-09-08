@@ -2,8 +2,7 @@ export const AUTH_BYPASS = import.meta.env.VITE_AUTH_BYPASS || 'off'
 
 export const isAuthBypass = () => AUTH_BYPASS !== 'off'
 
-export const isMockAuthBypass = () =>
-  AUTH_BYPASS === 'mock' || AUTH_BYPASS === 'mock-staff'
+export const isMockAuthBypass = () => AUTH_BYPASS === 'mock' || AUTH_BYPASS === 'mock-staff'
 
 export const MOCK_USERS = {
   citizen: {
@@ -22,11 +21,9 @@ export const MOCK_USERS = {
   },
 }
 
-export const getMockUser = (role) =>
-  MOCK_USERS[role === 'staff' ? 'staff' : 'citizen']
+export const getMockUser = (role) => MOCK_USERS[role === 'staff' ? 'staff' : 'citizen']
 
-export const getInitialMockRole = () =>
-  AUTH_BYPASS === 'mock-staff' ? 'staff' : 'citizen'
+export const getInitialMockRole = () => (AUTH_BYPASS === 'mock-staff' ? 'staff' : 'citizen')
 
 export const canSwitchBypassRole = () =>
   isMockAuthBypass() || AUTH_BYPASS === 'citizen' || AUTH_BYPASS === 'staff'

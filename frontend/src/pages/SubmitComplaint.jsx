@@ -37,10 +37,15 @@ export default function SubmitComplaint() {
         <main className="max-w-lg mx-auto px-4 py-8 md:py-12">
           <div className="card text-center space-y-5">
             <p className="text-primary font-bold text-xs uppercase tracking-[0.18em]">SCMS</p>
-            <div className="mx-auto w-14 h-14 rounded-full bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center text-emerald-700 dark:text-emerald-300 text-2xl font-bold" aria-hidden>
+            <div
+              className="mx-auto w-14 h-14 rounded-full bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center text-emerald-700 dark:text-emerald-300 text-2xl font-bold"
+              aria-hidden
+            >
               ✓
             </div>
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Complaint submitted</h1>
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+              Complaint submitted
+            </h1>
             <p className="text-muted text-sm">
               Your {cat.label.toLowerCase()} report is with city staff.
             </p>
@@ -59,11 +64,7 @@ export default function SubmitComplaint() {
               <Link to="/my-complaints" className="btn-primary flex-1 text-center">
                 View my complaints
               </Link>
-              <button
-                type="button"
-                className="btn-outline flex-1"
-                onClick={() => navigate('/')}
-              >
+              <button type="button" className="btn-outline flex-1" onClick={() => navigate('/')}>
                 Submit another
               </button>
             </div>
@@ -88,17 +89,33 @@ export default function SubmitComplaint() {
         <div className="card">
           <p className="text-primary font-bold text-xs uppercase tracking-[0.18em] mb-3">SCMS</p>
           <div className="flex items-center gap-4 mb-4 pb-4 border-b border-slate-200 dark:border-slate-700">
-            <img src={cat.image} alt="" className="w-14 h-14 object-cover rounded-xl ring-2 ring-primary/20" />
+            <img
+              src={cat.image}
+              alt=""
+              className="w-14 h-14 object-cover rounded-xl ring-2 ring-primary/20"
+            />
             <div>
               <h1 className="text-2xl font-bold text-slate-900 dark:text-white">{cat.label}</h1>
               <p className="text-muted text-sm">Submit a complaint</p>
             </div>
           </div>
-          <Link to="/" className="text-link text-sm inline-flex items-center gap-1">← Back to categories</Link>
-          {error && <p className="text-error mt-4 text-sm p-3 rounded-xl bg-red-50 dark:bg-red-900/20" role="alert">{error}</p>}
+          <Link to="/" className="text-link text-sm inline-flex items-center gap-1">
+            ← Back to categories
+          </Link>
+          {error && (
+            <p
+              className="text-error mt-4 text-sm p-3 rounded-xl bg-red-50 dark:bg-red-900/20"
+              role="alert"
+            >
+              {error}
+            </p>
+          )}
           <form onSubmit={handleSubmit} className="space-y-4 mt-6">
             <div>
-              <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="complain-desc">
+              <label
+                className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                htmlFor="complain-desc"
+              >
                 Description
               </label>
               <textarea
@@ -111,7 +128,10 @@ export default function SubmitComplaint() {
               />
             </div>
             <div>
-              <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="complain-phone">
+              <label
+                className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                htmlFor="complain-phone"
+              >
                 Phone number
               </label>
               <input
@@ -124,7 +144,10 @@ export default function SubmitComplaint() {
               />
             </div>
             <div>
-              <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="complain-address">
+              <label
+                className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                htmlFor="complain-address"
+              >
                 Address
               </label>
               <input
@@ -137,7 +160,10 @@ export default function SubmitComplaint() {
               />
             </div>
             <div>
-              <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="complain-area">
+              <label
+                className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                htmlFor="complain-area"
+              >
                 Area / locality
               </label>
               <input
@@ -149,7 +175,10 @@ export default function SubmitComplaint() {
               />
             </div>
             <div>
-              <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="complain-link">
+              <label
+                className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                htmlFor="complain-link"
+              >
                 Google Drive / Docs link (optional)
               </label>
               <input

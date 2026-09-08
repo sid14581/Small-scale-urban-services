@@ -24,11 +24,11 @@ function renderWithAuth(authValue, { path = '/protected', flags = {} } = {}) {
       <Routes>
         <Route
           path="/protected"
-          element={(
+          element={
             <PrivateRoute {...flags}>
               <div>Protected content</div>
             </PrivateRoute>
-          )}
+          }
         />
         <Route path="/login" element={<div>Login page</div>} />
         <Route path="/staff" element={<div>Staff page</div>} />

@@ -26,11 +26,21 @@ function ThemeToggle({ className = '' }) {
     >
       {dark ? (
         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+          />
         </svg>
       ) : (
         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+          />
         </svg>
       )}
     </button>
@@ -50,15 +60,7 @@ function NavLinkItem({ to, active, onClick, children, className = '' }) {
 }
 
 export default function Navbar() {
-  const {
-    user,
-    logout,
-    isAdmin,
-    isStaff,
-    isCitizen,
-    authBypassMode,
-    switchBypassRole,
-  } = useAuth()
+  const { user, logout, isAdmin, isStaff, isCitizen, authBypassMode, switchBypassRole } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
@@ -113,13 +115,29 @@ export default function Navbar() {
               <p className="text-[10px] uppercase tracking-wider font-bold text-amber-700 dark:text-amber-300 pt-2">
                 Staff
               </p>
-              <NavLinkItem to="/staff" active={isActive('/staff') && !location.pathname.includes('/complaints') && !location.pathname.includes('/feedback')} onClick={closeMenu}>
+              <NavLinkItem
+                to="/staff"
+                active={
+                  isActive('/staff') &&
+                  !location.pathname.includes('/complaints') &&
+                  !location.pathname.includes('/feedback')
+                }
+                onClick={closeMenu}
+              >
                 Dashboard
               </NavLinkItem>
-              <NavLinkItem to="/staff/complaints" active={isActive('/staff/complaints')} onClick={closeMenu}>
+              <NavLinkItem
+                to="/staff/complaints"
+                active={isActive('/staff/complaints')}
+                onClick={closeMenu}
+              >
                 Complaints
               </NavLinkItem>
-              <NavLinkItem to="/staff/feedback" active={isActive('/staff/feedback')} onClick={closeMenu}>
+              <NavLinkItem
+                to="/staff/feedback"
+                active={isActive('/staff/feedback')}
+                onClick={closeMenu}
+              >
                 Feedback
               </NavLinkItem>
             </>
@@ -132,7 +150,11 @@ export default function Navbar() {
               <NavLinkItem to="/#service-categories" active={false} onClick={closeMenu}>
                 Report an issue
               </NavLinkItem>
-              <NavLinkItem to="/my-complaints" active={isActive('/my-complaints')} onClick={closeMenu}>
+              <NavLinkItem
+                to="/my-complaints"
+                active={isActive('/my-complaints')}
+                onClick={closeMenu}
+              >
                 My Complaints
               </NavLinkItem>
               <NavLinkItem to="/feedback" active={isActive('/feedback')} onClick={closeMenu}>
@@ -143,7 +165,11 @@ export default function Navbar() {
           <NavLinkItem to="/profile" active={isActive('/profile')} onClick={closeMenu}>
             Profile
           </NavLinkItem>
-          <button type="button" onClick={handleLogout} className="btn-outline w-full justify-center mt-2">
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="btn-outline w-full justify-center mt-2"
+          >
             Logout
           </button>
         </>
@@ -152,7 +178,11 @@ export default function Navbar() {
           <NavLinkItem to="/login" active={isActive('/login')} onClick={closeMenu}>
             Login
           </NavLinkItem>
-          <Link to="/register" onClick={closeMenu} className="btn-primary w-full justify-center mt-2">
+          <Link
+            to="/register"
+            onClick={closeMenu}
+            className="btn-primary w-full justify-center mt-2"
+          >
             Sign up
           </Link>
         </>
@@ -203,7 +233,9 @@ export default function Navbar() {
             className="w-9 h-9 object-cover rounded-xl ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all"
           />
           <div className="leading-tight">
-            <span className="text-lg font-bold text-slate-900 dark:text-white tracking-tight">SCMS</span>
+            <span className="text-lg font-bold text-slate-900 dark:text-white tracking-tight">
+              SCMS
+            </span>
             <span className="hidden sm:block text-[10px] uppercase tracking-wider text-muted font-semibold">
               Smart City Management
             </span>
@@ -222,7 +254,14 @@ export default function Navbar() {
               )}
               {showStaffNav && (
                 <div className="flex items-center gap-1 px-2 py-1 rounded-xl bg-amber-50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-900/30">
-                  <NavLinkItem to="/staff" active={isActive('/staff') && !location.pathname.includes('/complaints') && !location.pathname.includes('/feedback')}>
+                  <NavLinkItem
+                    to="/staff"
+                    active={
+                      isActive('/staff') &&
+                      !location.pathname.includes('/complaints') &&
+                      !location.pathname.includes('/feedback')
+                    }
+                  >
                     Dashboard
                   </NavLinkItem>
                   <NavLinkItem to="/staff/complaints" active={isActive('/staff/complaints')}>
@@ -247,14 +286,22 @@ export default function Navbar() {
                 Profile
               </NavLinkItem>
               <span className="text-muted text-xs truncate max-w-[8rem]">{user.username}</span>
-              <button type="button" onClick={handleLogout} className="btn-outline text-sm min-h-[44px]">
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="btn-outline text-sm min-h-[44px]"
+              >
                 Logout
               </button>
             </>
           ) : (
             <>
-              <NavLinkItem to="/login" active={isActive('/login')}>Login</NavLinkItem>
-              <Link to="/register" className="btn-primary text-sm min-h-[44px]">Sign up</Link>
+              <NavLinkItem to="/login" active={isActive('/login')}>
+                Login
+              </NavLinkItem>
+              <Link to="/register" className="btn-primary text-sm min-h-[44px]">
+                Sign up
+              </Link>
             </>
           )}
         </div>
@@ -271,12 +318,34 @@ export default function Navbar() {
             onClick={() => setMenuOpen((o) => !o)}
           >
             {menuOpen ? (
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             ) : (
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               </svg>
             )}
           </button>
@@ -285,7 +354,12 @@ export default function Navbar() {
 
       {/* Mobile drawer — civic mobile shell pattern */}
       {menuOpen && (
-        <div className="md:hidden fixed inset-0 z-50" role="dialog" aria-modal="true" aria-label="Site menu">
+        <div
+          className="md:hidden fixed inset-0 z-50"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Site menu"
+        >
           <button
             type="button"
             className="absolute inset-0 bg-slate-950/50"
@@ -298,9 +372,25 @@ export default function Navbar() {
           >
             <div className="flex items-center justify-between mb-4">
               <span className="font-bold text-slate-900 dark:text-white">Menu</span>
-              <button type="button" className="btn-outline min-h-[44px] min-w-[44px]" aria-label="Close" onClick={closeMenu}>
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <button
+                type="button"
+                className="btn-outline min-h-[44px] min-w-[44px]"
+                aria-label="Close"
+                onClick={closeMenu}
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>

@@ -52,7 +52,8 @@ export default function ComplaintList() {
     setError('')
     const params = { page, ...filterParams() }
 
-    return api.get('/complaints/', { params })
+    return api
+      .get('/complaints/', { params })
       .then(({ data }) => {
         setComplaints(data.results || data)
         setTotalCount(data.count ?? (data.results || data).length)
@@ -64,7 +65,24 @@ export default function ComplaintList() {
   }
 
   useEffect(() => {
-    fetchComplaints()
+    setLoading(true)
+    setError('')
+    const params = { page }
+    if (category) params.category = category
+    if (status) params.status = status
+    if (area) params.area = area
+    if (search) params.search = search
+
+    api
+      .get('/complaints/', { params })
+      .then(({ data }) => {
+        setComplaints(data.results || data)
+        setTotalCount(data.count ?? (data.results || data).length)
+        setHasNext(!!data.next)
+        setHasPrev(!!data.previous)
+      })
+      .catch((err) => setError(getApiErrorMessage(err, 'Failed to load complaints.')))
+      .finally(() => setLoading(false))
   }, [category, status, area, search, page])
 
   const updateFilter = (key, value) => {
@@ -102,7 +120,7 @@ export default function ComplaintList() {
       })
       if (data.failed?.length) {
         setBulkError(
-          `Updated ${data.updated.length}; ${data.failed.length} failed (invalid status transition).`
+          `Updated ${data.updated.length}; ${data.failed.length} failed (invalid status transition).`,
         )
       }
       setSelectedIds(new Set())
@@ -156,7 +174,9 @@ export default function ComplaintList() {
           </button>
         </div>
         <div className="mb-6 flex flex-wrap gap-3 p-4 rounded-2xl border border-surface-variant dark:border-slate-700 bg-white dark:bg-slate-900">
-          <label className="sr-only" htmlFor="staff-search">Search</label>
+          <label className="sr-only" htmlFor="staff-search">
+            Search
+          </label>
           <input
             id="staff-search"
             className="input w-auto min-w-[12rem] flex-1"
@@ -164,26 +184,56 @@ export default function ComplaintList() {
             value={search}
             onChange={(e) => updateFilter('search', e.target.value)}
           />
-          <label className="sr-only" htmlFor="staff-category">Category</label>
-          <select id="staff-category" className="input w-auto" value={category} onChange={(e) => updateFilter('category', e.target.value)}>
+          <label className="sr-only" htmlFor="staff-category">
+            Category
+          </label>
+          <select
+            id="staff-category"
+            className="input w-auto"
+            value={category}
+            onChange={(e) => updateFilter('category', e.target.value)}
+          >
             <option value="">All Categories</option>
-            {CATEGORIES.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
+            {CATEGORIES.map((c) => (
+              <option key={c.value} value={c.value}>
+                {c.label}
+              </option>
+            ))}
           </select>
-          <label className="sr-only" htmlFor="staff-status">Status</label>
-          <select id="staff-status" className="input w-auto" value={status} onChange={(e) => updateFilter('status', e.target.value)}>
+          <label className="sr-only" htmlFor="staff-status">
+            Status
+          </label>
+          <select
+            id="staff-status"
+            className="input w-auto"
+            value={status}
+            onChange={(e) => updateFilter('status', e.target.value)}
+          >
             <option value="">All Statuses</option>
             <option value="open">Open</option>
             <option value="in_progress">In Progress</option>
             <option value="resolved">Resolved</option>
           </select>
-          <label className="sr-only" htmlFor="staff-area">Area</label>
-          <input id="staff-area" className="input w-auto" placeholder="Filter by area" value={area}
-            onChange={(e) => updateFilter('area', e.target.value)} />
+          <label className="sr-only" htmlFor="staff-area">
+            Area
+          </label>
+          <input
+            id="staff-area"
+            className="input w-auto"
+            placeholder="Filter by area"
+            value={area}
+            onChange={(e) => updateFilter('area', e.target.value)}
+          />
         </div>
         {selectedIds.size > 0 && (
           <div className="mb-4 flex flex-wrap items-center gap-3 p-4 rounded-2xl border border-primary/30 bg-primary/5 dark:bg-teal-950/30">
             <span className="text-sm text-muted">{selectedIds.size} selected</span>
-            <select className="input w-auto" value={bulkStatus} onChange={(e) => setBulkStatus(e.target.value)} aria-label="Bulk status">
+            <select
+              className="input w-auto"
+              value={bulkStatus}
+              onChange={(e) => setBulkStatus(e.target.value)}
+              aria-label="Bulk status"
+            >
               <option value="in_progress">In Progress</option>
               <option value="resolved">Resolved</option>
             </select>
@@ -195,14 +245,25 @@ export default function ComplaintList() {
             >
               {bulkSaving ? 'Updating...' : 'Update Selected'}
             </button>
-            <button type="button" onClick={() => setSelectedIds(new Set())} className="btn-outline text-sm">
+            <button
+              type="button"
+              onClick={() => setSelectedIds(new Set())}
+              className="btn-outline text-sm"
+            >
               Clear
             </button>
             {bulkError && <p className="text-error text-sm w-full">{bulkError}</p>}
           </div>
         )}
         {loading && <p className="text-muted">Loading...</p>}
-        {error && <p className="text-error text-sm mb-4 p-3 rounded-xl bg-red-50 dark:bg-red-900/20" role="alert">{error}</p>}
+        {error && (
+          <p
+            className="text-error text-sm mb-4 p-3 rounded-xl bg-red-50 dark:bg-red-900/20"
+            role="alert"
+          >
+            {error}
+          </p>
+        )}
         {!loading && !error && (
           <>
             {/* Desktop denser table */}
@@ -230,7 +291,9 @@ export default function ComplaintList() {
                 <tbody>
                   {complaints.length === 0 ? (
                     <tr>
-                      <td colSpan={7} className="py-12 text-center text-muted">No complaints match your filters.</td>
+                      <td colSpan={7} className="py-12 text-center text-muted">
+                        No complaints match your filters.
+                      </td>
                     </tr>
                   ) : (
                     complaints.map((c) => (
@@ -254,10 +317,14 @@ export default function ComplaintList() {
                         <td className="py-2.5 px-3 max-w-[16rem] truncate font-medium text-slate-900 dark:text-white">
                           {c.complain}
                         </td>
-                        <td className="py-2.5 px-3 text-muted whitespace-nowrap">{c.category_display}</td>
+                        <td className="py-2.5 px-3 text-muted whitespace-nowrap">
+                          {c.category_display}
+                        </td>
                         <td className="py-2.5 px-3 text-muted whitespace-nowrap">{c.area}</td>
                         <td className="py-2.5 px-3">
-                          <span className={STATUS_CLASS[c.status] || 'badge'}>{c.status_display}</span>
+                          <span className={STATUS_CLASS[c.status] || 'badge'}>
+                            {c.status_display}
+                          </span>
                         </td>
                         <td className="py-2.5 px-3 text-muted whitespace-nowrap">
                           {new Date(c.created_at).toLocaleDateString()}

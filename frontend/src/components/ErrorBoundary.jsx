@@ -25,11 +25,7 @@ export default class ErrorBoundary extends Component {
             <p className="text-muted text-sm mb-4">
               An unexpected error occurred. Please refresh the page or try again later.
             </p>
-            <button
-              type="button"
-              className="btn-primary"
-              onClick={() => window.location.reload()}
-            >
+            <button type="button" className="btn-primary" onClick={() => window.location.reload()}>
               Refresh Page
             </button>
           </div>

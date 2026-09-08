@@ -102,12 +102,24 @@
       transition-all duration-200 cursor-pointer no-underline;
   }
 
-  .category-air { @apply border-t-4 border-t-slate-500; }
-  .category-electricity { @apply border-t-4 border-t-amber-500; }
-  .category-road { @apply border-t-4 border-t-orange-500; }
-  .category-sewage { @apply border-t-4 border-t-cyan-500; }
-  .category-waste { @apply border-t-4 border-t-emerald-500; }
-  .category-others { @apply border-t-4 border-t-violet-500; }
+  .category-air {
+    @apply border-t-4 border-t-slate-500;
+  }
+  .category-electricity {
+    @apply border-t-4 border-t-amber-500;
+  }
+  .category-road {
+    @apply border-t-4 border-t-orange-500;
+  }
+  .category-sewage {
+    @apply border-t-4 border-t-cyan-500;
+  }
+  .category-waste {
+    @apply border-t-4 border-t-emerald-500;
+  }
+  .category-others {
+    @apply border-t-4 border-t-violet-500;
+  }
 
   .stat-total {
     @apply text-primary dark:text-primary-light;

@@ -6,11 +6,9 @@ import {
   getMockUser,
   isMockAuthBypass,
 } from '../config/authBypass'
-import { getDefaultRoute, getRoleFlags } from '../utils/roles'
+import { getRoleFlags } from '../utils/roles'
 
 const AuthContext = createContext(null)
-
-export { getDefaultRoute }
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)

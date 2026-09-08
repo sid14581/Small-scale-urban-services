@@ -59,11 +59,7 @@ export default function Home() {
       <Navbar />
       {/* Full-bleed civic hero — Home Variant A + mobile task-first */}
       <section className="relative min-h-[min(78vh,40rem)] flex items-end md:items-center overflow-hidden">
-        <img
-          src={BRANDING.hero}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+        <img src={BRANDING.hero} alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/55 to-slate-950/25" />
         <div className="relative z-10 w-full max-w-6xl mx-auto px-4 py-12 md:py-20">
           <p className="text-primary-light font-bold text-sm uppercase tracking-[0.2em] mb-3">
@@ -73,7 +69,8 @@ export default function Home() {
             Report urban service issues
           </h1>
           <p className="text-slate-200 text-base md:text-lg max-w-lg mb-8">
-            File infrastructure and utility problems with city staff — fast, transparent, and trackable.
+            File infrastructure and utility problems with city staff — fast, transparent, and
+            trackable.
           </p>
           {user ? (
             isAdmin ? (
@@ -85,7 +82,11 @@ export default function Home() {
                 Staff Dashboard
               </Link>
             ) : (
-              <button type="button" onClick={scrollToCategories} className="btn-primary text-base px-8">
+              <button
+                type="button"
+                onClick={scrollToCategories}
+                className="btn-primary text-base px-8"
+              >
                 Report now
               </button>
             )
@@ -132,10 +133,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             {GALLERY_IMAGES.map((src, i) => (
-              <div
-                key={src}
-                className="rounded-2xl overflow-hidden aspect-square shadow-card"
-              >
+              <div key={src} className="rounded-2xl overflow-hidden aspect-square shadow-card">
                 <img
                   src={src}
                   alt={`City highlight ${i + 1}`}

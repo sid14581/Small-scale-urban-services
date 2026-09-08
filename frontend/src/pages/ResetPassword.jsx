@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import PasswordInput from '../components/PasswordInput'
-import OtpInput, { isOtpComplete } from '../components/OtpInput'
+import OtpInput from '../components/OtpInput'
+import { isOtpComplete } from '../utils/otp'
 import { useAuth } from '../context/AuthContext'
 import { getApiErrorMessage } from '../utils/apiError'
 import { BRANDING } from '../constants'
@@ -92,15 +93,34 @@ export default function ResetPassword() {
           </div>
           <div className="card">
             <p className="text-primary font-bold text-xs uppercase tracking-[0.18em] mb-2">SCMS</p>
-            <h1 className="text-2xl font-bold mb-1 text-slate-900 dark:text-white">Reset Password</h1>
+            <h1 className="text-2xl font-bold mb-1 text-slate-900 dark:text-white">
+              Reset Password
+            </h1>
             <p className="text-muted text-sm mb-6">
               Code sent via {channelLabel}. After reset you will return to login.
             </p>
-            {error && <p className="text-error mb-4 text-sm p-3 rounded-xl bg-red-50 dark:bg-red-900/20" role="alert">{error}</p>}
-            {success && <p className="text-success mb-4 text-sm p-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/20" role="status">{success}</p>}
+            {error && (
+              <p
+                className="text-error mb-4 text-sm p-3 rounded-xl bg-red-50 dark:bg-red-900/20"
+                role="alert"
+              >
+                {error}
+              </p>
+            )}
+            {success && (
+              <p
+                className="text-success mb-4 text-sm p-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/20"
+                role="status"
+              >
+                {success}
+              </p>
+            )}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="reset-otp">
+                <label
+                  className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                  htmlFor="reset-otp"
+                >
                   Verification code
                 </label>
                 <div className="mt-1">
@@ -114,7 +134,10 @@ export default function ResetPassword() {
                 </div>
               </div>
               <div>
-                <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="reset-password">
+                <label
+                  className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                  htmlFor="reset-password"
+                >
                   New password
                 </label>
                 <div className="mt-1">
@@ -129,7 +152,10 @@ export default function ResetPassword() {
                 </div>
               </div>
               <div>
-                <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="reset-password-confirm">
+                <label
+                  className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                  htmlFor="reset-password-confirm"
+                >
                   Confirm new password
                 </label>
                 <div className="mt-1">
@@ -150,14 +176,23 @@ export default function ResetPassword() {
                 {submitting ? 'Updating...' : 'Set new password'}
               </button>
               <div className="flex gap-3 text-sm">
-                <Link to="/forgot-password" className="text-link">Back</Link>
-                <button type="button" onClick={handleResend} disabled={submitting} className="text-link">
+                <Link to="/forgot-password" className="text-link">
+                  Back
+                </Link>
+                <button
+                  type="button"
+                  onClick={handleResend}
+                  disabled={submitting}
+                  className="text-link"
+                >
                   Resend {channelLabel} code
                 </button>
               </div>
             </form>
             <p className="mt-6 text-sm text-muted text-center">
-              <Link to="/login" className="text-link font-medium">Back to Login</Link>
+              <Link to="/login" className="text-link font-medium">
+                Back to Login
+              </Link>
             </p>
           </div>
         </div>

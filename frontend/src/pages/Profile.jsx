@@ -69,10 +69,19 @@ export default function Profile() {
         <div className="card">
           <h2 className="text-2xl font-bold mb-1 text-slate-900 dark:text-white">My Profile</h2>
           <p className="text-muted text-sm mb-6">
-            Username: <span className="font-medium text-slate-700 dark:text-slate-200">{user?.username}</span>
+            Username:{' '}
+            <span className="font-medium text-slate-700 dark:text-slate-200">{user?.username}</span>
           </p>
-          {error && <p className="text-error mb-4 text-sm p-3 rounded-xl bg-red-50 dark:bg-red-900/20">{error}</p>}
-          {success && <p className="text-success mb-4 text-sm p-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/20">{success}</p>}
+          {error && (
+            <p className="text-error mb-4 text-sm p-3 rounded-xl bg-red-50 dark:bg-red-900/20">
+              {error}
+            </p>
+          )}
+          {success && (
+            <p className="text-success mb-4 text-sm p-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/20">
+              {success}
+            </p>
+          )}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="text-sm text-muted">First Name</label>
@@ -107,19 +116,26 @@ export default function Profile() {
         <div className="card">
           <h3 className="text-xl font-bold mb-1 text-slate-900 dark:text-white">Change Password</h3>
           <p className="text-muted text-sm mb-6">
-            Update your password for this account. Customers, staff, and admins can all change passwords here.
+            Update your password for this account. Customers, staff, and admins can all change
+            passwords here.
           </p>
           {passwordError && (
-            <p className="text-error mb-4 text-sm p-3 rounded-xl bg-red-50 dark:bg-red-900/20">{passwordError}</p>
+            <p className="text-error mb-4 text-sm p-3 rounded-xl bg-red-50 dark:bg-red-900/20">
+              {passwordError}
+            </p>
           )}
           {passwordSuccess && (
-            <p className="text-success mb-4 text-sm p-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/20">{passwordSuccess}</p>
+            <p className="text-success mb-4 text-sm p-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/20">
+              {passwordSuccess}
+            </p>
           )}
           <form onSubmit={handlePasswordSubmit} className="space-y-4">
             <PasswordInput
               placeholder="Current password"
               value={passwordForm.current_password}
-              onChange={(e) => setPasswordForm({ ...passwordForm, current_password: e.target.value })}
+              onChange={(e) =>
+                setPasswordForm({ ...passwordForm, current_password: e.target.value })
+              }
               required
             />
             <PasswordInput
@@ -132,7 +148,9 @@ export default function Profile() {
             <PasswordInput
               placeholder="Confirm new password"
               value={passwordForm.new_password_confirm}
-              onChange={(e) => setPasswordForm({ ...passwordForm, new_password_confirm: e.target.value })}
+              onChange={(e) =>
+                setPasswordForm({ ...passwordForm, new_password_confirm: e.target.value })
+              }
               minLength={8}
               required
             />

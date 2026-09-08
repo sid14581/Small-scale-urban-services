@@ -19,7 +19,8 @@ import AdminStaffList from './pages/AdminStaffList'
 import AdminStaffCreate from './pages/AdminStaffCreate'
 import AdminStaffDetail from './pages/AdminStaffDetail'
 import AdminAuditLogs from './pages/AdminAuditLogs'
-import { useAuth, getDefaultRoute } from './context/AuthContext'
+import { useAuth } from './context/AuthContext'
+import { getDefaultRoute } from './utils/roles'
 
 function AppRoutes() {
   const { user } = useAuth()
@@ -35,23 +36,127 @@ function AppRoutes() {
         path="/register"
         element={user ? <Navigate to={getDefaultRoute(user)} replace /> : <Register />}
       />
-      <Route path="/forgot-password" element={user ? <Navigate to={getDefaultRoute(user)} replace /> : <ForgotPassword />} />
-      <Route path="/reset-password" element={user ? <Navigate to={getDefaultRoute(user)} replace /> : <ResetPassword />} />
+      <Route
+        path="/forgot-password"
+        element={user ? <Navigate to={getDefaultRoute(user)} replace /> : <ForgotPassword />}
+      />
+      <Route
+        path="/reset-password"
+        element={user ? <Navigate to={getDefaultRoute(user)} replace /> : <ResetPassword />}
+      />
       <Route path="/complaints" element={<Navigate to="/" replace />} />
-      <Route path="/complaints/new/:category" element={<PrivateRoute citizenOnly><SubmitComplaint /></PrivateRoute>} />
-      <Route path="/my-complaints" element={<PrivateRoute citizenOnly><MyComplaints /></PrivateRoute>} />
-      <Route path="/my-complaints/:id" element={<PrivateRoute citizenOnly><MyComplaintDetail /></PrivateRoute>} />
-      <Route path="/feedback" element={<PrivateRoute citizenOnly><FeedbackPage /></PrivateRoute>} />
-      <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
-      <Route path="/staff" element={<PrivateRoute staffOnly><StaffDashboard /></PrivateRoute>} />
-      <Route path="/staff/complaints" element={<PrivateRoute staffOnly><ComplaintList /></PrivateRoute>} />
-      <Route path="/staff/complaints/:id" element={<PrivateRoute staffOnly><ComplaintDetail /></PrivateRoute>} />
-      <Route path="/staff/feedback" element={<PrivateRoute staffOnly><StaffFeedback /></PrivateRoute>} />
-      <Route path="/admin-portal" element={<PrivateRoute adminOnly><AdminPortal /></PrivateRoute>} />
-      <Route path="/admin-portal/staff" element={<PrivateRoute adminOnly><AdminStaffList /></PrivateRoute>} />
-      <Route path="/admin-portal/staff/new" element={<PrivateRoute adminOnly><AdminStaffCreate /></PrivateRoute>} />
-      <Route path="/admin-portal/staff/:id" element={<PrivateRoute adminOnly><AdminStaffDetail /></PrivateRoute>} />
-      <Route path="/admin-portal/audit-logs" element={<PrivateRoute adminOnly><AdminAuditLogs /></PrivateRoute>} />
+      <Route
+        path="/complaints/new/:category"
+        element={
+          <PrivateRoute citizenOnly>
+            <SubmitComplaint />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/my-complaints"
+        element={
+          <PrivateRoute citizenOnly>
+            <MyComplaints />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/my-complaints/:id"
+        element={
+          <PrivateRoute citizenOnly>
+            <MyComplaintDetail />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/feedback"
+        element={
+          <PrivateRoute citizenOnly>
+            <FeedbackPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <PrivateRoute>
+            <Profile />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/staff"
+        element={
+          <PrivateRoute staffOnly>
+            <StaffDashboard />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/staff/complaints"
+        element={
+          <PrivateRoute staffOnly>
+            <ComplaintList />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/staff/complaints/:id"
+        element={
+          <PrivateRoute staffOnly>
+            <ComplaintDetail />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/staff/feedback"
+        element={
+          <PrivateRoute staffOnly>
+            <StaffFeedback />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin-portal"
+        element={
+          <PrivateRoute adminOnly>
+            <AdminPortal />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin-portal/staff"
+        element={
+          <PrivateRoute adminOnly>
+            <AdminStaffList />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin-portal/staff/new"
+        element={
+          <PrivateRoute adminOnly>
+            <AdminStaffCreate />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin-portal/staff/:id"
+        element={
+          <PrivateRoute adminOnly>
+            <AdminStaffDetail />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin-portal/audit-logs"
+        element={
+          <PrivateRoute adminOnly>
+            <AdminAuditLogs />
+          </PrivateRoute>
+        }
+      />
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   )

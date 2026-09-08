@@ -18,7 +18,8 @@ export default function AdminAuditLogs() {
     setError('')
     const params = { page, page_size: pageSize }
     if (eventType) params.event_type = eventType
-    api.get('/audit-logs/', { params })
+    api
+      .get('/audit-logs/', { params })
       .then(({ data }) => {
         setLogs(data.results || [])
         setCount(data.count || 0)
@@ -39,18 +40,26 @@ export default function AdminAuditLogs() {
             <h1 className="page-header">Audit Logs</h1>
             <p className="page-subtitle">Authentication and security events from the API.</p>
           </div>
-          <Link to="/admin-portal" className="btn-outline text-sm">Dashboard</Link>
+          <Link to="/admin-portal" className="btn-outline text-sm">
+            Dashboard
+          </Link>
         </header>
 
         <div className="mb-4">
-          <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="audit-event-type">
+          <label
+            className="text-sm font-medium text-slate-700 dark:text-slate-200"
+            htmlFor="audit-event-type"
+          >
             Event type
           </label>
           <select
             id="audit-event-type"
             className="input mt-1 max-w-xs"
             value={eventType}
-            onChange={(e) => { setPage(1); setEventType(e.target.value) }}
+            onChange={(e) => {
+              setPage(1)
+              setEventType(e.target.value)
+            }}
           >
             <option value="">All events</option>
             <option value="otp_sent">OTP Sent</option>
@@ -66,7 +75,14 @@ export default function AdminAuditLogs() {
         </div>
 
         {loading && <p className="text-muted">Loading...</p>}
-        {error && <p className="text-error text-sm mb-4 p-3 rounded-xl bg-red-50 dark:bg-red-900/20" role="alert">{error}</p>}
+        {error && (
+          <p
+            className="text-error text-sm mb-4 p-3 rounded-xl bg-red-50 dark:bg-red-900/20"
+            role="alert"
+          >
+            {error}
+          </p>
+        )}
 
         {!loading && !error && (
           <>
@@ -84,11 +100,16 @@ export default function AdminAuditLogs() {
                 <tbody>
                   {logs.length === 0 ? (
                     <tr>
-                      <td colSpan={5} className="py-10 text-center text-muted">No audit events found.</td>
+                      <td colSpan={5} className="py-10 text-center text-muted">
+                        No audit events found.
+                      </td>
                     </tr>
                   ) : (
                     logs.map((row) => (
-                      <tr key={row.id} className="border-t border-surface-variant/70 dark:border-slate-800">
+                      <tr
+                        key={row.id}
+                        className="border-t border-surface-variant/70 dark:border-slate-800"
+                      >
                         <td className="py-2.5 px-3 text-muted whitespace-nowrap">
                           {row.created_at ? new Date(row.created_at).toLocaleString() : '—'}
                         </td>
@@ -97,7 +118,10 @@ export default function AdminAuditLogs() {
                         </td>
                         <td className="py-2.5 px-3">{row.user_username || row.username || '—'}</td>
                         <td className="py-2.5 px-3 font-mono text-xs">{row.ip_address || '—'}</td>
-                        <td className="py-2.5 px-3 text-muted max-w-xs truncate" title={row.detail || ''}>
+                        <td
+                          className="py-2.5 px-3 text-muted max-w-xs truncate"
+                          title={row.detail || ''}
+                        >
                           {row.detail || '—'}
                         </td>
                       </tr>
@@ -108,7 +132,9 @@ export default function AdminAuditLogs() {
             </div>
             {count > 0 && (
               <div className="flex items-center justify-between mt-6">
-                <p className="text-muted text-sm">Page {page} of {totalPages} ({count} total)</p>
+                <p className="text-muted text-sm">
+                  Page {page} of {totalPages} ({count} total)
+                </p>
                 <div className="flex gap-2">
                   <button
                     type="button"

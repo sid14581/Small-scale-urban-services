@@ -20,7 +20,8 @@ export default function MyComplaintDetail() {
   useEffect(() => {
     setLoading(true)
     setError('')
-    api.get(`/complaints/${id}/`)
+    api
+      .get(`/complaints/${id}/`)
       .then(({ data }) => setComplaint(data))
       .catch((err) => {
         if (err.response?.status === 404) {
@@ -38,11 +39,15 @@ export default function MyComplaintDetail() {
     <>
       <Navbar />
       <main className="max-w-lg mx-auto px-4 py-8 md:py-12">
-        <Link to="/my-complaints" className="text-link text-sm mb-4 inline-block">← Back to my complaints</Link>
+        <Link to="/my-complaints" className="text-link text-sm mb-4 inline-block">
+          ← Back to my complaints
+        </Link>
         {loading && <p className="text-muted">Loading...</p>}
         {error && (
           <div className="card">
-            <p className="text-error" role="alert">{error}</p>
+            <p className="text-error" role="alert">
+              {error}
+            </p>
           </div>
         )}
         {complaint && (
@@ -50,8 +55,12 @@ export default function MyComplaintDetail() {
             <header className="space-y-3">
               <p className="text-primary font-bold text-xs uppercase tracking-[0.18em]">SCMS</p>
               <div className="flex items-start justify-between gap-3">
-                <p className="font-mono text-sm text-primary dark:text-primary-light">{complaint.reference_id}</p>
-                <span className={STATUS_CLASS[complaint.status] || 'badge'}>{complaint.status_display}</span>
+                <p className="font-mono text-sm text-primary dark:text-primary-light">
+                  {complaint.reference_id}
+                </p>
+                <span className={STATUS_CLASS[complaint.status] || 'badge'}>
+                  {complaint.status_display}
+                </span>
               </div>
               <h1 className="text-2xl font-bold text-slate-900 dark:text-white leading-snug">
                 {complaint.complain}
@@ -74,7 +83,12 @@ export default function MyComplaintDetail() {
                 <div className="px-4 py-3 grid grid-cols-[7rem_1fr] gap-3 text-sm">
                   <dt className="text-muted">Attachment</dt>
                   <dd>
-                    <a href={driveUrl} target="_blank" rel="noopener noreferrer" className="text-link break-all">
+                    <a
+                      href={driveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-link break-all"
+                    >
                       {complaint.link}
                     </a>
                   </dd>
@@ -82,7 +96,8 @@ export default function MyComplaintDetail() {
               )}
             </dl>
             <p className="text-muted text-sm">
-              Status updates appear here after staff review. Keep your reference ID for phone follow-up.
+              Status updates appear here after staff review. Keep your reference ID for phone
+              follow-up.
             </p>
           </article>
         )}

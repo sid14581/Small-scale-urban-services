@@ -2,8 +2,10 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import PasswordInput from '../components/PasswordInput'
-import OtpInput, { isOtpComplete } from '../components/OtpInput'
-import { useAuth, getDefaultRoute } from '../context/AuthContext'
+import OtpInput from '../components/OtpInput'
+import { useAuth } from '../context/AuthContext'
+import { isOtpComplete } from '../utils/otp'
+import { getDefaultRoute } from '../utils/roles'
 import { getApiErrorMessage } from '../utils/apiError'
 import { BRANDING } from '../constants'
 
@@ -18,7 +20,12 @@ export default function Register() {
   const navigate = useNavigate()
   const [step, setStep] = useState(1)
   const [form, setForm] = useState({
-    username: '', email: '', first_name: '', phone: '', password: '', password_confirm: '',
+    username: '',
+    email: '',
+    first_name: '',
+    phone: '',
+    password: '',
+    password_confirm: '',
   })
   const [otpSession, setOtpSession] = useState('')
   const [otpCode, setOtpCode] = useState('')
@@ -103,12 +110,22 @@ export default function Register() {
                 ? 'Create a Customer account to file complaints and feedback.'
                 : `Enter the SMS code sent to ${maskPhone(form.phone)}.`}
             </p>
-            {error && <p className="text-error mb-4 text-sm p-3 rounded-xl bg-red-50 dark:bg-red-900/20" role="alert">{error}</p>}
+            {error && (
+              <p
+                className="text-error mb-4 text-sm p-3 rounded-xl bg-red-50 dark:bg-red-900/20"
+                role="alert"
+              >
+                {error}
+              </p>
+            )}
 
             {step === 1 ? (
               <form onSubmit={handleDetailsSubmit} className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="reg-first-name">
+                  <label
+                    className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                    htmlFor="reg-first-name"
+                  >
                     First name
                   </label>
                   <input
@@ -121,7 +138,10 @@ export default function Register() {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="reg-email">
+                  <label
+                    className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                    htmlFor="reg-email"
+                  >
                     Email
                   </label>
                   <input
@@ -135,7 +155,10 @@ export default function Register() {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="reg-username">
+                  <label
+                    className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                    htmlFor="reg-username"
+                  >
                     Username
                   </label>
                   <input
@@ -148,7 +171,10 @@ export default function Register() {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="reg-phone">
+                  <label
+                    className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                    htmlFor="reg-phone"
+                  >
                     Phone (E.164)
                   </label>
                   <input
@@ -162,7 +188,10 @@ export default function Register() {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="reg-password">
+                  <label
+                    className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                    htmlFor="reg-password"
+                  >
                     Password
                   </label>
                   <div className="mt-1">
@@ -177,7 +206,10 @@ export default function Register() {
                   </div>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="reg-password-confirm">
+                  <label
+                    className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                    htmlFor="reg-password-confirm"
+                  >
                     Confirm password
                   </label>
                   <div className="mt-1">
@@ -197,7 +229,10 @@ export default function Register() {
             ) : (
               <form onSubmit={handleOtpSubmit} className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="reg-otp">
+                  <label
+                    className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                    htmlFor="reg-otp"
+                  >
                     Verification code
                   </label>
                   <div className="mt-1">
@@ -210,13 +245,20 @@ export default function Register() {
                     />
                   </div>
                 </div>
-                <button type="submit" disabled={submitting || !isOtpComplete(otpCode)} className="btn-primary w-full">
+                <button
+                  type="submit"
+                  disabled={submitting || !isOtpComplete(otpCode)}
+                  className="btn-primary w-full"
+                >
                   {submitting ? 'Verifying...' : 'Verify & Create Account'}
                 </button>
                 <div className="flex gap-3 text-sm">
                   <button
                     type="button"
-                    onClick={() => { setStep(1); setError('') }}
+                    onClick={() => {
+                      setStep(1)
+                      setError('')
+                    }}
                     className="text-link"
                   >
                     Back
@@ -234,7 +276,10 @@ export default function Register() {
             )}
 
             <p className="mt-6 text-sm text-muted text-center">
-              Have an account? <Link to="/login" className="text-link font-medium">Login</Link>
+              Have an account?{' '}
+              <Link to="/login" className="text-link font-medium">
+                Login
+              </Link>
             </p>
           </div>
         </div>

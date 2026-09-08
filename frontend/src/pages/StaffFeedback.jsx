@@ -11,7 +11,8 @@ export default function StaffFeedback() {
   useEffect(() => {
     setLoading(true)
     setError('')
-    api.get('/feedback/')
+    api
+      .get('/feedback/')
       .then(({ data }) => setFeedbacks(data.results || data))
       .catch((err) => setError(getApiErrorMessage(err, 'Failed to load feedback.')))
       .finally(() => setLoading(false))
@@ -27,7 +28,11 @@ export default function StaffFeedback() {
           <p className="page-subtitle">Review suggestions from community members.</p>
         </header>
         {loading && <p className="text-muted">Loading...</p>}
-        {error && <p className="text-error text-sm mb-4 p-3 rounded-xl bg-red-50 dark:bg-red-900/20">{error}</p>}
+        {error && (
+          <p className="text-error text-sm mb-4 p-3 rounded-xl bg-red-50 dark:bg-red-900/20">
+            {error}
+          </p>
+        )}
         {!loading && !error && feedbacks.length === 0 && (
           <div className="card text-center py-12">
             <p className="text-muted">No feedback submitted yet.</p>
@@ -37,7 +42,9 @@ export default function StaffFeedback() {
           <div className="space-y-4">
             {feedbacks.map((fb) => (
               <div key={fb.id} className="card">
-                <h3 className="font-semibold text-lg text-slate-900 dark:text-white">{fb.problem}</h3>
+                <h3 className="font-semibold text-lg text-slate-900 dark:text-white">
+                  {fb.problem}
+                </h3>
                 <p className="text-muted mt-2 leading-relaxed">{fb.comment}</p>
                 <p className="text-muted text-xs mt-4 pt-3 border-t border-slate-200 dark:border-slate-700">
                   {fb.submitted_by_username} · {new Date(fb.created_at).toLocaleDateString()}

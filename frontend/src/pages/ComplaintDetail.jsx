@@ -24,7 +24,8 @@ export default function ComplaintDetail() {
   useEffect(() => {
     setLoading(true)
     setError('')
-    api.get(`/complaints/${id}/`)
+    api
+      .get(`/complaints/${id}/`)
       .then(({ data }) => {
         setComplaint(data)
         setStatus(data.status)
@@ -60,11 +61,15 @@ export default function ComplaintDetail() {
     <>
       <Navbar />
       <main className="max-w-4xl mx-auto px-4 py-8 md:py-12">
-        <Link to="/staff/complaints" className="text-link text-sm mb-4 inline-block">← Back to complaints</Link>
+        <Link to="/staff/complaints" className="text-link text-sm mb-4 inline-block">
+          ← Back to complaints
+        </Link>
         {loading && <p className="text-muted">Loading...</p>}
         {error && (
           <div className="border border-red-200 dark:border-red-900 rounded-2xl p-4 bg-red-50 dark:bg-red-900/20">
-            <p className="text-error" role="alert">{error}</p>
+            <p className="text-error" role="alert">
+              {error}
+            </p>
           </div>
         )}
         {complaint && (
@@ -73,8 +78,12 @@ export default function ComplaintDetail() {
               <header className="space-y-3">
                 <span className="staff-badge">Status workspace</span>
                 <div className="flex flex-wrap items-center gap-3">
-                  <p className="font-mono text-sm text-primary dark:text-primary-light">{complaint.reference_id}</p>
-                  <span className={STATUS_CLASS[complaint.status] || 'badge'}>{complaint.status_display}</span>
+                  <p className="font-mono text-sm text-primary dark:text-primary-light">
+                    {complaint.reference_id}
+                  </p>
+                  <span className={STATUS_CLASS[complaint.status] || 'badge'}>
+                    {complaint.status_display}
+                  </span>
                 </div>
                 <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white leading-snug">
                   {complaint.complain}
@@ -89,7 +98,10 @@ export default function ComplaintDetail() {
                   ['Area', complaint.area],
                   ['Submitted', new Date(complaint.created_at).toLocaleString()],
                 ].map(([label, value]) => (
-                  <div key={label} className="px-4 py-3 grid sm:grid-cols-[8rem_1fr] gap-1 sm:gap-3 text-sm">
+                  <div
+                    key={label}
+                    className="px-4 py-3 grid sm:grid-cols-[8rem_1fr] gap-1 sm:gap-3 text-sm"
+                  >
                     <dt className="text-muted">{label}</dt>
                     <dd className="font-medium text-slate-900 dark:text-slate-100">{value}</dd>
                   </div>
@@ -98,7 +110,12 @@ export default function ComplaintDetail() {
                   <div className="px-4 py-3 grid sm:grid-cols-[8rem_1fr] gap-1 sm:gap-3 text-sm">
                     <dt className="text-muted">Drive link</dt>
                     <dd>
-                      <a href={driveUrl} target="_blank" rel="noopener noreferrer" className="text-link break-all">
+                      <a
+                        href={driveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-link break-all"
+                      >
                         {complaint.link}
                       </a>
                     </dd>
@@ -113,7 +130,10 @@ export default function ComplaintDetail() {
                 Open → In Progress → Resolved. Invalid jumps are rejected by the API.
               </p>
               <div>
-                <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="detail-status">
+                <label
+                  className="text-sm font-medium text-slate-700 dark:text-slate-200"
+                  htmlFor="detail-status"
+                >
                   Status
                 </label>
                 <select
@@ -127,7 +147,11 @@ export default function ComplaintDetail() {
                   <option value="resolved">Resolved</option>
                 </select>
               </div>
-              {updateError && <p className="text-error text-sm" role="alert">{updateError}</p>}
+              {updateError && (
+                <p className="text-error text-sm" role="alert">
+                  {updateError}
+                </p>
+              )}
               <button
                 type="button"
                 onClick={handleUpdate}
