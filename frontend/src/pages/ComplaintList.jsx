@@ -1,12 +1,19 @@
 import { useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import ComplaintCard from '../components/ComplaintCard'
 import api from '../api/axios'
 import { CATEGORIES } from '../constants'
 import { getApiErrorMessage } from '../utils/apiError'
 
+const STATUS_CLASS = {
+  open: 'badge-open',
+  in_progress: 'badge-in_progress',
+  resolved: 'badge-resolved',
+}
+
 export default function ComplaintList() {
+  const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
   const [complaints, setComplaints] = useState([])
   const [loading, setLoading] = useState(true)
@@ -45,7 +52,8 @@ export default function ComplaintList() {
     setError('')
     const params = { page, ...filterParams() }
 
-    return api.get('/complaints/', { params })
+    return api
+      .get('/complaints/', { params })
       .then(({ data }) => {
         setComplaints(data.results || data)
         setTotalCount(data.count ?? (data.results || data).length)
@@ -57,7 +65,24 @@ export default function ComplaintList() {
   }
 
   useEffect(() => {
-    fetchComplaints()
+    setLoading(true)
+    setError('')
+    const params = { page }
+    if (category) params.category = category
+    if (status) params.status = status
+    if (area) params.area = area
+    if (search) params.search = search
+
+    api
+      .get('/complaints/', { params })
+      .then(({ data }) => {
+        setComplaints(data.results || data)
+        setTotalCount(data.count ?? (data.results || data).length)
+        setHasNext(!!data.next)
+        setHasPrev(!!data.previous)
+      })
+      .catch((err) => setError(getApiErrorMessage(err, 'Failed to load complaints.')))
+      .finally(() => setLoading(false))
   }, [category, status, area, search, page])
 
   const updateFilter = (key, value) => {
@@ -95,7 +120,7 @@ export default function ComplaintList() {
       })
       if (data.failed?.length) {
         setBulkError(
-          `Updated ${data.updated.length}; ${data.failed.length} failed (invalid status transition).`
+          `Updated ${data.updated.length}; ${data.failed.length} failed (invalid status transition).`,
         )
       }
       setSelectedIds(new Set())
@@ -133,7 +158,7 @@ export default function ComplaintList() {
   return (
     <>
       <Navbar />
-      <main className="max-w-5xl mx-auto px-4 py-8 md:py-12">
+      <main className="max-w-6xl mx-auto px-4 py-8 md:py-12">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
           <div>
             <span className="staff-badge mb-2">Staff Portal</span>
@@ -148,30 +173,67 @@ export default function ComplaintList() {
             {exporting ? 'Exporting...' : 'Export CSV'}
           </button>
         </div>
-        <div className="card mb-6 flex flex-wrap gap-3">
+        <div className="mb-6 flex flex-wrap gap-3 p-4 rounded-2xl border border-surface-variant dark:border-slate-700 bg-white dark:bg-slate-900">
+          <label className="sr-only" htmlFor="staff-search">
+            Search
+          </label>
           <input
+            id="staff-search"
             className="input w-auto min-w-[12rem] flex-1"
             placeholder="Search description, area, address"
             value={search}
             onChange={(e) => updateFilter('search', e.target.value)}
           />
-          <select className="input w-auto" value={category} onChange={(e) => updateFilter('category', e.target.value)}>
+          <label className="sr-only" htmlFor="staff-category">
+            Category
+          </label>
+          <select
+            id="staff-category"
+            className="input w-auto"
+            value={category}
+            onChange={(e) => updateFilter('category', e.target.value)}
+          >
             <option value="">All Categories</option>
-            {CATEGORIES.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
+            {CATEGORIES.map((c) => (
+              <option key={c.value} value={c.value}>
+                {c.label}
+              </option>
+            ))}
           </select>
-          <select className="input w-auto" value={status} onChange={(e) => updateFilter('status', e.target.value)}>
+          <label className="sr-only" htmlFor="staff-status">
+            Status
+          </label>
+          <select
+            id="staff-status"
+            className="input w-auto"
+            value={status}
+            onChange={(e) => updateFilter('status', e.target.value)}
+          >
             <option value="">All Statuses</option>
             <option value="open">Open</option>
             <option value="in_progress">In Progress</option>
             <option value="resolved">Resolved</option>
           </select>
-          <input className="input w-auto" placeholder="Filter by area" value={area}
-            onChange={(e) => updateFilter('area', e.target.value)} />
+          <label className="sr-only" htmlFor="staff-area">
+            Area
+          </label>
+          <input
+            id="staff-area"
+            className="input w-auto"
+            placeholder="Filter by area"
+            value={area}
+            onChange={(e) => updateFilter('area', e.target.value)}
+          />
         </div>
         {selectedIds.size > 0 && (
-          <div className="card mb-4 flex flex-wrap items-center gap-3 border-primary/30">
+          <div className="mb-4 flex flex-wrap items-center gap-3 p-4 rounded-2xl border border-primary/30 bg-primary/5 dark:bg-teal-950/30">
             <span className="text-sm text-muted">{selectedIds.size} selected</span>
-            <select className="input w-auto" value={bulkStatus} onChange={(e) => setBulkStatus(e.target.value)}>
+            <select
+              className="input w-auto"
+              value={bulkStatus}
+              onChange={(e) => setBulkStatus(e.target.value)}
+              aria-label="Bulk status"
+            >
               <option value="in_progress">In Progress</option>
               <option value="resolved">Resolved</option>
             </select>
@@ -183,45 +245,128 @@ export default function ComplaintList() {
             >
               {bulkSaving ? 'Updating...' : 'Update Selected'}
             </button>
-            <button type="button" onClick={() => setSelectedIds(new Set())} className="btn-outline text-sm">
+            <button
+              type="button"
+              onClick={() => setSelectedIds(new Set())}
+              className="btn-outline text-sm"
+            >
               Clear
             </button>
             {bulkError && <p className="text-error text-sm w-full">{bulkError}</p>}
           </div>
         )}
         {loading && <p className="text-muted">Loading...</p>}
-        {error && <p className="text-error text-sm mb-4 p-3 rounded-xl bg-red-50 dark:bg-red-900/20">{error}</p>}
+        {error && (
+          <p
+            className="text-error text-sm mb-4 p-3 rounded-xl bg-red-50 dark:bg-red-900/20"
+            role="alert"
+          >
+            {error}
+          </p>
+        )}
         {!loading && !error && (
           <>
-            {complaints.length > 0 && (
-              <label className="flex items-center gap-2 mb-3 text-sm text-muted">
-                <input
-                  type="checkbox"
-                  className="accent-primary w-4 h-4 rounded"
-                  checked={allSelected}
-                  onChange={(e) => toggleSelectAll(e.target.checked)}
-                />
-                Select all on this page
-              </label>
-            )}
-            <div className="grid gap-4">
+            {/* Desktop denser table */}
+            <div className="hidden md:block border border-surface-variant dark:border-slate-700 rounded-2xl overflow-hidden bg-white dark:bg-slate-900">
+              <table className="w-full text-sm text-left">
+                <thead className="bg-surface-muted/80 dark:bg-slate-800/80 text-muted">
+                  <tr>
+                    <th className="py-2.5 px-3 w-10">
+                      <input
+                        type="checkbox"
+                        className="accent-primary w-4 h-4 rounded"
+                        checked={allSelected}
+                        onChange={(e) => toggleSelectAll(e.target.checked)}
+                        aria-label="Select all on this page"
+                      />
+                    </th>
+                    <th className="py-2.5 px-3 font-medium">Reference</th>
+                    <th className="py-2.5 px-3 font-medium">Issue</th>
+                    <th className="py-2.5 px-3 font-medium">Category</th>
+                    <th className="py-2.5 px-3 font-medium">Area</th>
+                    <th className="py-2.5 px-3 font-medium">Status</th>
+                    <th className="py-2.5 px-3 font-medium">Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {complaints.length === 0 ? (
+                    <tr>
+                      <td colSpan={7} className="py-12 text-center text-muted">
+                        No complaints match your filters.
+                      </td>
+                    </tr>
+                  ) : (
+                    complaints.map((c) => (
+                      <tr
+                        key={c.id}
+                        className="border-t border-surface-variant/70 dark:border-slate-800 hover:bg-surface-muted/40 dark:hover:bg-slate-800/40 cursor-pointer"
+                        onClick={() => navigate(`/staff/complaints/${c.id}`)}
+                      >
+                        <td className="py-2.5 px-3" onClick={(e) => e.stopPropagation()}>
+                          <input
+                            type="checkbox"
+                            className="accent-primary w-4 h-4 rounded"
+                            checked={selectedIds.has(c.id)}
+                            onChange={(e) => toggleSelect(c.id, e.target.checked)}
+                            aria-label={`Select ${c.reference_id}`}
+                          />
+                        </td>
+                        <td className="py-2.5 px-3 font-mono text-primary dark:text-primary-light whitespace-nowrap">
+                          {c.reference_id}
+                        </td>
+                        <td className="py-2.5 px-3 max-w-[16rem] truncate font-medium text-slate-900 dark:text-white">
+                          {c.complain}
+                        </td>
+                        <td className="py-2.5 px-3 text-muted whitespace-nowrap">
+                          {c.category_display}
+                        </td>
+                        <td className="py-2.5 px-3 text-muted whitespace-nowrap">{c.area}</td>
+                        <td className="py-2.5 px-3">
+                          <span className={STATUS_CLASS[c.status] || 'badge'}>
+                            {c.status_display}
+                          </span>
+                        </td>
+                        <td className="py-2.5 px-3 text-muted whitespace-nowrap">
+                          {new Date(c.created_at).toLocaleDateString()}
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile cards */}
+            <div className="md:hidden space-y-3">
               {complaints.length === 0 ? (
-                <div className="card text-center py-12">
+                <div className="border border-dashed border-surface-variant dark:border-slate-700 rounded-2xl py-12 text-center">
                   <p className="text-muted">No complaints match your filters.</p>
                 </div>
               ) : (
-                complaints.map((c) => (
-                  <ComplaintCard
-                    key={c.id}
-                    complaint={c}
-                    staffView
-                    selectable
-                    selected={selectedIds.has(c.id)}
-                    onSelect={toggleSelect}
-                  />
-                ))
+                <>
+                  <label className="flex items-center gap-2 mb-1 text-sm text-muted">
+                    <input
+                      type="checkbox"
+                      className="accent-primary w-4 h-4 rounded"
+                      checked={allSelected}
+                      onChange={(e) => toggleSelectAll(e.target.checked)}
+                    />
+                    Select all on this page
+                  </label>
+                  {complaints.map((c) => (
+                    <ComplaintCard
+                      key={c.id}
+                      complaint={c}
+                      staffView
+                      selectable
+                      selected={selectedIds.has(c.id)}
+                      onSelect={toggleSelect}
+                    />
+                  ))}
+                </>
               )}
             </div>
+
             {totalCount > 0 && (
               <div className="flex items-center justify-between mt-8 pt-4 border-t border-slate-200 dark:border-slate-700">
                 <p className="text-muted text-sm">

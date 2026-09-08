@@ -24,7 +24,9 @@ export default function ComplaintHub() {
                 className="w-20 h-20 object-cover rounded-xl ring-2 ring-slate-200 dark:ring-slate-600"
               />
               <div>
-                <h3 className="font-semibold text-lg text-slate-900 dark:text-white">{cat.label}</h3>
+                <h3 className="font-semibold text-lg text-slate-900 dark:text-white">
+                  {cat.label}
+                </h3>
                 <p className="text-sm text-primary mt-1 font-medium">Submit complaint →</p>
               </div>
             </Link>

@@ -148,6 +148,10 @@ class APITests(TestCase):
         data = UserSerializer(self.staff).data
         self.assertEqual(data['role'], 'staff')
 
+    def test_user_serializer_citizen_role(self):
+        data = UserSerializer(self.citizen).data
+        self.assertEqual(data['role'], 'citizen')
+
     def test_is_staff_member_includes_superuser(self):
         self.assertTrue(is_staff_member(self.admin))
         self.assertTrue(is_staff_member(self.staff))

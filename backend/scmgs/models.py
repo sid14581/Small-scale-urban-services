@@ -93,6 +93,10 @@ class AuthAuditEvent(models.TextChoices):
     LOGIN_FAILED = 'login_failed', 'Login Failed'
     TOKEN_REFRESH = 'token_refresh', 'Token Refresh'
     REGISTER_INIT = 'register_init', 'Register Initiated'
+    PASSWORD_CHANGE = 'password_change', 'Password Change'
+    PASSWORD_FORGOT = 'password_forgot', 'Password Forgot'
+    PASSWORD_RESET = 'password_reset', 'Password Reset'
+    PASSWORD_FAILED = 'password_failed', 'Password Failed'
 
 
 class AuthAuditLog(models.Model):

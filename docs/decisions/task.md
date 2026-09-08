@@ -128,7 +128,7 @@ Transform a 2018 college Django project into a professional full-stack portfolio
 | 2026-06-14 | 1–7 | Full enhancement implemented: DRF API, React SPA, Docker Compose, tests, docs. |
 | 2026-06-15 | 8 | Backend optimization: Query optimization, validation, logging, error handling, containerization fixes. |
 | 2026-06-16 | 9 | Phase 8.1–8.3: Error handling, JWT cookies, rate limiting, pagination, Django 5 upgrade, Swagger, status transitions, stats caching. |
-| 2026-06-23 | 12 | Reconciled task.md inaccuracies; Stitch UI redesign complete (Civic Hybrid, teal tokens, theme toggle, all 13 pages); build passes. |
+| 2026-06-23 | 12 | Reconciled task.md inaccuracies; civic UI redesign complete (Civic Hybrid, teal tokens, theme toggle, all 13 pages); build passes. |
 
 ---
 
@@ -350,7 +350,7 @@ A comprehensive audit identified **81 distinct issues** across code quality, sec
 
 ---
 
-## Phase 12 — Stitch Design Analysis & UI Redesign (2026-06-23)
+## Phase 12 — Civic Design Analysis & UI Redesign (2026-06-23)
 
 ### Design brief
 
@@ -362,14 +362,14 @@ A comprehensive audit identified **81 distinct issues** across code quality, sec
 | **Routes (13)** | `/`, `/login`, `/register`, `/complaints`, `/complaints/new/:category`, `/my-complaints`, `/feedback`, `/profile`, `/staff`, `/staff/complaints`, `/staff/complaints/:id`, `/staff/feedback` |
 | **Key flows** | JWT + SMS OTP auth, complaint submit (Drive link), staff bulk status, stats dashboard |
 
-### Stitch MCP status
+### External design tool / MCP status
 
 | Check | Result |
 |-------|--------|
-| Stitch API via curl (`https://stitch.googleapis.com/mcp`) | ✅ API key auth works; `list_projects`, `create_project` succeed |
-| Stitch project | ✅ `projects/16308196752677021907` ("SCMS Urban Services") |
+| Design tool API (HTTPS MCP) | ✅ API key auth works; `list_projects`, `create_project` succeed |
+| Design project | ✅ `projects/16308196752677021907` ("SCMS Urban Services") |
 | `generate_screen_from_text` | ❌ Timed out (~61s); no screens created |
-| Stitch MCP in Cursor subagent | ❌ Not in enabled MCP server list — used curl fallback |
+| Design MCP in Cursor subagent | ❌ Not in enabled MCP server list — used curl fallback |
 | Design fallback | Manual **Civic Hybrid** design system (teal civic palette, light default + dark toggle) |
 
 ### Design directions compared
@@ -382,13 +382,13 @@ A comprehensive audit identified **81 distinct issues** across code quality, sec
 
 **Winner: Civic Hybrid** — best balance of accessibility, category discoverability, mobile-first card layout, and staff/citizen visual separation.
 
-### Stitch project / screen inventory
+### Design project / screen inventory
 
 | Item | Value |
 |------|-------|
-| Stitch project | `projects/16308196752677021907` |
-| Stitch screen IDs | None (generation timed out) |
-| Reference assets | `docs/design/stitch/` (`README.md`, `home.html`, `screen-patterns.html`) |
+| Design project | `projects/16308196752677021907` |
+| Screen IDs | None (generation timed out) |
+| Reference assets | `docs/design/civic/` (`README.md`, `home.html`, `screen-patterns.html`) |
 
 ### Implementation checklist
 
@@ -406,7 +406,7 @@ A comprehensive audit identified **81 distinct issues** across code quality, sec
 | `MyComplaints.jsx` / `FeedbackPage.jsx` / `Profile.jsx` | ✅ Done |
 | `StaffDashboard.jsx` / `ComplaintList.jsx` / `ComplaintDetail.jsx` / `StaffFeedback.jsx` | ✅ Done |
 | `npm run build` | ✅ Pass (2026-06-23) |
-| References in `docs/design/stitch/` | ✅ Done (manual HTML refs) |
+| References in `docs/design/civic/` | ✅ Done (manual HTML refs) |
 
 ### Design tokens (before → after)
 
@@ -429,9 +429,9 @@ A comprehensive audit identified **81 distinct issues** across code quality, sec
 | Category cards → direct submit (`/complaints/new/:category`) | ✅ Done | Guest → login with return URL |
 | Remove navbar "File Complaint" | ✅ Done | `/complaints` redirects to `/` |
 | Hero layout 40/60 (2fr/3fr), taller slideshow | ✅ Done | `Home.jsx` |
-| Light mode softened (Stitch Civic Light tokens) | ✅ Done | Phase 12.1: darker elevated boxes (`#dae2fd` cards on `#eef0ff` canvas) |
+| Light mode softened (Civic Light tokens) | ✅ Done | Phase 12.1: darker elevated boxes (`#dae2fd` cards on `#eef0ff` canvas) |
 | Login post-auth redirect to intended URL | ✅ Done | `PrivateRoute` + `Login.jsx` |
-| Stitch MCP | — | Reused project `16308196752677021907` tokens only; no screen regen |
+| External design MCP | — | Reused project `16308196752677021907` tokens only; no screen regen |
 
 | Date | Phase | Change Summary |
 |------|-------|---------------|

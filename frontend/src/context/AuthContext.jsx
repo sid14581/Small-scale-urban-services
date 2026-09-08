@@ -6,11 +6,9 @@ import {
   getMockUser,
   isMockAuthBypass,
 } from '../config/authBypass'
-import { getDefaultRoute, getRoleFlags } from '../utils/roles'
+import { getRoleFlags } from '../utils/roles'
 
 const AuthContext = createContext(null)
-
-export { getDefaultRoute }
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
@@ -109,6 +107,33 @@ export function AuthProvider({ children }) {
     return updated
   }
 
+  const changePassword = async ({ current_password, new_password, new_password_confirm }) => {
+    const { data } = await api.post('/auth/password/change/', {
+      current_password,
+      new_password,
+      new_password_confirm,
+    })
+    return data
+  }
+
+  const forgotPassword = async ({ username, email, channel }) => {
+    const payload = { channel }
+    if (email) payload.email = email
+    if (username) payload.username = username
+    const { data } = await api.post('/auth/password/forgot/', payload)
+    return data.otp_session
+  }
+
+  const resetPassword = async ({ otp_session, code, new_password, new_password_confirm }) => {
+    const { data } = await api.post('/auth/password/reset/', {
+      otp_session,
+      code,
+      new_password,
+      new_password_confirm,
+    })
+    return data
+  }
+
   const roleFlags = useMemo(() => getRoleFlags(user), [user])
 
   return (
@@ -123,6 +148,9 @@ export function AuthProvider({ children }) {
         verifyOtp,
         logout,
         updateProfile,
+        changePassword,
+        forgotPassword,
+        resetPassword,
         switchBypassRole,
         authBypassMode: AUTH_BYPASS,
         ...roleFlags,
