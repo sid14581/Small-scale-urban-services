@@ -1,0 +1,15 @@
+# Optional: https://pre-commit.com — not required if using .githooks/
+# Install: pip install pre-commit && pre-commit install
+# Prefer checked-in hook: git config core.hooksPath .githooks
+#
+# Secret scan: python3 tests/git/scan_secrets.py [--staged]
+repos:
+  - repo: local
+    hooks:
+      - id: scan-secrets
+        name: Secret scan (staged)
+        entry: python3 tests/git/scan_secrets.py --staged
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-commit]

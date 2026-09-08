@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Submit Road Construction Complaint - SCMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+              "surface-tint": "#006a61",
+              "on-background": "#191c1e",
+              "on-primary-fixed": "#00201d",
+              "surface-variant": "#e0e3e5",
+              "surface": "#f7f9fb",
+              "on-tertiary": "#ffffff",
+              "error-container": "#ffdad6",
+              "on-tertiary-fixed": "#131b2e",
+              "inverse-surface": "#2d3133",
+              "tertiary-fixed": "#dae2fd",
+              "on-secondary-container": "#116f65",
+              "tertiary-fixed-dim": "#bec6e0",
+              "outline-variant": "#bcc9c6",
+              "on-tertiary-container": "#fefcff",
+              "on-primary-container": "#f4fffc",
+              "on-secondary-fixed": "#00201d",
+              "background": "#f7f9fb",
+              "surface-dim": "#d8dadc",
+              "primary-fixed-dim": "#6bd8cb",
+              "on-primary": "#ffffff",
+              "inverse-primary": "#6bd8cb",
+              "on-primary-fixed-variant": "#005049",
+              "surface-container-lowest": "#ffffff",
+              "on-surface-variant": "#3d4947",
+              "primary-fixed": "#89f5e7",
+              "surface-container-low": "#f2f4f6",
+              "on-tertiary-fixed-variant": "#3f465c",
+              "secondary": "#066a61",
+              "tertiary-container": "#6c748b",
+              "outline": "#6d7a77",
+              "surface-container": "#eceef0",
+              "on-error-container": "#93000a",
+              "primary": "#00685f",
+              "on-error": "#ffffff",
+              "surface-bright": "#f7f9fb",
+              "tertiary": "#545c72",
+              "secondary-container": "#9eeee2",
+              "surface-container-high": "#e6e8ea",
+              "on-secondary-fixed-variant": "#005049",
+              "surface-container-highest": "#e0e3e5",
+              "secondary-fixed-dim": "#85d5c9",
+              "primary-container": "#008378",
+              "error": "#ba1a1a",
+              "on-secondary": "#ffffff",
+              "secondary-fixed": "#a1f1e5",
+              "inverse-on-surface": "#eff1f3",
+              "on-surface": "#191c1e"
+            },
+            "borderRadius": {
+              "DEFAULT": "0.125rem",
+              "lg": "0.25rem",
+              "xl": "0.5rem",
+              "full": "0.75rem"
+            },
+            "spacing": {
+              "gutter": "24px",
+              "margin-desktop": "32px",
+              "unit": "4px",
+              "max-width": "1280px",
+              "margin-mobile": "16px"
+            },
+            "fontFamily": {
+              "body-md": ["Inter"],
+              "headline-xl-mobile": ["Plus Jakarta Sans"],
+              "mono-data": ["JetBrains Mono"],
+              "headline-md": ["Plus Jakarta Sans"],
+              "headline-xl": ["Plus Jakarta Sans"],
+              "body-lg": ["Inter"],
+              "headline-lg": ["Plus Jakarta Sans"],
+              "label-sm": ["Inter"],
+              "label-bold": ["Inter"]
+            },
+            "fontSize": {
+              "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+              "headline-xl-mobile": ["30px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+              "mono-data": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+              "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+              "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+              "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+              "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+              "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+              "label-bold": ["14px", {"lineHeight": "20px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-on-background border-b border-outline-variant dark:border-outline docked full-width top-0 z-50">
+<div class="flex justify-between items-center w-full px-margin-desktop max-w-max-width mx-auto h-16">
+<div class="flex items-center gap-6">
+<a class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed no-underline" href="#">SCMS</a>
+<!-- Hidden Top Nav on mobile, task focused so no nav rendered per rules -->
+</div>
+<div class="flex items-center gap-4">
+<button aria-label="Notifications" class="p-2 text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors cursor-pointer active:opacity-80 rounded-full hover:bg-surface-container">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button aria-label="Settings" class="p-2 text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors cursor-pointer active:opacity-80 rounded-full hover:bg-surface-container">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<img alt="Administrator Profile" class="w-8 h-8 rounded-full object-cover border border-outline-variant" data-alt="A small, professional headshot portrait of an administrator in uniform or business attire. The background is a clean, neutral gray. Lighting is bright, even, and flattering, suggesting a high-quality ID badge photo for official government use." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7n2RqmwcnyuAhMyRnQMowBNFixrpJZkciEpsRVJuzj1-EdJ9VkE4E0-nMFQ21SMZV3DrfKfKK1WiJrrEj3o_6bReFkE82ck8nZYhAzbWBVd2__dIJ4ROyOxF-9K_Iu1v3DcCwmAijTg9sLCmjdkPvJiB6rewSb3S0LhVbKf3BXywBjcvEvoM2kbV1XK4Ih2PcEPMHnAD8nObjyO-d0hBG0lhWVjbVJzZxweh0QY67b2fb20rOl6oISG5qNgGxVQsowyGh9T0Spg"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-grow flex flex-col items-center py-12 px-margin-mobile md:px-margin-desktop w-full max-w-[800px] mx-auto">
+<!-- Back Link -->
+<div class="w-full mb-8">
+<a class="inline-flex items-center text-primary font-label-bold text-label-bold hover:underline transition-all" href="#">
+<span class="material-symbols-outlined mr-2" data-icon="arrow_back">arrow_back</span>
+                Back to categories
+            </a>
+</div>
+<!-- Form Container -->
+<div class="w-full bg-surface-container-lowest border border-outline-variant p-6 md:p-10">
+<div class="mb-8">
+<h1 class="font-headline-xl-mobile md:font-headline-xl text-headline-xl-mobile md:text-headline-xl text-on-surface mb-4">Submit Road Construction Complaint</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Provide details about construction issues, road damage, or maintenance requirements.</p>
+</div>
+<form class="space-y-6">
+<!-- Description Field -->
+<div class="flex flex-col gap-2">
+<label class="font-label-bold text-label-bold text-on-surface" for="description">Description</label>
+<textarea aria-required="true" class="w-full bg-surface border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary text-on-surface font-body-md text-body-md p-3 resize-y transition-colors" id="description" name="description" required="" rows="5"></textarea>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Please describe the issue in detail.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Phone Number Field -->
+<div class="flex flex-col gap-2">
+<label class="font-label-bold text-label-bold text-on-surface" for="phone">Phone Number</label>
+<input aria-required="true" class="w-full bg-surface border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary text-on-surface font-body-md text-body-md p-3 transition-colors" id="phone" name="phone" required="" type="tel"/>
+</div>
+<!-- Area/District Field -->
+<div class="flex flex-col gap-2">
+<label class="font-label-bold text-label-bold text-on-surface" for="district">Area/District</label>
+<select aria-required="true" class="w-full bg-surface border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary text-on-surface font-body-md text-body-md p-3 transition-colors appearance-none" id="district" name="district" required="">
+<option disabled="" selected="" value="">Select district...</option>
+<option value="d1">District 1 - North</option>
+<option value="d2">District 2 - Central</option>
+<option value="d3">District 3 - South</option>
+<option value="d4">District 4 - East</option>
+<option value="d5">District 5 - West</option>
+</select>
+</div>
+</div>
+<!-- Street Address Field -->
+<div class="flex flex-col gap-2">
+<label class="font-label-bold text-label-bold text-on-surface" for="address">Street Address</label>
+<input aria-required="true" class="w-full bg-surface border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary text-on-surface font-body-md text-body-md p-3 transition-colors" id="address" name="address" required="" type="text"/>
+</div>
+<!-- Document Link Field -->
+<div class="flex flex-col gap-2">
+<label class="font-label-bold text-label-bold text-on-surface" for="docLink">Google Drive Link (Optional)</label>
+<input class="w-full bg-surface border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary text-on-surface font-body-md text-body-md p-3 transition-colors" id="docLink" name="docLink" type="url"/>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Provide a link to photos or supporting documents if applicable.</p>
+</div>
+<!-- Submit Button -->
+<div class="pt-6 border-t border-outline-variant mt-8">
+<button class="w-full md:w-auto bg-[#0d9488] hover:bg-primary-container text-on-primary font-label-bold text-label-bold py-4 px-8 shadow-sm transition-colors active:scale-[0.98]" type="submit">
+                        Submit Complaint
+                    </button>
+</div>
+</form>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-highest dark:bg-inverse-surface border-t border-outline-variant dark:border-outline full-width mt-auto">
+<div class="w-full py-8 px-margin-desktop max-w-max-width mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+<span class="font-label-sm text-label-sm text-on-surface-variant dark:text-surface-variant text-center md:text-left">
+                © 2024 Smart City Management System. All rights reserved. Official Government Portal.
+            </span>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="font-label-sm text-label-sm text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed opacity-100 hover:opacity-80 transition-opacity no-underline" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed opacity-100 hover:opacity-80 transition-opacity no-underline" href="#">Accessibility Statement</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed opacity-100 hover:opacity-80 transition-opacity no-underline" href="#">Contact Registry</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed opacity-100 hover:opacity-80 transition-opacity no-underline" href="#">Terms of Service</a>
+</div>
+</div>
+</footer>
+</body></html>

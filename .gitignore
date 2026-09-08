@@ -1,14 +1,61 @@
 db_data/*
+db_data/**/*.pem
+db_data/**/*.key
 media/*
 .env
+.env.*
+!.env.example
+!.env.e2e.example
+!.env.*.example
+tests/e2e/.auth/
+tests/e2e/.auth/**
+test-results/
+playwright-report/
+blob-report/
+
 staticfiles/
 __pycache__/
 *.pyc
 venv/
 .idea/
+node_modules/
 frontend/node_modules/
 frontend/dist/
 frontend/public/assets/*
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# Local Cursor / MCP secrets (never commit)
+.cursor/mcp.secrets.env
+**/mcp.secrets.env
+
+# OWASP ZAP local DAST reports (generated)
+infrastructure/security/zap/reports/*
+!infrastructure/security/zap/reports/.gitkeep
 
 !db_data/.gitkeep
 !media/.gitkeep
+# Generated test / security reports — keep only the push recipe tracked
+# (README + generate-reports.sh). All suite outputs stay local.
+tests/TestReport/**
+!tests/TestReport/README.md
+!tests/TestReport/generate-reports.sh
+
+# Belt-and-suspenders: never commit bulky / generated summary artifacts
+tests/TestReport/SUMMARY.md
+tests/TestReport/index.html
+tests/TestReport/summary.html
+tests/TestReport/summary-data.json
+tests/TestReport/**/*.html
+tests/TestReport/**/*.json
+tests/TestReport/**/*.xml
+tests/TestReport/**/*.txt
+tests/TestReport/e2e/
+tests/TestReport/unit/
+tests/TestReport/lint/
+tests/TestReport/sast/
+tests/TestReport/vuln/
+tests/TestReport/dast/
+tests/TestReport/database/

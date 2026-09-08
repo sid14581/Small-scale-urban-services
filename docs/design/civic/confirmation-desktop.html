@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Complaint Successfully Submitted - SCMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "on-secondary-fixed": "#00201d",
+                "surface-container-lowest": "#ffffff",
+                "error-container": "#ffdad6",
+                "secondary-fixed-dim": "#85d5c9",
+                "on-primary-fixed-variant": "#005049",
+                "on-secondary": "#ffffff",
+                "secondary": "#066a61",
+                "on-primary": "#ffffff",
+                "primary": "#00685f",
+                "primary-fixed-dim": "#6bd8cb",
+                "surface-container-low": "#f2f4f6",
+                "surface": "#f7f9fb",
+                "surface-container-high": "#e6e8ea",
+                "outline-variant": "#bcc9c6",
+                "on-primary-fixed": "#00201d",
+                "inverse-primary": "#6bd8cb",
+                "outline": "#6d7a77",
+                "surface-variant": "#e0e3e5",
+                "tertiary-fixed-dim": "#bec6e0",
+                "on-tertiary-container": "#fefcff",
+                "inverse-on-surface": "#eff1f3",
+                "surface-container-highest": "#e0e3e5",
+                "secondary-fixed": "#a1f1e5",
+                "inverse-surface": "#2d3133",
+                "on-secondary-container": "#116f65",
+                "tertiary-fixed": "#dae2fd",
+                "primary-fixed": "#89f5e7",
+                "primary-container": "#008378",
+                "on-tertiary": "#ffffff",
+                "on-error-container": "#93000a",
+                "background": "#f7f9fb",
+                "secondary-container": "#9eeee2",
+                "on-primary-container": "#f4fffc",
+                "on-error": "#ffffff",
+                "tertiary-container": "#6c748b",
+                "tertiary": "#545c72",
+                "on-tertiary-fixed": "#131b2e",
+                "on-surface-variant": "#3d4947",
+                "surface-container": "#eceef0",
+                "surface-bright": "#f7f9fb",
+                "surface-tint": "#006a61",
+                "error": "#ba1a1a",
+                "on-secondary-fixed-variant": "#005049",
+                "surface-dim": "#d8dadc",
+                "on-tertiary-fixed-variant": "#3f465c",
+                "on-surface": "#191c1e",
+                "on-background": "#191c1e"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+              },
+              "spacing": {
+                "margin-desktop": "32px",
+                "max-width": "1280px",
+                "unit": "4px",
+                "gutter": "24px",
+                "margin-mobile": "16px"
+              },
+              "fontFamily": {
+                "body-lg": [
+                  "Inter"
+                ],
+                "headline-md": [
+                  "Plus Jakarta Sans"
+                ],
+                "headline-xl": [
+                  "Plus Jakarta Sans"
+                ],
+                "headline-xl-mobile": [
+                  "Plus Jakarta Sans"
+                ],
+                "headline-lg": [
+                  "Plus Jakarta Sans"
+                ],
+                "mono-data": [
+                  "JetBrains Mono"
+                ],
+                "label-bold": [
+                  "Inter"
+                ],
+                "body-md": [
+                  "Inter"
+                ],
+                "label-sm": [
+                  "Inter"
+                ]
+              },
+              "fontSize": {
+                "body-lg": [
+                  "18px",
+                  {
+                    "lineHeight": "28px",
+                    "fontWeight": "400"
+                  }
+                ],
+                "headline-md": [
+                  "24px",
+                  {
+                    "lineHeight": "32px",
+                    "fontWeight": "600"
+                  }
+                ],
+                "headline-xl": [
+                  "40px",
+                  {
+                    "lineHeight": "48px",
+                    "letterSpacing": "-0.02em",
+                    "fontWeight": "700"
+                  }
+                ],
+                "headline-xl-mobile": [
+                  "30px",
+                  {
+                    "lineHeight": "36px",
+                    "letterSpacing": "-0.01em",
+                    "fontWeight": "700"
+                  }
+                ],
+                "headline-lg": [
+                  "32px",
+                  {
+                    "lineHeight": "40px",
+                    "fontWeight": "600"
+                  }
+                ],
+                "mono-data": [
+                  "14px",
+                  {
+                    "lineHeight": "20px",
+                    "fontWeight": "400"
+                  }
+                ],
+                "label-bold": [
+                  "14px",
+                  {
+                    "lineHeight": "20px",
+                    "fontWeight": "600"
+                  }
+                ],
+                "body-md": [
+                  "16px",
+                  {
+                    "lineHeight": "24px",
+                    "fontWeight": "400"
+                  }
+                ],
+                "label-sm": [
+                  "12px",
+                  {
+                    "lineHeight": "16px",
+                    "fontWeight": "500"
+                  }
+                ]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-sans">
+<!-- Top Nav Bar (Suppressed per instructions for transactional/success screens) -->
+<main class="flex-grow flex items-center justify-center p-margin-desktop md:p-gutter w-full max-w-max-width mx-auto">
+<div class="w-full max-w-3xl bg-surface-container-lowest border border-outline-variant p-8 md:p-12 shadow-sm flex flex-col items-start gap-8">
+<div class="flex items-center gap-4">
+<div class="bg-primary-container text-on-primary-container rounded-full p-4 flex items-center justify-center">
+<span class="material-symbols-outlined text-[48px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-on-background">Complaint successfully submitted</h1>
+</div>
+<div class="w-full bg-surface p-6 border-l-4 border-primary rounded-r">
+<p class="font-body-md text-body-md text-on-surface-variant mb-2">Your Reference ID is</p>
+<div class="font-mono-data text-mono-data text-xl md:text-2xl font-bold bg-surface-container-high py-2 px-4 inline-block rounded">
+                    SCMS-A1B2C3D4
+                </div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-2">Please keep this ID safe. You will need it to track your complaint.</p>
+</div>
+<div class="flex flex-col gap-4 w-full border-t border-outline-variant pt-8">
+<h2 class="font-headline-md text-headline-md text-on-background">What happens next</h2>
+<ul class="list-decimal list-inside space-y-3 font-body-lg text-body-lg text-on-surface-variant marker:text-primary marker:font-bold">
+<li>Our staff will review your report within 2 business days.</li>
+<li>You can track the status of your complaint at any time using your Reference ID.</li>
+</ul>
+</div>
+<div class="flex flex-col sm:flex-row items-center gap-4 mt-8 w-full">
+<button class="w-full sm:w-auto bg-primary text-on-primary hover:bg-primary-fixed hover:text-on-primary-fixed transition-colors py-3 px-8 rounded font-label-bold text-label-bold focus:outline-none focus:ring-4 focus:ring-primary-container focus:ring-opacity-50">
+                    View my complaints
+                </button>
+<a class="w-full sm:w-auto text-primary hover:text-primary-fixed underline font-label-bold text-label-bold text-center sm:text-left focus:outline-none focus:ring-4 focus:ring-primary-container focus:ring-opacity-50 py-3 px-4 rounded" href="#">
+                    Submit another complaint
+                </a>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-highest border-t border-outline-variant w-full py-8 px-margin-desktop">
+<div class="max-w-max-width mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="font-label-sm text-label-sm text-on-surface-variant text-center md:text-left">
+                © 2024 Smart City Management System. All rights reserved. Official Government Portal.
+            </div>
+<div class="flex gap-4 md:gap-6 flex-wrap justify-center">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors underline focus:outline-none focus:ring-2 focus:ring-primary" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors underline focus:outline-none focus:ring-2 focus:ring-primary" href="#">Accessibility Statement</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors underline focus:outline-none focus:ring-2 focus:ring-primary" href="#">Contact Registry</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors underline focus:outline-none focus:ring-2 focus:ring-primary" href="#">Terms of Service</a>
+</div>
+</div>
+</footer>
+</body></html>

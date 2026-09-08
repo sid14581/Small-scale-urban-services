@@ -7,7 +7,7 @@ export default function PasswordInput({ value, onChange, placeholder, minLength,
     <div className="relative">
       <input
         id={id}
-        className="input pr-10"
+        className="input pr-16"
         type={visible ? 'text' : 'password'}
         placeholder={placeholder}
         value={value}
@@ -18,7 +18,7 @@ export default function PasswordInput({ value, onChange, placeholder, minLength,
       <button
         type="button"
         onClick={() => setVisible((v) => !v)}
-        className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-muted hover:text-slate-200 px-2 py-1"
+        className="absolute right-2 top-1/2 -translate-y-1/2 text-xs font-medium text-primary hover:text-primary-dark px-2 py-1 rounded-lg"
         aria-label={visible ? 'Hide password' : 'Show password'}
       >
         {visible ? 'Hide' : 'Show'}
